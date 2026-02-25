@@ -53,12 +53,6 @@ def create_all_regions(world: DeadCellsAPWorld) -> None:
     # Third Bosses
     throne_room = Region("Throne Room", world.player, world.multiworld)
 
-    # Seventh Stage
-    astrolab = Region("Astrolab", world.player, world.multiworld)
-
-    # Special Stages
-    bank = Region("The Bank", world.player, world.multiworld)
-
     regions = [
         prison_quarter,
         condemned_promenade,toxic_sewer,
@@ -69,9 +63,7 @@ def create_all_regions(world: DeadCellsAPWorld) -> None:
         clock_tower, forgotten_sepulcher,
         clock_room,
         high_peak_castle, dereliict_distillery,
-        throne_room,
-        astrolab,
-        bank]
+        throne_room,]
 
     # Adds regions to multiworld
     world.multiworld.regions += regions
@@ -98,8 +90,6 @@ def connect_regions(world: DeadCellsAPWorld) -> None:
     high_peak_castle = world.get_region("High Peak Castle")
     derelict_distillery = world.get_region("Derelict Distillery")
     throne_room = world.get_region("Throne Room")
-    astrolab = world.get_region("Astrolab")
-    bank = world.get_region("The Bank")
 
 
     # First Stage Connections
@@ -130,4 +120,20 @@ def connect_regions(world: DeadCellsAPWorld) -> None:
     insuff_crypt.connect(graveyard, "Insufferable Crypt to Graveyard", lambda state: state.has("Spider Rune", world.player))
 
     # Fourth Stage Connections
-    stilt_village.connect(clock_tower, "Clock Tower to Clock Village")
+    stilt_village.connect(clock_tower, "Stilt Village to Clock Tower")
+    stilt_village.connect(forgotten_sepulcher, "Stilt Village to Forgotten Sepulcher", lambda state: state.has("Teleport Rune", world.player))
+    slumber_sanctuary.connect(clock_tower, "Slumbering Sanctuary to Clock Tower")
+    slumber_sanctuary.connect(forgotten_sepulcher, "Slumbering Sanctuary to Forgotten Sepulcher", lambda state: state.has("Teleport Rune", world.player))
+
+    # Fifth Stage Connections
+    clock_tower.connect(clock_room, "Clock Tower to Clock Room")
+    forgotten_sepulcher.connect(clock_room, "Forgotten Sepulcher to Clock Room")
+
+    # Second Boss Stage Connections
+    clock_room.connect(derelict_distillery, "Clock Room to Derelict Distillery")
+    clock_room.connect(high_peak_castle, "Clock Room to High Peak Castle")
+
+    # Sixth Stage Connections
+    derelict_distillery.connect(throne_room, "Derelict Distillery to Throne Room")
+    high_peak_castle.connect(throne_room, "High Peak Castle to Throne Room")
+
