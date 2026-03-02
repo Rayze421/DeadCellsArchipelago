@@ -53,13 +53,6 @@ namespace DeadCellsArchipelago {
             if (ARCHIPELAGO != null)
             {
                 ARCHIPELAGO.SendCheck($"Boss: {bossName}");
-                if (SAVED_DATA != null)
-                {
-                    SAVED_DATA.SaveCheckSent(bossName);
-                } else
-                {
-                    Log.Error("=== Couldn't save check ===");
-                }
             }
             else
             {

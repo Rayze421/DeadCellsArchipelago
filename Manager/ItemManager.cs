@@ -19,6 +19,7 @@ namespace DeadCellsArchipelago {
         public static Dictionary<string, ItemData>? ITEMS { get; set; }
         public static ItemMetaManager? ITEM_META_MANAGER { get; set; }
         public static User? USER { get; set; }
+        public static bool useOriginalUnlockItem { get; set; } = false;
 
         //Drop the item with the id @itemName to the player position
         //Warning: all items can be dropped, but if it has no pick up implementation, it will crash the game when you take it.
@@ -201,7 +202,8 @@ namespace DeadCellsArchipelago {
 
         public static void ReallyRevealAllBaseItems(Hook_ItemMetaManager.orig_revealAllBaseItems orig, ItemMetaManager self)
         {
-            //leaving this blank remove base items in collector's shop
+            //leaving this blank remove base items in collector's shop (upgrade, weapons and skills)
+            //todo: lock base weapon, not just stop revealing them (but maybe not here, this function is checked each run/load)
         }
 
         public static void GiveItemFromArchipelago(string itemName)
@@ -222,8 +224,40 @@ namespace DeadCellsArchipelago {
                         RuneManager.ActivateMinimapTracking(itemName);
                         return;
 
-                }
+                }//todo: 
                 BlueprintManager.UnlockBlueprint(itemName);
+            }
+        }
+
+        public static void UnlockItem(string itemId)
+        {
+            if(ITEM_META_MANAGER != null)
+            {
+                useOriginalUnlockItem = true;
+                ITEM_META_MANAGER.unlockItem(itemId.AsHaxeString());
+                useOriginalUnlockItem = false;
+            }
+        }
+
+        public static bool OnUnlockItem(Hook_ItemMetaManager.orig_unlockItem orig, ItemMetaManager self, dc.String k)//utilisé pour les items comme la poelle 
+        {
+            Log.Warning($"=== This method was called for {k} in on unlock ===");//to be removed when all unlocked item with this are found
+            if(!useOriginalUnlockItem)
+            {
+                SendItemWithoutBlueprintCheck(k.ToString());
+            }
+            return orig(self, k);
+        }
+
+        public static void SendItemWithoutBlueprintCheck(string itemId)
+        {
+            if (ARCHIPELAGO != null)
+            {
+                ARCHIPELAGO.SendCheck($"Item: {itemId}");
+            }
+            else
+            {
+                Log.Error("=== Error while sending Item check ===");
             }
         }
     }

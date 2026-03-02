@@ -71,13 +71,6 @@ namespace DeadCellsArchipelago {
             if (ARCHIPELAGO != null)
             {
                 ARCHIPELAGO.SendCheck($"Rune: {runeId}");
-                if (SAVED_DATA != null)
-                {
-                    SAVED_DATA.SaveCheckSent(runeId);
-                } else
-                {
-                    Log.Error("=== Couldn't save check ===");
-                }
             }
             else
             {

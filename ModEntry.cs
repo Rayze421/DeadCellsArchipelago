@@ -9,6 +9,7 @@ using static DeadCellsArchipelago.ItemManager;
 using static DeadCellsArchipelago.BlueprintManager;
 using static DeadCellsArchipelago.RuneManager;
 using static DeadCellsArchipelago.RoomManager;
+using static DeadCellsArchipelago.PerkManager;
 using dc.en.mob;
 using dc._Data;
 using dc.pr;
@@ -28,6 +29,9 @@ using dc.steam.ugc;
 using Archipelago.MultiClient.Net.Models;
 using dc.tool.utils;
 using dc.level.@struct;
+using dc.en.inter.door;
+using dc.level.lore;
+using dc.ui;
 
 
 namespace DeadCellsArchipelago{
@@ -59,6 +63,11 @@ namespace DeadCellsArchipelago{
 
             InitializeRoomHooks();
 
+            //PerkSelect;
+            //TriggeredDoor;
+            Hook_TriggeredDoor.onActivate += OnTriggeredDoorActivate;
+            Hook_Door.closeFast += OnDoorCloseFast;
+
             archipelago.EnableMockMode();
             // TODO: Get infos from file or ui
             //archipelago.Connect("localhost:38281", "Player1");
@@ -68,14 +77,8 @@ namespace DeadCellsArchipelago{
             ITEMS = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, ItemData>>(json);
 
             Log.Information("=== Archipelago Mod loaded ! ===");
-        }
 
-        private bool OnUnlockItem(Hook_ItemMetaManager.orig_unlockItem orig, ItemMetaManager self, dc.String k)//utilisé pour les items comme la poelle 
-        {
-            Log.Warning($"=== This method was called for {k} in on unlock ===");
-            bool res = orig(self, k);
-            Log.Warning("=== End call unlock ===");
-            return res;
+            
         }
 
         private void OnHeroInit(Hook_Hero.orig_init orig, Hero self)

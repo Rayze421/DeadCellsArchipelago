@@ -51,13 +51,6 @@ namespace DeadCellsArchipelago {
             if (ARCHIPELAGO != null)
             {
                 ARCHIPELAGO.SendCheck($"Blueprint: {blueprintId}");
-                if (SAVED_DATA != null)
-                {
-                    SAVED_DATA.SaveCheckSent(blueprintId);
-                } else
-                {
-                    Log.Error("=== Couldn't save check ===");
-                }
             }
             else
             {

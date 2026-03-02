@@ -8,6 +8,8 @@ using Serilog;
 using System.Collections.Generic;
 using System.Linq;
 
+using static DeadCellsArchipelago.ItemManager;
+
 namespace DeadCellsArchipelago
 {
     public class ArchipelagoManager
@@ -95,8 +97,10 @@ namespace DeadCellsArchipelago
                 
                 // Simulate a blueprint send from server
                 Log.Information($"=== [MOCK] Simulate item send ===");
-                ItemManager.GiveItemFromArchipelago("Flask1");
-                ItemManager.GiveItemFromArchipelago("BreakableGroundKey");//LadderKey//TeleportKey
+                GiveItemFromArchipelago("Flask1");
+                GiveItemFromArchipelago("BlobbyFlame");
+                GiveItemFromArchipelago("LadderKey");//LadderKey//TeleportKey//BreakableGroundKey
+                SaveChecks(locationName);
                 return;
             }
 
@@ -114,6 +118,7 @@ namespace DeadCellsArchipelago
                 
                 _session.Locations.CompleteLocationChecks(locationId);
                 Log.Information($"=== Check sent: {locationName} (ID: {locationId}) ===");
+                SaveChecks(locationName);
             }
             catch (Exception ex)
             {
@@ -171,6 +176,17 @@ namespace DeadCellsArchipelago
         {
             _isConnected = false;
             Log.Warning($"=== Déconnecté d'Archipelago: {reason} ===");
+        }
+
+        private void SaveChecks(string locationName)
+        {
+            if (SAVED_DATA != null)
+            {
+                SAVED_DATA.SaveCheckSent(locationName);
+            } else
+            {
+                Log.Error("=== Couldn't save check ===");
+            }
         }
     }
 }
