@@ -81,7 +81,7 @@ namespace DeadCellsArchipelago{
             archipelago.Connect("localhost:38281", "TestPlayer");
             ARCHIPELAGO = archipelago;
 
-            string json = System.IO.File.ReadAllText("./coremod/mods/DeadCellsArchipelago/itemsId-Category.json"); //the json should be placed next to the modinfo.json
+            string json = System.IO.File.ReadAllText(System.IO.Path.Combine(AppContext.BaseDirectory, "coremod", "mods", "DeadCellsArchipelago", "itemsId-Category.json")); //the json should be placed next to the modinfo.json
             ITEMS = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, ItemData>>(json);
 
             Log.Information("=== Archipelago Mod loaded ! ===");
@@ -168,7 +168,7 @@ namespace DeadCellsArchipelago{
         
         private string GetSaveFilePath(int slot)
         {
-            var saveDir = "./coremod/mods/DeadCellsArchipelago/data";
+            string saveDir = System.IO.Path.Combine(AppContext.BaseDirectory, "coremod", "mods", "DeadCellsArchipelago", "data");
             
             Directory.CreateDirectory(saveDir);
             return System.IO.Path.Combine(saveDir, $"archipelagoUserId_{slot}.json");
