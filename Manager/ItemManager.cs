@@ -16,10 +16,11 @@ namespace DeadCellsArchipelago {
         public static Hero? HERO { get; set; }
         public static ArchipelagoSaveData? SAVED_DATA { get; set; }
         public static ArchipelagoManager? ARCHIPELAGO { get; set; }
-        public static Dictionary<string, ItemData>? ITEMS { get; set; }
         public static ItemMetaManager? ITEM_META_MANAGER { get; set; }
         public static User? USER { get; set; }
         public static bool useOriginalUnlockItem { get; set; } = false;
+        public static bool heroJustDead = false;
+        public static int aspectsToIter = 0;
 
         //Drop the item with the id @itemName to the player position
         //Warning: all items can be dropped, but if it has no pick up implementation, it will crash the game when you take it.
@@ -94,18 +95,17 @@ namespace DeadCellsArchipelago {
 
         private static InventItem? CreateInventItemById(string itemName)
         {
+            var group = -1;
 
-            if (ITEMS == null)
+            foreach (var item in Data.Class.item.all)
             {
-                Log.Error($"=== Could not get the json list of items ===");
-                return null;
+                if(item.id.ToString() == itemName)
+                {
+                    group = item.group;
+                    break;
+                }
             }
-
-            if (ITEMS.TryGetValue(itemName, out ItemData? itemData))
-            {
-                Console.WriteLine($"=== Item {itemName} exists with category {itemData.category} ===");
-            }
-            else
+            if (group == -1)
             {
                 Log.Error($"=== Item with id : {itemName} doesn't exist ===");
                 return null;
@@ -113,58 +113,58 @@ namespace DeadCellsArchipelago {
 
             InventItem? inventItem = null;
 
-            switch (itemData.category)
+            switch (group)
             {
-                case "DeployedTrap":
-                case "Grenade":
-                case "SideKick":
-                case "Power":
+                case 0:
+                case 1:
+                case 2:
+                case 3:
                     inventItem = new InventItem(new InventItemKind.Active(itemName.AsHaxeString()));
                     break;
 
-                case "Melee":
-                case "Ranged":
-                case "Shield":
+                case 4:
+                case 5:
+                case 6:
                     inventItem = new InventItem(new InventItemKind.Weapon(itemName.AsHaxeString()));
                     break;
 
-                case "Talisman":
+                case 7:
                     inventItem = new InventItem(new Talisman(itemName.AsHaxeString()));
                     break;
 
-                case "BagItem":
+                case 8:
                     inventItem = new InventItem(new BagItem(itemName.AsHaxeString()));
                     break;
 
-                case "Meta":
+                case 9:
                     inventItem = new InventItem(new Meta(itemName.AsHaxeString()));
                     break;
 
-                case "Consumable":
+                case 10:
                     inventItem = new InventItem(new Consumable(itemName.AsHaxeString()));
                     break;
 
-                case "PreciousLoot":
+                case 11:
                     inventItem = new InventItem(new PreciousLoot(itemName.AsHaxeString()));
                     break;
 
-                case "Perk":
+                case 12:
                     inventItem = new InventItem(new Perk(itemName.AsHaxeString()));
                     break;
 
-                case "Skin":
+                case 13:
                     inventItem = new InventItem(new Skin(itemName.AsHaxeString()));
                     break;
 
-                case "Head":
+                case 14:
                     inventItem = new InventItem(new Head(itemName.AsHaxeString()));
                     break;
 
-                case "Aspect":
+                case 15:
                     inventItem = new InventItem(new Aspect(itemName.AsHaxeString()));
                     break;
 
-                case "BossRushStatueUnlock":
+                case 16:
                     inventItem = new InventItem(new BossRushStatueUnlock(itemName.AsHaxeString()));
                     break;
             }
@@ -222,6 +222,7 @@ namespace DeadCellsArchipelago {
                         ITEM_META_MANAGER.addPermanentItem(itemName.AsHaxeString());
                         GiveItemToPlayer(itemName);
                         RuneManager.ActivateMinimapTracking(itemName);
+                        LogItem(itemName);
                         return;
                     case "BossRune1":
                     case "BossRune2":
@@ -229,16 +230,38 @@ namespace DeadCellsArchipelago {
                     case "BossRune4":
                     case "BossRune5":
                         ITEM_META_MANAGER.addPermanentItem(itemName.AsHaxeString());
+                        LogItem(itemName);
                         return;
 
-                }//todo: other kinds && add base aspects
-                BlueprintManager.UnlockBlueprint(itemName);
-                if(USER != null)
+                }//todo: other kinds
+                if("ASP" == itemName[..3])
                 {
-                    BlueprintManager.showBlueprintLog = true;
-                    USER.game.log.blueprint(itemName.AsHaxeString(), "Always".AsHaxeString(), false, false);
-                    BlueprintManager.showBlueprintLog = false;
+                    if (IsUnlockedByDefault(itemName))
+                    {
+                        var progress = new ItemProgress(itemName.AsHaxeString());
+                        ITEM_META_MANAGER.itemProgress.push(progress);
+                    }
+                    UnlockItem(itemName);
+                    ITEM_META_MANAGER.getItemProgress(itemName.AsHaxeString()).unlocked = true;
+                    if (IsUnlockedByDefault(itemName) && SAVED_DATA != null)
+                    {
+                        SAVED_DATA.AddBaseItemUnlocked(itemName);
+                    }
+                } else
+                {
+                    BlueprintManager.UnlockBlueprint(itemName);
                 }
+                LogItem(itemName);
+            }
+        }
+
+        public static void LogItem(string itemId)
+        {
+            if(USER != null)
+            {
+                BlueprintManager.showBlueprintLog = true;
+                USER.game.log.blueprint(itemId.AsHaxeString(), "Always".AsHaxeString(), false, false);
+                BlueprintManager.showBlueprintLog = false;
             }
         }
 
@@ -254,7 +277,7 @@ namespace DeadCellsArchipelago {
 
         public static bool OnUnlockItem(Hook_ItemMetaManager.orig_unlockItem orig, ItemMetaManager self, dc.String k)//utilisé pour les items comme la poelle 
         {
-            Log.Warning($"=== This method was called for {k} in on unlock ===");//to be removed when all unlocked item with this are found
+            //Log.Warning($"=== This method was called for {k} in on unlock ===");//to be removed when all unlocked item with this are found
             if(!useOriginalUnlockItem)
             {
                 SendItemWithoutBlueprintCheck(k.ToString());
@@ -287,10 +310,18 @@ namespace DeadCellsArchipelago {
 
         public static bool OnHasUnlockedItem(Hook_ItemMetaManager.orig_hasUnlockedItem orig, ItemMetaManager self, dc.String k)
         {
-            Log.Information($"=== test {k} ===");
-            if (IsUnlockedByDefault(k.ToString()) && SAVED_DATA != null)
+            //Log.Information($"=== test {k} ===");
+            if (SAVED_DATA != null)
             {
-                return SAVED_DATA.IsBaseItemUnlocked(k.ToString());
+                if (heroJustDead && aspectsToIter <= 12)//the game use hasUnlockedItem to add aspects in its random give pool
+                {
+                    aspectsToIter++;
+                    return SAVED_DATA.IsCheckSent(k.ToString());
+                }
+                if (IsUnlockedByDefault(k.ToString()))
+                {
+                    return SAVED_DATA.IsBaseItemUnlocked(k.ToString());
+                }
             }
             return orig(self, k);
         }
@@ -328,6 +359,14 @@ namespace DeadCellsArchipelago {
                 case "ASP_Firestarter":
                 case "ASP_ToxinLover":
                 case "ASP_Shatter":
+                case "PrisonerGOG":
+                case "PrisonerFrench":
+                case "PrisonerRetro":
+                case "Snowman":
+                case "SantaKLOS":
+                case "BlackHoleViolet":
+                case "VortexHelloDarkness":
+                case "BlowTorch":
                     return true;
             }
             return false;

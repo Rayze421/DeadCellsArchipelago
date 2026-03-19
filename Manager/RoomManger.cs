@@ -15,7 +15,7 @@ using Hashlink.Virtuals;
 namespace DeadCellsArchipelago {
     public static class RoomManager
     {
-        private static string? lastLevel { get; set; }
+        public static string? lastLevel { get; set; }
         public static void InitializeRoomHooks()
         {
             Hook_PrisonCourtyard.buildMainRooms += (orig, self) => { useOriginalHasPermanentItem=false; var res=orig(self); useOriginalHasPermanentItem=true; return res;};
@@ -74,13 +74,6 @@ namespace DeadCellsArchipelago {
                 Log.Warning($"=== last level {lastLevel} ===");
             }
             return orig(self, user, seed, ldat, resetCount);
-        }
-
-        public static void OnHeroDie(Hook_Hero.orig_onDie orig, Hero self)
-        {
-            lastLevel = null;
-            Log.Warning("=== It's a death ==="); //test for reset and complete run (I want to do it on reset but not on complete), and what happend when he quit
-            orig(self);
         }
 
         public static void SendBiomeCheck(string locationId)

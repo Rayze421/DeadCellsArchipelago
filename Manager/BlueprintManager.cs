@@ -21,7 +21,6 @@ namespace DeadCellsArchipelago {
         {
             //the blueprint is comming from the game, so we need to send a archipelago check
             Log.Information($"=== Blueprint picked up: {k} ===");
-            // TODO: send check to Archipelago
             SendBlueprintCheck(k.ToString());
             return true;
         }

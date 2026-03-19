@@ -9,7 +9,9 @@ using static DeadCellsArchipelago.ItemManager;
 using static DeadCellsArchipelago.BlueprintManager;
 using static DeadCellsArchipelago.RuneManager;
 using static DeadCellsArchipelago.RoomManager;
-using static DeadCellsArchipelago.PerkManager;
+using static DeadCellsArchipelago.AchievementManager;
+using static DeadCellsArchipelago.NpcManager;
+using static DeadCellsArchipelago.HeroManager;
 using static DeadCellsArchipelago.ItemQueue;
 using dc.en.mob;
 using dc._Data;
@@ -38,6 +40,8 @@ using ModCore.Events.Interfaces.Game.Hero;
 using dc.uicore;
 using dc.hl;
 using dc.uicore.element;
+using dc.achievements;
+using dc.en.inter.npc;
 
 
 namespace DeadCellsArchipelago{
@@ -78,36 +82,25 @@ namespace DeadCellsArchipelago{
             //LevelGen
             Hook_LevelGen.generate += OnGenerate;
 
+            
+            Hook_SteamAchievementManager.isUnlocked += RemoveIsUnlocked;
+            Hook_SteamAchievementManager.unlock += RemoveUnlock;
+            Hook_SteamAchievementManager.shouldDisplayInGameNotification += RemoveShouldDisplayInGameNotification;
+
+            Hook_LogManager.blueprint += BlueprintUILog;
+            Hook_ItemMetaManager.hasUnlockedItem += OnHasUnlockedItem;
+            Hook_ItemMetaManager.investOnItemProgress += OnInvestOnItemProgress;
+            Hook_AspectMaster.onActivate += NoAspectActivate;
+            //AspectMaster
+            //ItemMetaManager
+            //InventItemKind
+
             //archipelago.EnableMockMode();
             // TODO: Get infos from file or ui
             archipelago.Connect("localhost:38281", "TestPlayer");
             ARCHIPELAGO = archipelago;
 
-            string json = System.IO.File.ReadAllText(System.IO.Path.Combine(AppContext.BaseDirectory, "..", "..", "mods", "DeadCellsArchipelago", "itemsId-Category.json")); //the json should be placed next to the modinfo.json
-            ITEMS = System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, ItemData>>(json);
-
             Log.Information("=== Archipelago Mod loaded ! ===");
-            Hook_LogManager.blueprint += BlueprintUILog;
-            Hook_ItemMetaManager.hasUnlockedItem += OnHasUnlockedItem;
-            Hook_ItemMetaManager.investOnItemProgress += OnInvestOnItemProgress;
-            //ItemMetaManager
-        }
-
-        private void OnHeroInit(Hook_Hero.orig_init orig, Hero self)
-        {
-            orig(self);
-            HERO = self;
-            
-            Log.Information("=== Hero initialized ! ===");
-            //giving an item to a player saved at a level transition do nothing or errors (can pose future problems)
-            //LogInventory();
-            /*GiveItemToPlayer("DiverseDeckWatcher");
-            GiveItemToPlayer("AnyUp");
-            GiveItemToPlayer("LegendGem");
-            UnlockBlueprint("FastBow");
-            UnlockBlueprint("EvilSword");
-            UnlockBlueprint("FastBow");
-            UnlockBlueprint("BackStabber");*/
         }
 
         public void OnHeroUpdate(double dt)
@@ -142,11 +135,6 @@ namespace DeadCellsArchipelago{
                         }
                     }
                 }
-                Log.Information($"{ITEM_META_MANAGER.hasUnlockedItem("QuickSword".AsHaxeString())}");
-                Log.Information($"{ITEM_META_MANAGER.hasUnlockedItem("StunMace".AsHaxeString())}");
-                Log.Information($"{ITEM_META_MANAGER.hasUnlockedItem("DashSword".AsHaxeString())}");
-                Log.Information($"{ITEM_META_MANAGER.hasUnlockedItem("Spear".AsHaxeString())}");
-                
                 
                 USER = data;
 
@@ -204,6 +192,10 @@ namespace DeadCellsArchipelago{
 
         private ArrayObj OnLevelGenGenerate(Hook_LevelGen.orig_generate orig, LevelGen self, User user, int seed, Hashlink.Virtuals.virtual_baseLootLevel_biome_bonusTripleScrollAfterBC_cellBonus_dlc_doubleUps_eliteRoomChance_eliteWanderChance_flagsProps_group_icon_id_index_loreDescriptions_mapDepth_minGold_mobDensity_mobs_name_nextLevels_parallax_props_quarterUpsBC3_quarterUpsBC4_specificLoots_specificSubBiome_transitionTo_tripleUps_worldDepth_ ldat, Ref<bool> resetCount)
         {
+            if(USER == null)
+            {
+                USER = user;
+            }
             ITEM_META_MANAGER = user.itemMeta;
             var result = orig(self, user, seed, ldat, resetCount);
             return result;

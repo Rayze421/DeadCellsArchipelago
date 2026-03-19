@@ -34,5 +34,18 @@ namespace DeadCellsArchipelago {
         {
             return BaseItemUnlocked.Contains(itemName);
         }
+
+        public bool HasReceivedAspect()
+        {
+            foreach (string item in RecievedItem)
+            {
+                if ("ASP" == item[..3])
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

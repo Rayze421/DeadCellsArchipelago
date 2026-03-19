@@ -1839,10 +1839,10 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "BroadSword",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
     },
-    "Blueprint_Pan": {
-        "id": 0x021E, "region": "Checks", "type": "blueprint_floor",
+    "Item_Pan": {
+        "id": 0x021E, "region": "Checks", "type": "item_no_blueprint",
         "dlc": "", "min_bc": 0, "item": "Pan",
-        "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
+        "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'item_no_blueprint'}],
     },
     "Blueprint_LongBow": {
         "id": 0x021F, "region": "Checks", "type": "blueprint_floor",
@@ -2104,6 +2104,21 @@ LOCATION_TABLE: Dict[str, dict] = {
         "id": 0x0253, "region": "Checks", "type": "blueprint_floor",
         "dlc": "", "min_bc": 0, "item": "ShopCategories",
         "sources": [{'biome': 'Cemetery', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
+    },
+    "Item_ASP_Shatter": {
+        "id": 0x0254, "region": "Checks", "type": "item_no_blueprint",
+        "dlc": "", "min_bc": 0, "item": "ASP_Shatter",
+        "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'item_no_blueprint'}],
+    },
+    "Item_ASP_ToxinLover": {
+        "id": 0x0255, "region": "Checks", "type": "item_no_blueprint",
+        "dlc": "", "min_bc": 0, "item": "ASP_ToxinLover",
+        "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'item_no_blueprint'}],
+    },
+    "Item_ASP_Firestarter": {
+        "id": 0x0256, "region": "Checks", "type": "item_no_blueprint",
+        "dlc": "", "min_bc": 0, "item": "ASP_Firestarter",
+        "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'item_no_blueprint'}],
     },
 }
 

@@ -54,10 +54,6 @@ BASE_PERKS = {
     "P_Yolo", "P_CDR_Crit",
 }
 
-BASE_ASPECTS = {
-    "ASP_Shatter", "ASP_ToxinLover", "ASP_Firestarter",
-}
-
 BASE_SKINS = {
     "PrisonerGOG", "PrisonerFrench", "PrisonerRetro", "Snowman", "SantaKLOS",
 }
@@ -242,9 +238,6 @@ class DeadCellsWorld(World):
             items_to_place.append(self.create_item(name))
                 
         for name in BASE_PERKS:
-            items_to_place.append(self.create_item(name))
-        
-        for name in BASE_ASPECTS:
             items_to_place.append(self.create_item(name))
         
         for name in BASE_SKINS:
