@@ -25,14 +25,14 @@ namespace DeadCellsArchipelago {
             Hook_AncientTemple.buildSecondaryRooms += (orig, self) => { useOriginalHasPermanentItem=false; orig(self); useOriginalHasPermanentItem=true; };
             Hook_Ossuary.buildMainRooms += (orig, self) => { useOriginalHasPermanentItem=false; var res=orig(self); useOriginalHasPermanentItem=true; return res;};
             Hook_Ossuary.buildSecondaryRooms += (orig, self) => { useOriginalHasPermanentItem=false; orig(self); useOriginalHasPermanentItem=true; };
-            dc.level.@struct.Hook_Throne.buildMainRooms += (orig, self) => { Log.Warning("111"); useOriginalHasPermanentItem=false; var res=orig(self); useOriginalHasPermanentItem=true; Log.Warning("222"); return res; };
+            dc.level.@struct.Hook_Throne.buildMainRooms += (orig, self) => { useOriginalHasPermanentItem=false; var res=orig(self); useOriginalHasPermanentItem=true; return res; };
             Hook_QueenArena.buildMainRooms += (orig, self) => { useOriginalHasPermanentItem=false; var res=orig(self); useOriginalHasPermanentItem=true; return res;};
             Hook_DookuArena.buildMainRooms += (orig, self) => { useOriginalHasPermanentItem=false; var res=orig(self); useOriginalHasPermanentItem=true; return res;};
         }
 
         public static void OnTriggeredDoorActivate(Hook_TriggeredDoor.orig_onActivate orig, TriggeredDoor self, Hero by, bool lp)
         {
-            if(USER != null)
+            if(USER != null && USER.game.curLevel.map.getRoomAt(self.cx, self.cy) != null)
             {   //allow the player to open the mutation door in collector's transition
             Log.Warning($"=== porte en {USER.game.curLevel.map.getRoomAt(self.cx, self.cy).rTemplate} ===");
                 if (USER.game.curLevel.map.getRoomAt(self.cx, self.cy).rTemplate.ToString() == "PerkShop" || USER.game.curLevel.map.getRoomAt(self.cx, self.cy).rTemplate.ToString() == "DookuArenaPerkShop")
@@ -46,7 +46,7 @@ namespace DeadCellsArchipelago {
 
         public static void OnDoorCloseFast(Hook_Door.orig_closeFast orig, Door self, HlAction cb)
         {   //without this, the mutation door in collector's transition will close automatically
-            if(USER != null)
+            if(USER != null && USER.game.curLevel != null)
             {
                 if (USER.game.curLevel.map.getRoomAt(self.cx, self.cy).rTemplate.ToString() == "PerkShop" || USER.game.curLevel.map.getRoomAt(self.cx, self.cy).rTemplate.ToString() == "DookuArenaPerkShop")
                 {

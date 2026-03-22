@@ -94,6 +94,7 @@ namespace DeadCellsArchipelago{
             Hook_LogManager.head += HeadUILog;
             Hook_ItemMetaManager.hasUnlockedItem += OnHasUnlockedItem;
             Hook_ItemMetaManager.investOnItemProgress += OnInvestOnItemProgress;
+            Hook_ItemMetaManager.canInvestOnItem += OnCanInvestOnItem;
             Hook_AspectMaster.onActivate += NoAspectActivate;
             //AspectMaster
             //ItemMetaManager

@@ -1,4 +1,5 @@
 
+using System.Text.RegularExpressions;
 using dc;
 using dc.en;
 using dc.en.inter;
@@ -19,8 +20,27 @@ namespace DeadCellsArchipelago {
         public static ItemMetaManager? ITEM_META_MANAGER { get; set; }
         public static User? USER { get; set; }
         public static bool useOriginalUnlockItem { get; set; } = false;
+        public static bool useHaveFlaskUnlockItem { get; set; } = false;
         public static bool heroJustDead = false;
         public static int aspectsToIter = 0;
+        public static List<string> dropableList = [];
+
+        public static void InitDropableList()
+        {
+            foreach (var item in Data.Class.item.all)
+            {
+                int group = -1;
+                var match = Regex.Match(item.ToString(), @"group\s*:\s*(\d+)");
+                if (match.Success)
+                {
+                    group = int.Parse(match.Groups[1].Value);
+                }
+                if(group == 10 || group == 11)
+                {
+                    dropableList.Add(item.id.ToString());
+                }
+            }
+        }
 
         //Drop the item with the id @itemName to the player position
         //Warning: all items can be dropped, but if it has no pick up implementation, it will crash the game when you take it.
@@ -93,10 +113,9 @@ namespace DeadCellsArchipelago {
             }
         }
 
-        private static InventItem? CreateInventItemById(string itemName)
+        public static int? GetGroupItem(string itemName)
         {
             var group = -1;
-
             foreach (var item in Data.Class.item.all)
             {
                 if(item.id.ToString() == itemName)
@@ -110,6 +129,14 @@ namespace DeadCellsArchipelago {
                 Log.Error($"=== Item with id : {itemName} doesn't exist ===");
                 return null;
             }
+            return group;
+        }
+
+        private static InventItem? CreateInventItemById(string itemName)
+        {
+            var group = GetGroupItem(itemName);
+
+            if(group == null) {return null;}
 
             InventItem? inventItem = null;
 
@@ -203,7 +230,6 @@ namespace DeadCellsArchipelago {
         public static void ReallyRevealAllBaseItems(Hook_ItemMetaManager.orig_revealAllBaseItems orig, ItemMetaManager self)
         {
             //leaving this blank remove base items in collector's shop (upgrade, weapons and skills)
-            //todo: lock base weapon, not just stop revealing them (but maybe not here, this function is checked each run/load)
         }
 
         //the boolean returned here is for saving or not the item in local data
@@ -251,7 +277,14 @@ namespace DeadCellsArchipelago {
                     Log.Warning("=== if nothing append, I forgot to implement it ===");
                     return false;
                 }
-                else if(itemName.Length >= 3 && itemName[..3] == "ASP")
+
+                if(InDropableList(itemName))
+                {
+                    DropItemToPlayer(itemName);
+                    return false;
+                }
+
+                if(itemName.Length >= 3 && itemName[..3] == "ASP")
                 {
                     if (IsUnlockedByDefault(itemName))
                     {
@@ -270,6 +303,22 @@ namespace DeadCellsArchipelago {
                 }
                 LogItem(itemName);
                 return true;
+            }
+            return false;
+        }
+
+        public static bool InDropableList(string itemName)
+        {
+            if(!dropableList.Any())
+            {
+                InitDropableList();
+            }
+            foreach (var item in dropableList)
+            {
+                if(item == itemName)
+                {
+                    return true;
+                }
             }
             return false;
         }
@@ -305,6 +354,14 @@ namespace DeadCellsArchipelago {
             return orig(self, k);
         }
 
+        public static bool OnCanInvestOnItem(Hook_ItemMetaManager.orig_canInvestOnItem orig, ItemMetaManager self, dc.String k)
+        {
+            useHaveFlaskUnlockItem = true;
+            bool res = orig(self, k);
+            useHaveFlaskUnlockItem = false;
+            return res;
+        }
+
         public static void SendItemWithoutBlueprintCheck(string itemId)
         {
             if (ARCHIPELAGO != null)
@@ -335,6 +392,10 @@ namespace DeadCellsArchipelago {
                 {
                     aspectsToIter++;
                     return SAVED_DATA.IsCheckSent(k.ToString());
+                }
+                if(useHaveFlaskUnlockItem)
+                {
+                    return true;
                 }
                 if (IsUnlockedByDefault(k.ToString()))
                 {
