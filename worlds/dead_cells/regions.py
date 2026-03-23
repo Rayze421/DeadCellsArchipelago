@@ -165,7 +165,6 @@ def build_rule(requires, world: "DeadCellsWorld"):
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Transition table
-# Encoded directly from transition.json
 # ─────────────────────────────────────────────────────────────────────────────
 TRANSITIONS = {
     "Menu": [
@@ -178,11 +177,14 @@ TRANSITIONS = {
         {"to": "Greenhouse",      "require": "TeleportKey"},
         {"to": "PurpleGarden",    "require": None},
     ],
+    "Greenhouse": [
+        {"to": "PrisonDepths", "require": "WallJumpKey"},
+        {"to": "Swamp",        "require": None},
+    ],
     "PrisonCourtyard": [
         {"to": "Ossuary",      "require": "TeleportKey"},
         {"to": "PrisonRoof",   "require": "LadderKey"},
         {"to": "PrisonDepths", "require": "WallJumpKey"},
-        {"to": "Swamp",        "require": None},
     ],
     "SewerShort": [
         {"to": "PrisonCorrupt", "require": "WallJumpKey"},
@@ -193,7 +195,6 @@ TRANSITIONS = {
     "PrisonDepths": [
         {"to": "Ossuary",    "require": None},
         {"to": "SewerDepths","require": "bsc1"},
-        {"to": "Swamp",      "require": None},
     ],
     "PrisonCorrupt": [
         {"to": "SewerDepths", "require": None},
