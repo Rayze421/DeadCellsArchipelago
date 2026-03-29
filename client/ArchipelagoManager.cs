@@ -227,7 +227,6 @@ namespace DeadCellsArchipelago
         {
             userWithSkillIssue = deathLink.Source;
             deathLinkReceived = true;
-            DieByDeathLink();
         }
 
         public void SendDeathLink(string message = "")
