@@ -160,6 +160,24 @@ def _has_and_boss(item: str, boss_loc: str):
 def get_bc_level(state, player):
     return state.count("ProgBossRune", player)
 
+def set_rules(world):
+    player = world.player
+
+    for loc_name, loc_data in LOCATION_TABLE.items():
+        location = world.multiworld.get_location(loc_name, player)
+
+        sources = loc_data.get("sources", [])
+
+        def rule(state, sources=sources):
+            bc = get_bc_level(state, player)
+
+            return any(
+                state.can_reach(s["biome"], "Region", player)
+                and s["min_bc"] <= bc <= s["max_bc"]
+                for s in sources
+            )
+
+        add_rule(location, rule)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # The main rules table

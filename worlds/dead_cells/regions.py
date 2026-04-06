@@ -501,7 +501,7 @@ def create_regions(world: "DeadCellsWorld") -> None:
                 return source_ok
 
             return rule
-
+        
         set_rule(loc, make_rule(valid_sources, extra_rule))
         
 
