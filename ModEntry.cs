@@ -109,6 +109,10 @@ namespace DeadCellsArchipelago{
 
             Log.Information("=== Archipelago Mod loaded ! ===");
             //dc.level.@struct.Throne
+
+            //Exit
+            //dc.pr.Game
+            Hook_Exit.onActivate += OnActiviteExit;
         }
 
         public void OnHeroUpdate(double dt)

@@ -11,6 +11,9 @@ using dc.hl.types;
 using dc.level;
 using dc;
 using Hashlink.Virtuals;
+using dc.hl;
+using dc.ui;
+using ModCore.Utilities;
 
 namespace DeadCellsArchipelago {
     public static class RoomManager
@@ -89,6 +92,27 @@ namespace DeadCellsArchipelago {
             {
                 Log.Error("=== Error while sending Rune check ===");
             }
+        }
+
+        public static void OnActiviteExit(Hook_Exit.orig_onActivate orig, Exit self, Hero by, bool lp)
+        {
+            if(SAVED_DATA != null && USER != null && !SAVED_DATA.IsItemRecieved(self.destLevel.ToString()))
+            {
+                string msg = "You need the key for " + self.destLevel + " !";
+                bool sound = true;
+                USER.game.modalPause(new Ref<bool>(ref sound));
+                //ui.Notification.show(msg);
+                new Confirmation(null, msg.AsHaxeString(), () => CloseModal(), () => CloseModal(), "Close".AsHaxeString(), "".AsHaxeString(), null);
+            }
+            else
+            {
+                orig(self, by, lp);
+            }
+        }
+
+        public static void CloseModal()
+        {
+            USER?.game.resume();
         }
     }
 }
