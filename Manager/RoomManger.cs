@@ -98,7 +98,7 @@ namespace DeadCellsArchipelago {
 
         public static void OnActiviteExit(Hook_Exit.orig_onActivate orig, Exit self, Hero by, bool lp)
         {
-            if(SAVED_DATA != null && USER != null && !CanTakeExit(self.destLevel.ToString(), self.getDestBasedOnNextLevels().ToString()))
+            if(SAVED_DATA != null && USER != null && !IsMultipleExitsTransition(self.destLevel.ToString()) && !CanTakeExit(self.getDestBasedOnNextLevels().ToString()))
             {
                 string msg = $"You need the key for {self.getDestName()} !";
                 bool sound = true;
@@ -121,11 +121,11 @@ namespace DeadCellsArchipelago {
             USER?.game.resume();
         }
 
-        public static bool CanTakeExit(string levelId, string biomeId)
+        public static bool CanTakeExit(string biomeId)
         {
             if(SAVED_DATA != null)
             {
-                return !ExistKey(biomeId) || SAVED_DATA.IsItemRecieved(biomeId) || IsMultipleExitsTransition(levelId);
+                return !ExistKey(biomeId) || SAVED_DATA.IsItemRecieved(biomeId);
             }
             return false;
         }
