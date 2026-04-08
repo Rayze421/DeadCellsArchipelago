@@ -13,6 +13,7 @@ using static DeadCellsArchipelago.AchievementManager;
 using static DeadCellsArchipelago.NpcManager;
 using static DeadCellsArchipelago.HeroManager;
 using static DeadCellsArchipelago.ItemQueue;
+using static DeadCellsArchipelago.Translator;
 using dc.en.mob;
 using dc._Data;
 using dc.pr;
@@ -103,6 +104,9 @@ namespace DeadCellsArchipelago{
             //archipelago.EnableMockMode();
             // TODO: Get infos from ui
             var confData = GetConfData();
+
+            IdToApName = LoadModApTranslation();
+            ApNameToId = Invert(IdToApName);
 
             archipelago.Connect(confData.serverIp, confData.slotName, confData.password);
             ARCHIPELAGO = archipelago;

@@ -15,6 +15,8 @@ using dc.hl;
 using dc.ui;
 using ModCore.Utilities;
 
+using static DeadCellsArchipelago.Translator;
+
 namespace DeadCellsArchipelago {
     public static class RoomManager
     {
@@ -96,12 +98,11 @@ namespace DeadCellsArchipelago {
 
         public static void OnActiviteExit(Hook_Exit.orig_onActivate orig, Exit self, Hero by, bool lp)
         {
-            if(SAVED_DATA != null && USER != null && !SAVED_DATA.IsItemRecieved(self.destLevel.ToString()))
+            if(SAVED_DATA != null && USER != null && !CanTakeExit(self.destLevel.ToString(), self.getDestBasedOnNextLevels().ToString()))
             {
-                string msg = "You need the key for " + self.destLevel + " !";
+                string msg = $"You need the key for {self.getDestName()} !";
                 bool sound = true;
                 USER.game.modalPause(new Ref<bool>(ref sound));
-                //ui.Notification.show(msg);
                 new Confirmation(null, msg.AsHaxeString(), () => CloseModal(), () => CloseModal(), "Close".AsHaxeString(), "".AsHaxeString(), null);
             }
             else
@@ -113,6 +114,34 @@ namespace DeadCellsArchipelago {
         public static void CloseModal()
         {
             USER?.game.resume();
+        }
+
+        public static bool CanTakeExit(string levelId, string biomeId)
+        {
+            if(SAVED_DATA != null)
+            {
+                return !ExistKey(biomeId) || SAVED_DATA.IsItemRecieved(biomeId) || IsMultipleExitsTransition(levelId);
+            }
+            return false;
+        }
+
+        public static bool IsMultipleExitsTransition(string levelId)
+        {
+            switch (levelId)
+            {
+                case "T_AfterDeathArena":
+                case "T_AfterTumulus":
+                case "T_Castle":
+                case "T_AfterSwamp":
+                case "T_AfterBridge":
+                    return true;
+            }
+            return false;
+        }
+
+        public static bool ExistKey(string biomeId)
+        {
+            return IdToNameKeyExist(biomeId);
         }
     }
 }

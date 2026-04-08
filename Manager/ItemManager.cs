@@ -301,6 +301,12 @@ namespace DeadCellsArchipelago {
                     return false;
                 }
 
+                if(IsLevelKey(itemName))
+                {
+                    LogItem("GenericKey");
+                    return true;
+                }
+
                 if(itemName.Length >= 3 && itemName[..3] == "ASP")
                 {
                     if (IsUnlockedByDefault(itemName))
@@ -314,11 +320,21 @@ namespace DeadCellsArchipelago {
                     {
                         SAVED_DATA.AddBaseItemUnlocked(itemName);
                     }
-                } else
+                }
+                else
                 {
                     BlueprintManager.UnlockBlueprint(itemName);
                 }
-                LogItem(itemName);
+                
+                try {
+                    LogItem(itemName);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"=== Item doesn't exist {ex} ===");
+                    return false;
+                }
+                
                 return true;
             }
             return false;
@@ -608,6 +624,46 @@ namespace DeadCellsArchipelago {
                 }
             }
             return res;
+        }
+
+        private static bool IsLevelKey(string itemName)
+        {
+            switch (itemName)
+            {
+                case "PrisonDepths":
+                case "PrisonCorrupt":
+                case "Ossuary":
+                case "SewerDepths":
+                case "BeholderPit":
+                case "StiltVillage":
+                case "AncientTemple":
+                case "Cemetery":
+                case "ClockTower":
+                case "Crypt":
+                case "TopClockTower":
+                case "Castle":
+                case "Distillery":
+                case "Throne":
+                case "Cavern":
+                case "Giant":
+                case "Astrolab":
+                case "Observatory":
+                case "Greenhouse":
+                case "Swamp":
+                case "SwampHeart":
+                case "Tumulus":
+                case "Cliff":
+                case "GardenerStage":
+                case "Shipwreck":
+                case "Lighthouse":
+                case "QueenArena":
+                case "PurpleGarden":
+                case "DookuCastle":
+                case "DeathArena":
+                case "DookuArena":
+                    return true;
+            }
+            return false;
         }
     }
 }

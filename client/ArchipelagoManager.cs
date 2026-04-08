@@ -2,12 +2,8 @@ using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
-using Archipelago.MultiClient.Net.Models;
 using Archipelago.MultiClient.Net.Packets;
-using ModCore.Utilities;
 using Serilog;
-using System.Collections.Generic;
-using System.Linq;
 
 using static DeadCellsArchipelago.ItemManager;
 using static DeadCellsArchipelago.ItemQueue;

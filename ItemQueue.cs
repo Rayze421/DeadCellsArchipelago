@@ -1,6 +1,7 @@
 using Serilog;
 
 using static DeadCellsArchipelago.ItemManager;
+using static DeadCellsArchipelago.Translator;
 
 namespace DeadCellsArchipelago
 {
@@ -20,6 +21,11 @@ namespace DeadCellsArchipelago
             if(SAVED_DATA == null) { return; }
 
             var itemName = pendingItems[0];
+
+            if (NameToIdKeyExist(itemName))
+            {
+                itemName = GetId(itemName);
+            }
 
             //if not prog, check classic list OR prog, check prog list
             if((!IsItemProgressive(itemName) && !SAVED_DATA.IsItemRecieved(itemName)) ||
