@@ -70,8 +70,9 @@ namespace DeadCellsArchipelago{
             //TitleScreen
 
             Hook_TitleScreen.mainMenu += OnMainMenu;
-            Hook_TitleScreen.update += OnUpdate;
             Hook_TitleScreen.onResize += OnOnResize;
+            Hook_TitleScreen.playMenu += OnPlayMenu;
+            Hook_Main.launchGame += OnLaunchGame;
 
             Hook_Pixels.convert += OnConvert;
             //UIDlc
@@ -120,7 +121,7 @@ namespace DeadCellsArchipelago{
 
             //archipelago.EnableMockMode();
             // TODO: Get infos from ui
-            var confData = GetConfData();
+            //var confData = GetConfData();
 
             IdToApName = LoadModApTranslation();
             ApNameToId = Invert(IdToApName);

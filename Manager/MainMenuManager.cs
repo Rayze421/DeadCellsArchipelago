@@ -1,14 +1,8 @@
-using System.Security.Cryptography;
 using dc;
-using dc.h3d.mat;
-using dc.hl;
-using dc.hxd;
 using dc.pr;
 using dc.ui;
-using Hashlink.Virtuals;
 using HaxeProxy.Runtime;
 using ModCore.Utilities;
-using Serilog;
 using static DeadCellsArchipelago.ItemManager;
 using static DeadCellsArchipelago.ImageManager;
 using Newtonsoft.Json;
@@ -22,32 +16,6 @@ namespace DeadCellsArchipelago {
         public static dc.h2d.TextInput? slotName = null;
         public static dc.h2d.TextInput? password = null;
         public static Text? connectButton = null;
-
-        public static TextInput? test = null;
-
-        public static void OnUpdate(Hook_TitleScreen.orig_update orig, TitleScreen self)
-        {
-            /*double scale = 1;
-            Text label = new Text(self.root, false, false, new Ref<double>(ref scale), null, null)
-            {
-                x = 0,
-                y = 0
-            };
-            label.set_text("Mon texte ici".AsHaxeString());
-            label.set_textColor(16711680);*/
-            //label.draw();
-            //Log.Warning($"{self.sizeFactorX} {self.sizeFactorY}");
-            
-            orig(self);
-            if(test != null)
-            {
-                test.bgInput.set_visible(false);
-            }
-            /*self.padWarning.set_text("test".AsHaxeString());
-            self.padWarning.x = 0;
-            self.padWarning.y = 0;*/
-            //Log.Warning("update !");
-        }
 
         public static void OnMainMenu(Hook_TitleScreen.orig_mainMenu orig, TitleScreen self)
         {
@@ -65,23 +33,16 @@ namespace DeadCellsArchipelago {
                 double XY = 0;
                 dc.h2d.Tile bgTileApMenu = Assets.Class.ui.getTile("walterWhite".AsHaxeString(), new Ref<int>(ref frame), new Ref<double>(ref XY), new Ref<double>(ref XY), null);
                 dc.h2d.Tile frameTileApMenu = Assets.Class.ui.getTile("boxLegendary".AsHaxeString(), new Ref<int>(ref frame), new Ref<double>(ref XY), new Ref<double>(ref XY), null);
-                //string cwd = Directory.GetCurrentDirectory();
-                //Log.Information($"CWD: {cwd}");
-                //dc.h2d.Tile test = Res.Class.load.Invoke("coremod/mods/DeadCellsArchipelago/res/BestImageEver.png".AsHaxeString()).toTile();
+                var logoTile = LoadTileFromPng(GetResPath("BestImageEver.png"));
 
-                var tile = LoadTileFromPng(GetResPath("BestImageEver.png"));
 
-                double R = 34.0/255;
-                double G = 34.0/255;
-                double B = 74.0/255;
-                double A = 1;
                 var bgApMenu = new dc.h2d.Bitmap(bgTileApMenu, apMenuContainer)
                 {
                     scaleX = (113-4)*menuScale,
                     scaleY = (113-4)*menuScale,
                     x = 2*menuScale,
                     y = 2*menuScale,
-                    color = new dc.h3d.Vector(new Ref<double>(ref R), new Ref<double>(ref G), new Ref<double>(ref B), new Ref<double>(ref A))
+                    color = ColorVectorRGBA(34, 34, 74, 1)
                 };
 
                 var apMenu = new dc.h2d.Bitmap(frameTileApMenu, apMenuContainer)
@@ -90,10 +51,13 @@ namespace DeadCellsArchipelago {
                     scaleY = menuScale
                 };
 
-                var myBitmap = new dc.h2d.Bitmap(tile, apMenuContainer)
+                var logoBitmap = new dc.h2d.Bitmap(logoTile, apMenuContainer)
                 {
-                    scaleX = 0.1,
-                    scaleY = 0.1
+                    x = -50,
+                    y = -50,
+                    scaleX = 0.15,
+                    scaleY = 0.15,
+                    alpha = 0.5
                 };
             }
 
@@ -108,8 +72,16 @@ namespace DeadCellsArchipelago {
                 };
                 index++;
 
-                connectionStatus.set_text("Not Connected".AsHaxeString());
-                connectionStatus.set_textColor(16711680);
+                if (ARCHIPELAGO == null || ARCHIPELAGO.IsConnected == false)
+                {
+                    connectionStatus.set_text("Not Connected".AsHaxeString());
+                    connectionStatus.set_textColor(16711680);
+                } else
+                {
+                    connectionStatus.set_text("Connected".AsHaxeString());
+                    connectionStatus.set_textColor(2883371);
+                }
+
             }
 
 
@@ -130,7 +102,8 @@ namespace DeadCellsArchipelago {
                 UIBox bgServerIp = UIBox.Class.drawBoxMain(270, 1, 4, 3, 0, null);
                 bgServerIp.x = 18;
                 bgServerIp.y = 40*index;
-                bgServerIp.alpha = 0.5;
+                bgServerIp.alpha = 0.85;
+                bgServerIp.sg.color = ColorVectorRGBA(17*bgServerIp.alpha, 17*bgServerIp.alpha, 37*bgServerIp.alpha, 1);
 
                 apMenuContainer.addChild(bgServerIp);
 
@@ -169,7 +142,8 @@ namespace DeadCellsArchipelago {
                 UIBox bgSlotName = UIBox.Class.drawBoxMain(270, 1, 4, 3, 0, null);
                 bgSlotName.x = 18;
                 bgSlotName.y = 40*index;
-                bgSlotName.alpha = 0.5;
+                bgSlotName.alpha = 0.85;
+                bgSlotName.sg.color = ColorVectorRGBA(17*bgSlotName.alpha, 17*bgSlotName.alpha, 37*bgSlotName.alpha, 1);
 
                 apMenuContainer.addChild(bgSlotName);
 
@@ -209,7 +183,8 @@ namespace DeadCellsArchipelago {
                 UIBox bgPassword = UIBox.Class.drawBoxMain(270, 1, 4, 3, 0, null);
                 bgPassword.x = 18;
                 bgPassword.y = 40*index;
-                bgPassword.alpha = 0.5;
+                bgPassword.alpha = 0.85;
+                bgPassword.sg.color = ColorVectorRGBA(17*bgPassword.alpha, 17*bgPassword.alpha, 37*bgPassword.alpha, 1);
 
                 apMenuContainer.addChild(bgPassword);
 
@@ -279,10 +254,6 @@ namespace DeadCellsArchipelago {
             SetValueFields();
 
             orig(self);
-
-            //ModCore.Modules.Game
-
-
         }
 
         public static void OnOnResize(Hook_TitleScreen.orig_onResize orig, TitleScreen self)
@@ -293,6 +264,24 @@ namespace DeadCellsArchipelago {
                 apMenuContainer.x = dc.libs.Process.Class.CUSTOM_STAGE_WIDTH * 0.7;
                 apMenuContainer.y = dc.libs.Process.Class.CUSTOM_STAGE_HEIGHT * 0.05;
             }
+        }
+
+        public static void OnPlayMenu(Hook_TitleScreen.orig_playMenu orig, TitleScreen self)
+        {
+            orig(self);
+            self.news.hidden = true;
+            self.news.updateVisible();
+        }
+
+        public static void OnLaunchGame(Hook_Main.orig_launchGame orig, Main self, LaunchMode mode, bool? tpause, double? fadeOutS)
+        {
+            apMenuContainer = null;
+            connectionStatus = null;
+            serverIp = null;
+            slotName = null;
+            password = null;
+            connectButton = null;
+            orig(self, mode, tpause, fadeOutS);
         }
 
         private static void SetValueFields()
@@ -342,6 +331,14 @@ namespace DeadCellsArchipelago {
         {
             var json = JsonConvert.SerializeObject(confData, Formatting.Indented);
             System.IO.File.WriteAllText(GetConfFilePath(), json);
+        }
+
+        public static dc.h3d.Vector ColorVectorRGBA(double r, double g, double b, double A)
+        {
+            double R = r /255;
+            double G = g /255;
+            double B = b /255;
+            return new dc.h3d.Vector(new Ref<double>(ref R), new Ref<double>(ref G), new Ref<double>(ref B), new Ref<double>(ref A));
         }
     }
 }
