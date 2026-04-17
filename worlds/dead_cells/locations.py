@@ -161,10 +161,10 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "Bobby",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
     },
-    "Item_Crowbar": {
-        "id": 0x006B, "region": "Checks", "type": "item_no_blueprint",
+    "Blueprint_Crowbar": {
+        "id": 0x006B, "region": "Checks", "type": "blueprint_floor",
         "dlc": "", "min_bc": 0, "item": "Crowbar",
-        "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'item_no_blueprint'}],
+        "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
     },
     "Item_MachetePistol": {
         "id": 0x006C, "region": "Checks", "type": "item_no_blueprint",
