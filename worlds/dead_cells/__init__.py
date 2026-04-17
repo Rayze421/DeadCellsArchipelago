@@ -15,7 +15,7 @@ from .items import (
     DLC_RISE_OF_GIANT, DLC_BAD_SEED, DLC_FATAL_FALLS,
     DLC_QUEEN_AND_SEA, DLC_PURPLE,
     get_items_for_dlcs, get_filler_items, get_trap_items,
-    get_progression_items, item_id, PROG, USFL, FILR, TRAP,
+    get_progression_items, item_id, PROG, USFL, FILR, TRAP, is_cosmetic
 )
 from .locations import (
     LOCATION_TABLE, BASE_ID as LOC_BASE_ID,
@@ -187,115 +187,179 @@ class DeadCellsWorld(World):
         player = self.player
         enabled_dlcs = self.enabled_dlcs
 
-    # ─────────────────────────────────────
-    # 1. Gather item groups
-    # ─────────────────────────────────────
-        progression_items = get_progression_items(enabled_dlcs)  # dict{name: (id, class)}
-        useful_items = get_items_for_dlcs(enabled_dlcs)          # dict{name: (id, class)}
-        filler_items = get_filler_items(enabled_dlcs)            # list[str]
-        trap_items = get_trap_items()                            # list[str]
+        # ─────────────────────────────────────
+        # 1. Gather item groups
+        # ─────────────────────────────────────
+        progression_items = get_progression_items(enabled_dlcs)   # dict[name, (offset, class, dlc)]
+        useful_items = get_items_for_dlcs(enabled_dlcs)           # dict[name, (offset, class, dlc)]
+        filler_items = get_filler_items(enabled_dlcs)             # list[str]
+        trap_items = get_trap_items()                             # list[str]
 
-    # Remove progression from useful
+    # Remove progression items from useful pool
         useful_items = [name for name in useful_items if name not in progression_items]
 
     # ─────────────────────────────────────
-    # 2. Count locations
+    # 2. Remove cosmetics if option disabled
+    # ─────────────────────────────────────
+        if not self.options.include_cosmetics.value:
+            def not_cosmetic(name: str) -> bool:
+                return not is_cosmetic(name)
+
+        # Keep Cultist Outfit even if cosmetics are disabled, because it is progression
+            progression_items = {
+                name: data
+                for name, data in progression_items.items()
+                if not_cosmetic(name) or name == "Cultist Outfit"
+        }
+
+            useful_items = [
+               name for name in useful_items
+               if not_cosmetic(name) or name == "Cultist Outfit"
+        ]
+
+            filler_items = [
+                name for name in filler_items
+                if not_cosmetic(name) or name == "Cultist Outfit"
+        ]
+
+    # ─────────────────────────────────────
+    # 3. Count locations
     # ─────────────────────────────────────
         total_locations = len(self.created_locations)
 
     # ─────────────────────────────────────
-    # 3. Build progression pool (FIXED)
+    # 4. Build progression pool
     # ─────────────────────────────────────
-        itempool = []
+        itempool: list[str] = []
 
-    # Each progression item appears ONCE
         progression_list = list(progression_items.keys())
 
-    # Fix Boss Rune count based on BC option
+    # Remove progressive items that need custom counts
+        custom_progressives = {
+            "Progressive Stem Cell",
+            "Progressive Flask",
+            "Progressive Gold Reserves",
+    }
+        progression_list = [name for name in progression_list if name not in custom_progressives]
+
+    # Progressive Stem Cells: count based on boss_cells option
         max_bc = self.options.boss_cells.value
+        itempool += ["Progressive Stem Cell"] * max_bc
 
-    # Remove any existing boss runes
-        progression_list = [i for i in progression_list if i != "ProgBossRune"]
+    # Progressive Flask: always 4 total
+        itempool += ["Progressive Flask"] * 4
 
-    # Add correct amount
-        progression_list += ["ProgBossRune"] * max_bc
+    # Progressive Gold Reserves: always 5 total
+        itempool += ["Progressive Gold Reserves"] * 5
 
-    # Add to pool
+    # Add remaining progression items once each
         itempool += progression_list
+
+    # Safety: make sure Cultist Outfit exists if enabled in this DLC set
+        if (
+            "Cultist Outfit" in ITEM_TABLE
+            and (ITEM_TABLE["Cultist Outfit"][2] == "" or ITEM_TABLE["Cultist Outfit"][2] in enabled_dlcs)
+            and "Cultist Outfit" not in itempool
+        ):
+            itempool.append("Cultist Outfit")
 
     # Calculate remaining slots
         remaining_slots = total_locations - len(itempool)
 
         if remaining_slots < 0:
-            print("WARNING: Too many progression items, trimming...")
+            print(f"[DC DEBUG] Too many progression items ({len(itempool)}/{total_locations}), trimming.")
             itempool = itempool[:total_locations]
             remaining_slots = 0
 
     # ─────────────────────────────────────
-    # 4. Add useful items (LIMITED)
+    # 5. Add useful items
     # ─────────────────────────────────────
-        useful_limit = int(remaining_slots * 0.5)
         useful_list = list(useful_items)
 
+    # Shuffle for variety
+        import random
+        random.shuffle(useful_list)
+
+        useful_limit = min(len(useful_list), int(remaining_slots * 0.5))
         itempool += useful_list[:useful_limit]
-        remaining_slots -= min(useful_limit, len(useful_list))
+        remaining_slots -= useful_limit
 
     # ─────────────────────────────────────
-    # 5. Add traps
+    # 6. Add traps
     # ─────────────────────────────────────
-        trap_percentage = self.options.trap_percentage.value
-        trap_count = int(total_locations * trap_percentage / 100)
+        trap_percentage = self.options.trap_percentage.value / 100.0
+        trap_count = min(len(trap_items), int(total_locations * trap_percentage))
 
-        itempool += trap_items[:trap_count]
-        remaining_slots -= min(trap_count, len(trap_items))
+        if trap_count > 0:
+            random.shuffle(trap_items)
+            itempool += trap_items[:trap_count]
+            remaining_slots -= trap_count
 
     # ─────────────────────────────────────
-    # 6. Fill rest with filler
+    # 7. Fill the rest with filler
     # ─────────────────────────────────────
         if remaining_slots > 0:
-            import random
-            random.shuffle(filler_items)
-
-            filler_cycle = (
-                filler_items * ((remaining_slots // len(filler_items)) + 1)
-            )[:remaining_slots]
-
-            itempool += filler_cycle
+            if filler_items:
+                random.shuffle(filler_items)
+                filler_cycle = (
+                    filler_items * ((remaining_slots // len(filler_items)) + 1)
+                )[:remaining_slots]
+                itempool += filler_cycle
+            else:
+                print("[DC DEBUG] No filler items available; leaving remaining slots empty.")
 
     # ─────────────────────────────────────
-    # 7. Safety trim (overflow protection)
+    # 8. Safety trim if pool overflowed
     # ─────────────────────────────────────
         if len(itempool) > total_locations:
             overflow = len(itempool) - total_locations
-            print(f"WARNING: Trimming {overflow} excess items")
+            print(f"[DC DEBUG] Trimming {overflow} excess items.")
 
             for _ in range(overflow):
+                # Prefer removing filler first
                 for i in range(len(itempool) - 1, -1, -1):
                     if itempool[i] in filler_items:
                         itempool.pop(i)
                         break
                 else:
+                    # Then remove useful
                     for i in range(len(itempool) - 1, -1, -1):
                         if itempool[i] in useful_items:
                             itempool.pop(i)
                             break
+                    else:
+                    # Last resort: remove last non-progression duplicate
+                        itempool.pop()
 
     # ─────────────────────────────────────
-    # 8. Convert to AP items
+    # 9. Convert to AP items
     # ─────────────────────────────────────
         final_items = []
 
         for name in itempool:
+            if name not in ITEM_TABLE:
+                raise KeyError(f"[DC ERROR] Item '{name}' is missing from ITEM_TABLE")
+
             item_data = ITEM_TABLE[name]
-            item = DeadCellsItem(
-                name,
-                item_data[1],  # classification
-                item_id(name),
+            final_items.append(
+                DeadCellsItem(
+                    name,
+                    item_data[1],   # classification
+                    item_id(name),
                 player,
             )
-            final_items.append(item)
+        )
 
         multiworld.itempool += final_items
+
+        print(
+            f"[DC DEBUG] create_items: "
+            f"locations={total_locations}, "
+            f"items={len(final_items)}, "
+            f"progressive_stem_cells={max_bc}, "
+            f"progressive_flasks=4, "
+            f"progressive_gold_reserves=5"
+        )
 
     def set_rules(self) -> None:
         """

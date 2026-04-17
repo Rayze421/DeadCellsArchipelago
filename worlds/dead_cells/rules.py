@@ -33,46 +33,256 @@ if TYPE_CHECKING:
 # Skin item names (used for count-based rules)
 # ─────────────────────────────────────────────────────────────────────────────
 SKIN_ITEMS = [
-    "PrisonerGold", "PrisonerSonGoku", "PrisonerBlack", "PrisonerGhost",
-    "PrisonerSewers", "PrisonerSanta", "PrisonerStilt", "PrisonerSkeleton",
-    "PrisonerCarduus", "PrisonerAphrodite", "PrisonerShaman", "PrisonerCloud",
-    "PrisonerHyperlight", "PrisonerAladdin", "PrisonerBison", "PrisonerWarrior",
-    "PrisonerMage", "PrisonerNeon", "PrisonerBobby", "PrisonerDemon",
-    "PrisonerSylvanian", "PrisonerSand", "PrisonerGOG", "PrisonerFrench",
-    "PrisonerXmas", "PrisonerGardener", "PrisonerFriendlyHardy", "PrisonerMushroom",
-    "PrisonerFugitive", "PrisonerBlowgunner", "PrisonerTick", "RoyalGardener",
-    "PrisonerRetro", "FreemanSkin", "PrisonerJavelinSnake", "PrisonerNecromant",
-    "PrisonerBootleg", "PrisonerKamikaze", "PrisonerCrossbowMan", "PrisonerKillBill",
-    "KingDefault", "KingWhite",
-    "BehemothDefault", "Behemoth1", "Behemoth2", "Behemoth3", "Behemoth4",
-    "BeholderDefault", "Beholder1", "Beholder2", "Beholder3", "Beholder4",
-    "AssassinDefault", "Assassin1", "Assassin2", "Assassin3", "Assassin4",
-    "GiantDefault", "Giant1", "Giant2", "Giant3", "Giant4",
-    "HotkDefault", "Hotk1", "Hotk2", "Hotk3", "Hotk4",
-    "Statue", "CollectorDefault",
-    "TickDefault", "Tick1", "Tick2", "Tick3", "Tick4", "TickSacrifice",
-    "GardenerDefault", "Gardener1", "Gardener2", "Gardener3", "Gardener4", "Cultist",
-    "FlawlessBehemoth", "FlawlessBeholder", "FlawlessAssassin", "FlawlessGiant",
-    "FlawlessHotk", "FlawlessTick", "FlawlessGardener",
-    "Snowman", "SantaKLOS",
-    "HollowKnight", "Blasphemous", "Guacamelee", "Skul", "HyperLightDrifter",
-    "CurseofTheDeadGods", "SoulKnight",
-    "Staphy", "ANCHORGUY",
-    "ServanteDefault", "Servante1", "Servante2", "Servante3", "Servante4",
-    "FlawlessServante", "QueenDefault", "Queen1", "Queen2", "Queen3", "Queen4",
-    "FlawlessQueen", "BlueErinaceus",
-    "Banker", "GuillainThief", "Bobby",
-    "ShovelKnight", "HotlineMiamiChicken", "KatanaZero", "RiskOfRain",
-    "Terraria", "SlayTheSpire",
-    "Mentor", "Mentor1", "Mentor2", "Mentor3",
-    "VictoriusBeheaded", "VictoriusBeheaded1", "VictoriusBeheaded2", "VictoriusBeheaded3",
-    "Simon", "Alucard", "RichterROB", "Sypha", "Trevor", "Maria", "Hector",
-    "HauntedArmor",
-    "AdeleDefault", "Adele1", "Adele2", "Adele3", "Adele4", "FlawlessAdele",
-    "DookuDefault", "Dooku1", "Dooku2", "Dooku3", "Dooku4", "FlawlessDooku",
+
+    # base outfits
+    "Golden Outfit", "Son Goku Outfit", "Black Outfit", "Ghost Outfit",
+    "Sewers Outfit", "Santa Outfit", "Stilt Outfit", "Skeleton Outfit",
+    "Carduus Outfit", "Aphrodite Outfit", "Shaman Outfit", "Cloud Outfit",
+    "Hyper Light Drifter Outfit", "Aladdin Outfit", "Bison Outfit", "Warrior Outfit",
+    "Mage Outfit", "Neon Outfit", "Bobby Outfit", "Demon Outfit",
+    "Sylvanian Outfit", "Sand Outfit", "GOG Outfit", "French Outfit",
+    "Festive Outfit", "Gardener Outfit", "Friendly Hardy Outfit", "Mushroom Outfit",
+    "Fugitive Outfit", "Blowgunner Outfit", "Tick Outfit", "Royal Gardener Outfit",
+    "Retro Outfit", "Gordon Freeman Outfit", "Javelin Snake Outfit", "Necromancer Outfit",
+    "Bootleg Outfit", "Kamikaze Outfit", "Crossbowman Outfit", "Kill Bill Outfit",
+
+    # king
+    "King Outfit", "White King Outfit",
+
+    # concierge
+    "Concierge Outfit",
+    "Piccolo Concierge Outfit",
+    "Misunderstood Concierge Outfit",
+    "Blacksmith Concierge Outfit",
+    "Golden Concierge Outfit",
+
+    # conjunctivius
+    "Classic Conjunctivius Outfit",
+    "Starved Conjunctivius Outfit",
+    "Enraged Conjunctivius Outfit",
+    "Tentacled Conjunctivius Outfit",
+    "Aurora Borealis Conjunctivius Outfit",
+
+    # time keeper
+    "Classic Temporal Outfit",
+    "Apex Temporal Outfit",
+    "Red Temporal Outfit",
+    "White Shadow Temporal Outfit",
+    "Devilish Temporal Outfit",
+
+    # giant
+    "Classic Giant Outfit",
+    "Mutineer Giant Outfit",
+    "Royal Giant Outfit",
+    "Frustrated Giant's Outfit",
+    "Cavern Dweller Giant Outfit",
+
+    # hand of the king
+    "The Hand of the King Outfit",
+    "Loyal Hand of the King Outfit",
+    "Majestic Hand of the King Outfit",
+    "Red Hand of the King Outfit",
+    "The Leeching Hand of the King Outfit",
+
+    "Statue Outfit",
+    "Collector Outfit",
+
+    # mama tick
+    "Classic Mama Tick Outfit",
+    "Sharp Mama Tick Outfit",
+    "Wigged Mama Tick Outfit",
+    "Scarlet Mama Tick Outfit",
+    "Vibrant Mama Tick Outfit",
+    "Sacrificial Tick Outfit",
+
+    # scarecrow
+    "Classic Scarecrow Outfit",
+    "Rusted Scarecrow Outfit",
+    "Cardinal Scarecrow Outfit",
+    "Festering Scarecrow Outfit",
+    "Murderous Scarecrow Outfit",
+    "Cultist Outfit",
+
+    # flawless boss outfits
+    "Flawless Concierge Outfit",
+    "Flawless Conjunctivius Outfit",
+    "Flawless Time Keeper Outfit",
+    "Flawless Giant Outfit",
+    "Flawless Hand of the King Outfit",
+    "Flawless Mama Tick Outfit",
+    "Flawless Scarecrow Outfit",
+
+    # misc
+    "Snowman Outfit",
+    "Santa Outfit",
+
+    # crossover outfits
+    "Hollow Knight Outfit",
+    "Blasphemous Outfit",
+    "Guacamelee Outfit",
+    "Skul Outfit",
+    "Hyper Light Drifter Outfit",
+    "Curse of the Dead Gods Outfit",
+    "Soul Knight Outfit",
+
+    # pets / misc
+    "Staphy Outfit",
+    "Anchor Guy Outfit",
+
+    # servants
+    "Servants Outfit",
+    "Burnished Servants Outfit",
+    "Indigo Servants Outfit",
+    "Shining Servants Outfit",
+    "Luminous Servants Outfit",
+    "Flawless Servants Outfit",
+
+    # queen
+    "Queen Outfit",
+    "White Gold Queen Outfit",
+    "Cherry Blossom Queen Outfit",
+    "Spicy Queen Outfit",
+    "Stinging Queen Outfit",
+    "Flawless Queen Outfit",
+
+    "Blue Erinaceus Outfit",
+
+    # npcs
+    "Banker Outfit",
+    "Guillain Outfit",
+    "Bobby Outfit",
+
+    # indie crossovers
+    "Shovel Knight Outfit",
+    "Hotline Miami Outfit",
+    "Katana ZERO Outfit",
+    "Risk of Rain Outfit",
+    "Terraria Outfit",
+    "Slay the Spire Outfit",
+
+    # boss rush
+    "Mentor Outfit",
+    "Mentor Outfit 1",
+    "Mentor Outfit 2",
+    "Mentor Outfit 3",
+
+    "Victorious Outfit",
+    "Victorious Outfit 1",
+    "Victorious Outfit 2",
+    "Victorious Outfit 3",
+
+    # castlevania
+    "Simon Outfit",
+    "Alucard Outfit",
+    "Richter Outfit",
+    "Sypha Outfit",
+    "Trevor Outfit",
+    "Maria Outfit",
+    "Hector Outfit",
+    "Haunted Armor Outfit",
+
+    # death
+    "Death Outfit",
+    "Sanguine Death Outfit",
+    "Twilight Death Outfit",
+    "Regal Death Outfit",
+    "Pale Death Outfit",
+    "Flawless Death Outfit",
+
+    # dracula
+    "Dracula Outfit",
+    "Moonlit Dracula Outfit",
+    "Grand Dracula Outfit",
+    "Vampiric Dracula Outfit",
+    "Dark Lord Dracula Outfit",
+    "Flawless Dracula Outfit",
+]
+BOSS_RUSH_TIER_1 = [
+    "Behemoth",
+    "Beholder",
+    "MamaTick",
+    "Death",
 ]
 
+BOSS_RUSH_TIER_2 = [
+    "TimeKeeper",
+    "Giant",
+    "GardenerBoss",
+    "DookuBeast",
+]
 
+BOSS_RUSH_TIER_3 = [
+    "KingsHand",
+    "Queen",
+    "AmazonSurvival",
+    "AmazonTactic",
+    "AmazonBrutal",
+    "Collector",
+]
+HEAD_ITEMS = [
+
+    # boss flames
+    "Bobby Flame",
+    "Concierge Flame",
+    "Giant Flame",
+    "Queen Flame",
+    "Hand of the King Flame",
+
+    # boss themed heads
+    "Conjunctivius Head",
+    "Mama Tick Eye",
+    "Time Keeper Hat",
+    "Scarecrow Hat",
+    "Servants Mask",
+    "Collector Hood",
+
+    # black hole variants
+    "Black Hole",
+    "White Black Hole",
+    "Violet Black Hole",
+    "Red Black Hole",
+    "Green Black Hole",
+    "Blue Black Hole",
+
+    # vortex heads
+    "Hello Darkness Vortex",
+    "Bad Seed Vortex",
+    "Queen and the Sea Vortex",
+    "Foundry Vortex",
+
+    # misc
+    "Guillain Head",
+    "Pecheur Head",
+    "Staphy Head",
+    "Flawless Head",
+    "Cell Head",
+    "Evil Empire Head",
+
+    # blob heads
+    "Blobby Flame",
+    "Magma Blobby Flame",
+    "Malaise Blobby Flame",
+    "Gum Blobby Flame",
+
+    # glitch heads
+    "Glitchy Head",
+    "Deep Space Glitchy Head",
+    "Red Glitchy Head",
+
+    # mushroom
+    "Mushroom Boi Head",
+
+    # torch heads
+    "Black Blowtorch",
+    "Blowtorch",
+    "Gold Blowtorch",
+    "Red Blowtorch",
+
+    # misc uniques
+    "Bitter",
+    "Hordes Zero Hood",
+    "Boss Cell Head",
+]
 
 # ─────────────────────────────────────────────────────────────────────────────
 # Location rules table
@@ -83,26 +293,38 @@ SKIN_ITEMS = [
 # Helpers at the bottom of this file build the lambdas cleanly.
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _has(item):
+from worlds.generic.Rules import add_rule
+
+
+def _has(item: str):
     """Rule: player has item in inventory."""
     return lambda world: (
         lambda state: state.has(item, world.player)
     )
 
-def _has_all(*items):
+
+def _has_all(*items: str):
+    """Rule: player has ALL listed items."""
     return lambda world: (
         lambda state: state.has_all(items, world.player)
     )
 
-def _has_any(*items):
+
+def _has_any(*items: str):
     """Rule: player has ANY of the listed items."""
     return lambda world: (
         lambda state: any(state.has(i, world.player) for i in items)
     )
 
+
 def _has_all_any(all_items, any_of=()):
+    """
+    Rule: player has ALL items in all_items AND at least one item in any_of.
+    all_items may contain strings or nested lists/tuples.
+    """
     flat_items = tuple(
-        item for sub in all_items
+        item
+        for sub in all_items
         for item in (sub if isinstance(sub, (list, tuple)) else (sub,))
     )
 
@@ -112,20 +334,34 @@ def _has_all_any(all_items, any_of=()):
             and (not any_of or any(state.has(i, world.player) for i in any_of))
     )
 
+def _has_any_of(*items: str):
+    return lambda world: (
+        lambda state: any(state.has(item, world.player) for item in items)
+    )
+
+def get_bc_level(state, player: int) -> int:
+    """Count acquired Boss Stem Cells."""
+    return state.count("Progressive Stem Cell", player)
+
+
 def _bsc(level: int):
+    """Rule: player has at least N Boss Stem Cells."""
     return lambda world: (
         lambda state: get_bc_level(state, world.player) >= level
     )
 
+
 def _has_and_bsc(item: str, level: int):
+    """Rule: player has item AND at least N Boss Stem Cells."""
     return lambda world: (
         lambda state:
             state.has(item, world.player)
             and get_bc_level(state, world.player) >= level
     )
 
+
 def _skin_count(count: int):
-    """Rule: player has received at least `count` Skin-category items."""
+    """Rule: player has received at least `count` skin items."""
     return lambda world: (
         lambda state: sum(
             1 for skin in SKIN_ITEMS
@@ -133,13 +369,15 @@ def _skin_count(count: int):
         ) >= count
     )
 
+
 def _boss_killed(location: str):
-    """Rule: specific boss location has been checked."""
+    """Rule: specific boss location has been checked/reached."""
     return lambda world: (
         lambda state: state.can_reach_location(location, world.player)
     )
 
-def _any_biome_exit(*biomes):
+
+def _any_biome_exit(*biomes: str):
     """Rule: player has completed the biome_exit check of at least one biome."""
     return lambda world: (
         lambda state: any(
@@ -148,8 +386,9 @@ def _any_biome_exit(*biomes):
         )
     )
 
+
 def _has_and_boss(item: str, boss_loc: str):
-    """Rule: has item AND boss kill completed."""
+    """Rule: player has item AND boss kill completed."""
     return lambda world: (
         lambda state: (
             state.has(item, world.player)
@@ -157,28 +396,113 @@ def _has_and_boss(item: str, boss_loc: str):
         )
     )
 
-def get_bc_level(state, player):
-    return state.count("ProgBossRune", player)
+
+def _count_cleared_bosses(state, player: int, boss_names) -> int:
+    from .regions import BOSS_LOCATION
+
+    count = 0
+    for boss in boss_names:
+        loc_name = BOSS_LOCATION.get(boss)
+        if not loc_name:
+            continue
+
+        try:
+            if state.can_reach_location(loc_name, player):
+                count += 1
+        except KeyError:
+            # Boss location may not exist in this seed/world
+            continue
+
+    return count
+
+
+def _boss_rush_trials_1_2():
+    """
+    Trials 1 and 2:
+    at least 1 cleared Tier 1 boss,
+    at least 1 cleared Tier 2 boss,
+    at least 1 cleared Tier 3 boss.
+    """
+    return lambda world: (
+        lambda state: (
+            _count_cleared_bosses(state, world.player, BOSS_RUSH_TIER_1) >= 1
+            and _count_cleared_bosses(state, world.player, BOSS_RUSH_TIER_2) >= 1
+            and _count_cleared_bosses(state, world.player, BOSS_RUSH_TIER_3) >= 1
+        )
+    )
+
+
+def _boss_rush_trials_3_4():
+    """
+    Trials 3 and 4:
+    at least 2 cleared Tier 1 bosses,
+    at least 2 cleared Tier 2 bosses,
+    at least 1 cleared Tier 3 boss.
+    """
+    return lambda world: (
+        lambda state: (
+            _count_cleared_bosses(state, world.player, BOSS_RUSH_TIER_1) >= 2
+            and _count_cleared_bosses(state, world.player, BOSS_RUSH_TIER_2) >= 2
+            and _count_cleared_bosses(state, world.player, BOSS_RUSH_TIER_3) >= 1
+        )
+    )
+
+def _head_count(count: int):
+    """
+    Rule: player has received at least `count` head cosmetics.
+    """
+    return lambda world: (
+        lambda state: sum(
+            1 for head in HEAD_ITEMS
+            if state.has(head, world.player)
+        ) >= count
+    )
 
 def set_rules(world):
+    """
+    Apply source-based access rules from LOCATION_TABLE.
+    A location is reachable if ANY source is valid:
+    - source biome is reachable
+    - player's BSC count is within source min/max
+    - source DLC is enabled (if specified)
+    """
     player = world.player
+    enabled_dlcs = getattr(world, "enabled_dlcs", set())
 
     for loc_name, loc_data in LOCATION_TABLE.items():
-        location = world.multiworld.get_location(loc_name, player)
+        try:
+            location = world.multiworld.get_location(loc_name, player)
+        except KeyError:
+            # Location does not exist in this world (DLC off, filtered out, etc.)
+            continue
 
         sources = loc_data.get("sources", [])
 
-        def rule(state, sources=sources):
+        # If no sources are defined, do not attach a source rule here.
+        # Other explicit rules can still apply elsewhere.
+        if not sources:
+            continue
+
+        def rule(state, sources=sources, enabled_dlcs=enabled_dlcs):
             bc = get_bc_level(state, player)
 
-            return any(
-                state.can_reach(s["biome"], "Region", player)
-                and s["min_bc"] <= bc <= s["max_bc"]
-                for s in sources
-            )
+            for s in sources:
+                biome = s.get("biome")
+                min_bc = s.get("min_bc", 0)
+                max_bc = s.get("max_bc", 5)
+                dlc = s.get("dlc", "")
+
+                # DLC gate
+                if dlc and dlc not in enabled_dlcs:
+                    continue
+
+                # Region/biome reachability + BC gate
+                if biome and state.can_reach(biome, "Region", player) and min_bc <= bc <= max_bc:
+                    return True
+
+            return False
 
         add_rule(location, rule)
-
 # ─────────────────────────────────────────────────────────────────────────────
 # The main rules table
 # Format: (location_name, rule_factory)
@@ -186,123 +510,211 @@ def set_rules(world):
 LOCATION_RULES = [
 
     # ── Gameplay items ────────────────────────────────────────────────────────
-    ("Blueprint_P_Disengage", _has("HomKey")),
-    ("Money5",  _has("HomKey")),
-    
-    # P_Health rule is applied on the enemy check below, not on P_Wishes
-    # P_Health is a Perk dropped by Lancer (Castle biome), not a floor blueprint
-    # Rule applied via enemy check: Castle_Blueprint_P_Health_from_Lancer
+    ("Blueprint_P_Disengage", _has("Homunculus Rune")),
+    ("Money5",  _has("Homunculus Rune")),
+    ("Blueprint_P_AmmoOnHit", _has("Spider Rune")),
 
-    ("Blueprint_SpeedBlade",    _has("ScoringKey")),
-    ("Blueprint_DamageAura",    _has("ScoringKey")),
-    ("Blueprint_DashSword",     _has("ScoringKey")),
-
-    # MultiKickBoots requires 1+ BSC (dropped by Ninja in PrisonCourtyard)
+    ("Blueprint_SpeedBlade",    _has("Challenger's Rune")),
+    ("Blueprint_DamageAura",    _has("Challenger's Rune")),
+    ("Blueprint_DashSword",     _has("Challenger's Rune")),
 
 
-    # ── LighthouseKey ─────────────────────────────────────────────────────────
-    # LighthouseKey only appears in StiltVillage if player visited SewerShort
+    # ── Lighthouse Key logic ─────────────────────────────────────────────────
     ("Blueprint_LighthouseKey", lambda world: (
         lambda state: state.can_reach("SewerShort", "Region", world.player)
     )),
-    # ── PrisonCourtyard mid-biome gate (LadderKey) ────────────────────────────
-    # These items only drop from enemies in the locked zone of PrisonCourtyard
-    ("Blueprint_BackBlink", _has("LadderKey")),
-    ("Blueprint_BumpBoots", _has("LadderKey")),
-    ("Blueprint_DamageBuff", _has("LadderKey")),
-    ("Blueprint_Decoy", _has("LadderKey")),
-    ("Blueprint_ExplosiveGrenade", _has("LadderKey")),
-    ("Blueprint_GroundSaw", _has("LadderKey")),
-    ("Blueprint_KnivesCircle", _has("LadderKey")),
-    ("Blueprint_LowHealth", _has("LadderKey")),
-    ("Blueprint_MultiCrossBow", _has("LadderKey")),
-    ("Blueprint_MultiKickBoots", _has("LadderKey")),
-    ("Blueprint_OilSword", _has("LadderKey")),
-    ("Blueprint_P_DeathShield", _has("LadderKey")),
-    ("Blueprint_PrisonerAphrodite", _has("LadderKey")),
-    ("Blueprint_PrisonerBlack", _has("LadderKey")),
-    ("Blueprint_PrisonerKamikaze", _has("LadderKey")),
-    ("Blueprint_PrisonerNeon", _has("LadderKey")),
-    ("Blueprint_PrisonerWarrior", _has("LadderKey")),
-    ("Blueprint_Shockwave", _has("LadderKey")),
-    
-    ("Blueprint_LongBow", _has("LadderKey")),
-    ("Blueprint_ExplosiveCrossBow",
-      _has_all_any(
-     ["LadderKey", "BreakableGroundKey"], any_of=["WallJumpKey", "HomKey"]
- )),
-    ("PrisonCourtyard_Exit", _has("LadderKey")),
-    # ── Lighthouse access (no LighthouseKey item yet) ─────────────────────────
-    # Requires having visited SewerShort AND StiltVillage
-    # More precise: SewerShort biome_enter AND StiltVillage biome_enter
 
-    # ── Boss skin series (BSC gates) ──────────────────────────────────────────
 
-    # ── Prisoner skin BSC gates ───────────────────────────────────────────────
+    # ── PrisonCourtyard mid-biome gate (Vine Rune) ────────────────────────────
+    ("Blueprint_BackBlink", _has("Vine Rune")),
+    ("Blueprint_BumpBoots", _has("Vine Rune")),
+    ("Blueprint_DamageBuff", _has("Vine Rune")),
+    ("Blueprint_Decoy", _has("Vine Rune")),
+    ("Blueprint_ExplosiveGrenade", _has("Vine Rune")),
+    ("Blueprint_GroundSaw", _has("Vine Rune")),
+    ("Blueprint_KnivesCircle", _has("Vine Rune")),
+    ("Blueprint_LowHealth", _has("Vine Rune")),
+    ("Blueprint_MultiCrossBow", _has("Vine Rune")),
+    ("Blueprint_MultiKickBoots", _has("Vine Rune")),
+    ("Blueprint_OilSword", _has("Vine Rune")),
+    ("Blueprint_P_DeathShield", _has("Vine Rune")),
+    ("Blueprint_PrisonerAphrodite", _has("Vine Rune")),
+    ("Blueprint_PrisonerBlack", _has("Vine Rune")),
+    ("Blueprint_PrisonerKamikaze", _has("Vine Rune")),
+    ("Blueprint_PrisonerNeon", _has("Vine Rune")),
+    ("Blueprint_PrisonerWarrior", _has("Vine Rune")),
+    ("Blueprint_Shockwave", _has("Vine Rune")),
+    ("Blueprint_LongBow", _has("Vine Rune")),
 
-    # ── Collab skins (item requirements) ─────────────────────────────────────
-    ("Blueprint_HollowKnight", _has("PureNail")),
-    ("Blueprint_Blasphemous", _has("FaceFlask")),
-    # Guacamelee: requires visiting Crypt + having a kick-type boot
-    # Boots (MultiKickBoots etc.) are useful items — promote MultiKickBoots to PROG
-    # and simplify rule to just require Crypt + MultiKickBoots
-    ("Blueprint_Guacamelee", lambda world: (
-        lambda state: (
-            state.can_reach("Crypt", "Region", world.player)
-            and state.has("MultiKickBoots", world.player)
+    (
+        "Blueprint_ExplosiveCrossBow",
+        _has_all_any(
+            ["Vine Rune", "Ram Rune"],
+            any_of=["Spider Rune", "Homunculus Rune"]
         )
-    )),
-    ("Blueprint_HyperLightDrifter",
-        _has_all("HardLightSword", "PrisonerHyperlight")),
-    ("Blueprint_CurseofTheDeadGods", lambda world: (
-        lambda state: any(
-            state.can_reach_location(loc, world.player)
-            for loc in ["Throne_Exit", "QueenArena_Exit", "DookuArena_Exit"]
-        )
-    )),
-    # Terraria: requires BackpackUnlock — rule disabled for now to avoid fill errors
-    # TODO: re-enable once BackpackUnlock is confirmed as progression item
-    ("Blueprint_Terraria",
+    ),
+
+    ("PrisonCourtyard_Exit", _has("Vine Rune")),
+
+
+    # ── Collab skins ─────────────────────────────────────────────────────────
+    ("Blueprint_HollowKnight", _has("Pure Nail")),
+    ("Blueprint_Blasphemous", _has("Face Flask")),
+
+    (
+    "Blueprint_Guacamelee",
     lambda world: (
         lambda state:
-             state.has("BackpackUnlock", world.player) and
-             state.can_reach_location("Boss_KingsHand", world.player)
- )
+            state.can_reach("Crypt", "Region", world.player)
+            and _has_any_of(
+                "Spartan Sandals",
+                "Spiked Boots",
+                "Hayabusa Boots",
+                "Hayabusa Gauntlets",
+            )(world)(state)
+    )
 ),
-    ("Blueprint_HotlineMiamiChicken", _has("BaseballBat")),
-    ("Blueprint_KatanaZero", _has("Katana")),
+    (
+        "Blueprint_HyperLightDrifter",
+        _has_all("Hard Light Sword", "Hyper Light Drifter Outfit")
+    ),
+
+    (
+        "Blueprint_CurseofTheDeadGods",
+        lambda world: (
+            lambda state: any(
+                state.can_reach_location(loc, world.player)
+                for loc in [
+                    "Throne_Exit",
+                    "QueenArena_Exit",
+                    "DookuArena_Exit"
+                ]
+            )
+        )
+    ),
+
+    (
+        "Blueprint_Terraria",
+        lambda world: (
+            lambda state:
+                state.has("Backpack", world.player)
+                and state.can_reach_location("Boss_KingsHand", world.player)
+        )
+    ),
+
+    ("Blueprint_HotlineMiamiChicken", _has("Baseball Bat")),
+    ("Blueprint_KatanaZero", _has("Hattori's Katana")),
     ("Blueprint_ShovelKnight", _has("Shovel")),
 
-    # ── Scissor / Comb (skin count gates) ────────────────────────────────────
-    # Scissor/Comb: skin count gates disabled for now
-    # AP cannot guarantee enough skins are reachable before these locations
-    # TODO: re-enable with a more sophisticated count that respects BC/DLC filters
-    # ("Blueprint_Scissor",   _skin_count(16)),
-    # ("Blueprint_Comb",      _skin_count(51)),
 
-    # ── KingDefault / KingWhite (boss kill chain) ─────────────────────────────
+    # ── Scissor / Comb skin count gates ──────────────────────────────────────
+    (
+        "Blueprint_Scissor",
+        lambda world: lambda state:
+            _skin_count(16)(world)(state)
+            or state.can_reach("Throne", "Region", world.player)
+    ),
+
+    (
+    "Blueprint_Comb",
+    lambda world: (
+        lambda state:
+            _skin_count(51)(world)(state)
+            or (
+                state.can_reach("Throne", "Region", world.player)
+                and get_bc_level(state, world.player) >= 5
+            )
+    )
+),
+
+    # ── King outfit chain ────────────────────────────────────────────────────
     ("Blueprint_KingDefault", _boss_killed("Boss_Collector")),
-    ("Blueprint_KingWhite", _has("KingDefault")),
+    ("Blueprint_KingWhite", _has("King Outfit")),
+
 
     # ── TickSacrifice ─────────────────────────────────────────────────────────
-    ("Blueprint_TickSacrifice", _has("SpawnFriendlyHardy")),
-    
-    # ── PokebombUnlock ────────────────────────────────────────────────────────
-    ("Blueprint_PrisonerGold", _has("PokebombUnlock")),
+    ("Blueprint_TickSacrifice", _has("Mushroom Boi!")),
 
-    # ── TODO: Cemetery -> Cavern rule (KingsHand vs bsc1 + HomKey) ────────────
-    # Currently KingsHand boss kill is used in transition.json.
-    # Needs in-game testing to confirm if HomKey is also required.
-    # Uncomment and adjust once confirmed:
-    # TODO: Cemetery->Cavern may also require HomKey — needs in-game testing
-    
+
+    # ── Specialist showroom unlock ───────────────────────────────────────────
+    ("Blueprint_PrisonerGold", _has("Specialist's Showroom")),
+
+    ("Blueprint_P_Wishes", _boss_rush_trials_3_4()),
+
+
     # ── Heads ────────────────────────────────────────────────────────────────
-    # TODO: (red/blue/green black hole heads) && (VortexFoundry, Pecheur, GlitchyHeadDeepSpace) && Flawless
-    ("Item_StaphyHead", _has("SpawnLilStaphy")),
-    ("Item_MushroomBoi", _has("SpawnFriendlyHardy")),
-    ("Item_BlobbyFlameMagma", _boss_killed("Boss_KingsHand")),
-    ("Item_BlowTorchRed", _has("FlameThrower")),
-    ("Item_BossCellHead", _has("ProgBossRune:5")),
+    ("Item_StaphyHead", _has("Leghugger")),
+
+    ("Item_MushroomBoi", _has("Mushroom Boi!")),
+
+    ("Item_BlobbyFlameMagma",
+        _boss_killed("Boss_KingsHand")
+    ),
+
+    ("Item_BlowTorchRed", _has("Pyrotechnics")),
+
+    ("Item_BossCellHead", _bsc(5)),
+
+    ("Item_Guillain", _boss_rush_trials_1_2()),
+
+    ("Blueprint_Bobby", _has("Progressive Stem Cell")),
+
+    ("Item_GlitchyHeadDeepSpace",
+     lambda world: lambda state:
+        _head_count(35)(world)(state) 
+        or state.can_reach("Throne", "Region", world.player)),
+
+    ("Item_BlackHoleRed",
+    lambda world: lambda state: 
+        _head_count(7)(world)(state)
+        or (
+                state.can_reach("Throne", "Region", world.player)
+                and get_bc_level(state, world.player) >= 5
+            )
+    ),
+    ("Item_Pecheur",
+    lambda world: lambda state: 
+        _head_count(40)(world)(state)
+        or (
+                state.can_reach("Throne", "Region", world.player)
+                and get_bc_level(state, world.player) >= 5
+            )),
+
+    (
+    "Item_BlackHoleBlue",
+    lambda world: (
+        lambda state:
+            state.has("Vine Rune", world.player)
+            and state.has("Teleportation Rune", world.player)
+            and state.has("Challenger's Rune", world.player)
+            and state.has("Customization Rune", world.player)
+            and state.has("Ram Rune", world.player)
+            and state.has("Spider Rune", world.player)
+            and state.has("Homunculus Rune", world.player)
+            and state.has("Explorer's Rune", world.player)
+            and state.has("Backpack", world.player)
+            and state.has("Advanced Forge 1", world.player)
+            and state.has("Recycling Tubes", world.player)
+            and state.has("Hunter's Mirror", world.player)
+            and state.has("Specialist's Showroom", world.player)
+            and state.has("Restock", world.player)
+            and state.has("Merchandise Categories", world.player)
+            and state.count("Progressive Flask", world.player) >= 4
+            and state.count("Progressive Recycling", world.player) >= 2
+            and state.count("Progressive Gold Reserves", world.player) >= 5
+    )
+    ),
+    (
+    "Item_BlackHoleGreen",
+    lambda world: (
+        lambda state:
+            sum(
+                state.count(item, world.player)
+                for item, data in ITEM_TABLE.items()
+                if 0x0200 <= data[0] <= 0x07FF
+            ) >= 75
+    )
+    ),
 ]
 
 
