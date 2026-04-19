@@ -31,11 +31,12 @@ namespace DeadCellsArchipelago
             if((!IsItemProgressive(itemName) && !SAVED_DATA.IsItemRecieved(itemName)) ||
                 (IsItemProgressive(itemName) && !SAVED_DATA.IsProgressionItemRecieved(itemName)))
             {
+                useOriginalRevealItem = true;
                 if (GiveItemFromArchipelago(itemName))
                 {
                     SAVED_DATA.SaveItemRecieved(itemName);
                 }
-                Log.Information($"=== Item {itemName} given ===");
+                useOriginalRevealItem = false;
             }
             else
             {

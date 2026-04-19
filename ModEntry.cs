@@ -86,6 +86,7 @@ namespace DeadCellsArchipelago{
             Hook_Hero.addCells += OnAddCells;
 
             Hook_ItemMetaManager.hasRevealedItem += ReallyHasBlueprint; //might check rune
+            Hook_ItemMetaManager.revealItem += OnRevealItem;
             Hook_ItemMetaManager.revealAllBaseItems += ReallyRevealAllBaseItems;
             Hook_ItemMetaManager.unlockItem += OnUnlockItem;
             //hasPermanentItem (5559) is used on too many things. should check on what call it later for bsc
@@ -128,7 +129,6 @@ namespace DeadCellsArchipelago{
 /*            archipelago.Connect(confData.serverIp, confData.slotName, confData.password);
             ARCHIPELAGO = archipelago;*/
 
-            Log.Information("=== Archipelago Mod loaded ! ===");
             //dc.level.@struct.Throne
 
             //Exit
@@ -138,6 +138,8 @@ namespace DeadCellsArchipelago{
             TextInput.Class.MAX_LENGTH = 50;
 
             Hook_LootGen.addBlueprintAt += FixNotSpawningBlueprint;
+
+            Log.Information("=== Archipelago Mod loaded ! ===");
         }
 
         public void OnHeroUpdate(double dt)

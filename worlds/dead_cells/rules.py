@@ -23,6 +23,7 @@ Adding new rules:
 """
 
 from typing import TYPE_CHECKING, List
+from worlds.dead_cells.items import ITEM_TABLE
 from worlds.generic.Rules import add_rule
 
 if TYPE_CHECKING:

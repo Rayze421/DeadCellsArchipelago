@@ -20,6 +20,7 @@ namespace DeadCellsArchipelago {
         public static ItemMetaManager? ITEM_META_MANAGER { get; set; }
         public static User? USER { get; set; }
         public static bool useOriginalUnlockItem { get; set; } = false;
+        public static bool useOriginalRevealItem { get; set; } = false;
         public static bool useHaveFlaskUnlockItem { get; set; } = false;
         public static bool heroJustDead = false;
         public static int aspectsToIter = 0;
@@ -262,7 +263,6 @@ namespace DeadCellsArchipelago {
         //the boolean returned here is for saving or not the item in local data
         public static bool GiveItemFromArchipelago(string itemName)
         {
-            Log.Error($"+++++++++++++++++++++++++++++ {itemName}");
             if (ITEM_META_MANAGER != null) {
                 if(IsItemProgressive(itemName))
                 {
@@ -511,13 +511,23 @@ namespace DeadCellsArchipelago {
 
         public static bool OnUnlockItem(Hook_ItemMetaManager.orig_unlockItem orig, ItemMetaManager self, dc.String k)//utilisé pour les items comme la poelle 
         {
-            //Log.Warning($"=== This method was called for {k} in on unlock ===");//to be removed when all unlocked item with this are found
+            //Log.Warning($"||| This method was called for {k} in on unlock |||");//to be removed when all unlocked item with this are found
             if(!useOriginalUnlockItem && ARCHIPELAGO != null && (!InCosmeticList(k.ToString()) || ARCHIPELAGO.includeCosmetics))
             {
                 SendItemWithoutBlueprintCheck(k.ToString());
                 return false;
             }
             return orig(self, k);
+        }
+
+        public static bool OnRevealItem(Hook_ItemMetaManager.orig_revealItem orig, ItemMetaManager self, dc.String k, bool showAsNew)
+        {
+            if(!useOriginalRevealItem && ARCHIPELAGO != null && (!InCosmeticList(k.ToString()) || ARCHIPELAGO.includeCosmetics))
+            {
+                SendItemWithoutBlueprintCheck(k.ToString());
+                return false;
+            }
+            return orig(self, k, showAsNew);
         }
 
         public static bool OnCanInvestOnItem(Hook_ItemMetaManager.orig_canInvestOnItem orig, ItemMetaManager self, dc.String k)
