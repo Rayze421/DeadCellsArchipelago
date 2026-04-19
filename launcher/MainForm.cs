@@ -38,6 +38,10 @@ namespace DeadCellsInstaller
         public MainForm()
         {
             InitializeComponent();
+            using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("DeadCellsInstaller.logo.ico"))
+            {
+                this.Icon = new Icon(stream);
+            }
             LoadSavedPath();
         }
 

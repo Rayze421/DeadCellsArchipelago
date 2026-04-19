@@ -33,7 +33,7 @@ namespace DeadCellsArchipelago {
                 double XY = 0;
                 dc.h2d.Tile bgTileApMenu = Assets.Class.ui.getTile("walterWhite".AsHaxeString(), new Ref<int>(ref frame), new Ref<double>(ref XY), new Ref<double>(ref XY), null);
                 dc.h2d.Tile frameTileApMenu = Assets.Class.ui.getTile("boxLegendary".AsHaxeString(), new Ref<int>(ref frame), new Ref<double>(ref XY), new Ref<double>(ref XY), null);
-                var logoTile = LoadTileFromPng(GetResPath("BestImageEver.png"));
+                var logoTile = LoadTileFromPng(GetResPath("logo.png"));
 
 
                 var bgApMenu = new dc.h2d.Bitmap(bgTileApMenu, apMenuContainer)
@@ -53,10 +53,10 @@ namespace DeadCellsArchipelago {
 
                 var logoBitmap = new dc.h2d.Bitmap(logoTile, apMenuContainer)
                 {
-                    x = -50,
-                    y = -50,
-                    scaleX = 0.15,
-                    scaleY = 0.15,
+                    x = -45,
+                    y = -45,
+                    scaleX = 0.08,
+                    scaleY = 0.08,
                     alpha = 0.5
                 };
             }
