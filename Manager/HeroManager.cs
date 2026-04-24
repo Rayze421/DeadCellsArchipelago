@@ -5,6 +5,9 @@ using dc.en;
 using Serilog;
 using ModCore.Utilities;
 using HaxeProxy.Runtime;
+using dc.ui;
+using dc.ui.pause;
+using dc.hxd.res;
 
 namespace DeadCellsArchipelago {
     public static class HeroManager
@@ -14,7 +17,6 @@ namespace DeadCellsArchipelago {
 
         public static void OnHeroDie(Hook_Hero.orig_onDie orig, Hero self)
         {
-            lastLevel = null;
             heroJustDead = true;
             Log.Warning("=== It's a death ==="); //test for reset and complete run (I want to do it on reset but not on complete), and what happend when he quit
             orig(self);
@@ -24,6 +26,31 @@ namespace DeadCellsArchipelago {
             {
                 ARCHIPELAGO.SendDeathLink();
             }
+            ResetDataNewRun();
+        }
+
+        public static void OnRestart(Hook__Confirmation.orig___constructor__ orig, Confirmation arg1, Process from, dc.String str, HlAction onValidate, HlAction onCancel, dc.String validateStr, dc.String cancelStr, Sound validSfx)
+        {
+            if(from is DefaultPause)
+            {
+                var originalOnValidate = onValidate;
+
+                onValidate = () => {
+                    ResetDataNewRun();
+                    originalOnValidate.Invoke();
+                };
+            }
+            orig(arg1, from, str, onValidate, onCancel, validateStr, cancelStr, validSfx);
+        }
+
+        public static void ResetDataNewRun()
+        {
+            if(SAVED_DATA != null)
+            {
+                SAVED_DATA.currentLevelId = "PrisonStart";
+                SAVED_DATA.isDoingChallenge = false;
+                SAVED_DATA.numberOfPokebombUse = 1;
+            }
         }
 
         public static void OnHeroInit(Hook_Hero.orig_init orig, Hero self)
@@ -32,6 +59,7 @@ namespace DeadCellsArchipelago {
             HERO = self;
             
             Log.Information("=== Hero initialized ! ===");
+            //DropItemToPlayer("Pokebomb");
         }
 
         public static void DieByDeathLink()

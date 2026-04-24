@@ -20,7 +20,6 @@ using static DeadCellsArchipelago.Translator;
 namespace DeadCellsArchipelago {
     public static class RoomManager
     {
-        public static string? lastLevel { get; set; }
         public static void InitializeRoomHooks()
         {
             Hook_PrisonCourtyard.buildMainRooms += (orig, self) => { useOriginalHasPermanentItem=false; var res=orig(self); useOriginalHasPermanentItem=true; return res;};
@@ -64,34 +63,13 @@ namespace DeadCellsArchipelago {
         //when the level is generating, we do the checks biomes
         public static ArrayObj OnGenerate(Hook_LevelGen.orig_generate orig, LevelGen self, User user, int seed, virtual_baseLootLevel_biome_bonusTripleScrollAfterBC_cellBonus_dlc_doubleUps_eliteRoomChance_eliteWanderChance_flagsProps_group_icon_id_index_loreDescriptions_mapDepth_minGold_mobDensity_mobs_name_nextLevels_parallax_props_quarterUpsBC3_quarterUpsBC4_specificLoots_specificSubBiome_transitionTo_tripleUps_worldDepth_ ldat, Ref<bool> resetCount)
         {
-            Log.Warning($"=== start last level {lastLevel} ===");
-            if(lastLevel != null && SAVED_DATA != null && !SAVED_DATA.IsCheckSent($"{ldat.id}_Exit"))
+            if(ldat.id.ToString() == "PrisonStart")
             {
-                var locationName = lastLevel;
-                if (IdToNameKeyExist(locationName))
+                if(SAVED_DATA != null && SAVED_DATA.currentLevelId != "PrisonStart")
                 {
-                    locationName = GetName(locationName);
+                    PrepareBiomeCheck(SAVED_DATA.currentLevelId, " Exit", ldat.id.ToString());
                 }
-
-                SendBiomeCheck(locationName + " Exit");
-                Log.Warning("=== send end ===");
-            }
-
-            if(ldat.id.ToString().Substring(0, 2) != "T_")
-            {
-                if(SAVED_DATA != null && !SAVED_DATA.IsCheckSent($"{ldat.id}_Exit"))
-                {
-                    var locationName = ldat.id.ToString();
-                    if (IdToNameKeyExist(locationName))
-                    {
-                        locationName = GetName(locationName);
-                    }
-
-                    SendBiomeCheck(locationName + " Enter");
-                    Log.Warning("=== send start ===");
-                }
-                lastLevel = ldat.id.ToString();
-                Log.Warning($"=== last level {lastLevel} ===");
+                PrepareBiomeCheck(ldat.id.ToString(), " Enter", ldat.id.ToString());
             }
             return orig(self, user, seed, ldat, resetCount);
         }
@@ -123,8 +101,55 @@ namespace DeadCellsArchipelago {
                 {
                     bool noStats = false;
                     by.addCells(10, new Ref<bool>(ref noStats));
+                    if(SAVED_DATA != null) PrepareBiomeCheck(SAVED_DATA.currentLevelId, " Exit", self.destLevel.ToString());
+                }
+                else
+                {
+                    PrepareBiomeCheck(self.destLevel.ToString(), " Enter", self.destLevel.ToString());
                 }
                 orig(self, by, lp);
+            }
+        }
+
+        public static void OnActivatePortal(Hook_Portal.orig_onActivate orig, Portal self, Hero by, bool lp)
+        {
+            if (SAVED_DATA != null)
+            {
+                if (self.isExit)
+                {
+                    if(SAVED_DATA.isDoingChallenge) PrepareBiomeCheck("Challenge", " Exit", SAVED_DATA.currentLevelId);
+                }
+                else
+                {
+                    PrepareBiomeCheck("Challenge", " Enter", SAVED_DATA.currentLevelId);
+                }
+            }
+            orig(self, by, lp);
+        }
+
+        public static void OnClosePortal(Hook_Portal.orig_close orig, Portal self)
+        {
+            if(SAVED_DATA != null)
+            {
+                SAVED_DATA.isDoingChallenge = !SAVED_DATA.isDoingChallenge;
+            }
+            orig(self);
+        }
+
+        private static void PrepareBiomeCheck(string locationName, string kind, string destinationId)
+        {
+            if(SAVED_DATA != null)
+            {
+                if (IdToNameKeyExist(locationName))
+                {
+                    locationName = GetName(locationName);
+                }
+
+                if(!SAVED_DATA.IsCheckSent(locationName + kind))
+                {
+                    SendBiomeCheck(locationName + kind);
+                }
+                SAVED_DATA.currentLevelId = destinationId;
             }
         }
 

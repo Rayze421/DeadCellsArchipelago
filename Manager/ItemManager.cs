@@ -517,7 +517,7 @@ namespace DeadCellsArchipelago {
 
         public static void LogItem(string itemId)
         {
-            if(USER != null)
+            if(USER != null && USER.game != null)
             {
                 BlueprintManager.showBlueprintLog = true;
                 USER.game.log.blueprint(itemId.AsHaxeString(), "Always".AsHaxeString(), false, false);

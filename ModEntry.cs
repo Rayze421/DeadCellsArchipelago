@@ -16,6 +16,7 @@ using static DeadCellsArchipelago.ItemQueue;
 using static DeadCellsArchipelago.Translator;
 using static DeadCellsArchipelago.MainMenuManager;
 using static DeadCellsArchipelago.ImageManager;
+using static DeadCellsArchipelago.PokeManager;
 using dc.en.mob;
 using dc._Data;
 using dc.pr;
@@ -50,6 +51,10 @@ using ModCore.Events.Interfaces.Game;
 using ModCore.Events.Interfaces;
 using dc.level.disp;
 using dc.h2d.col;
+using dc.en.gr;
+using dc.pow;
+using dc.ui.pause;
+using dc.hxd.res;
 
 
 namespace DeadCellsArchipelago{
@@ -138,6 +143,19 @@ namespace DeadCellsArchipelago{
             TextInput.Class.MAX_LENGTH = 50;
 
             Hook_LootGen.addBlueprintAt += FixNotSpawningBlueprint;
+
+            Hook_Pokecharge.removeItem += OnRemoveItem;
+            //DefaultPause
+            //dc.h2d.Interactive
+            //botMenu
+            //dc.pr.Game
+
+            //Hook_ControllerAccess.onActPressed += OnActPressed;
+
+            Hook__Confirmation.__constructor__ += OnRestart;
+            Hook_Portal.onActivate += OnActivatePortal;
+            Hook_Portal.close += OnClosePortal;
+            //Portal
 
             Log.Information("=== Archipelago Mod loaded ! ===");
         }

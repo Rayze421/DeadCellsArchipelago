@@ -9,7 +9,10 @@ namespace DeadCellsArchipelago {
         public HashSet<string> BaseItemUnlocked { get; set; } = [];
         public Dictionary<string, int> RecievedProgressionItem { get; set; } = [];
         public Dictionary<string, int> RecievedFillerItem { get; set; } = [];
+        public bool isDoingChallenge = false;
         public int bscLevelToWin = 4;
+        public int numberOfPokebombUse = 1;
+        public string currentLevelId = "PrisonStart";
 
         public void SaveCheckSent(string checkName)
         {
