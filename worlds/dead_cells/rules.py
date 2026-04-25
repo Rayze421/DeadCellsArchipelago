@@ -459,6 +459,13 @@ def _head_count(count: int):
         ) >= count
     )
 
+def _can_reach_location_if_exists(state, world, loc_name: str) -> bool:
+    try:
+        world.multiworld.get_location(loc_name, world.player)
+    except KeyError:
+        return False
+    return state.can_reach_location(loc_name, world.player)
+
 def set_rules(world):
     """
     Apply source-based access rules from LOCATION_TABLE.
@@ -557,6 +564,9 @@ LOCATION_RULES = [
 
     ("Promenade of the Condemned Exit", _has("Vine Rune")),
 
+    # ── Half life lore room ──────────────────────────────────────────────────
+    ("Crowbar", _has("Teleportation Rune")),
+    ("Gordon Freeman Outfit", _has("Teleportation Rune")),
 
     # ── Collab skins ─────────────────────────────────────────────────────────
     ("Hollow Knight Outfit", _has("Pure Nail")),
@@ -581,16 +591,14 @@ LOCATION_RULES = [
     ),
 
     (
-        "Curse of the Dead Gods Outfit",
-        lambda world: (
-            lambda state: any(
-                state.can_reach_location(loc, world.player)
-                for loc in [
-                    "Throne Room Exit",
-                    "Crown Exit",
-                    "Master's Keep Exit",
-                ]
-            )
+    "Curse of the Dead Gods Outfit",
+    lambda world: lambda state: any(
+        _can_reach_location_if_exists(state, world, loc)
+        for loc in [
+            "Throne Room Exit",
+            "Crown Exit",
+            "Master's Keep Exit",
+        ]
         )
     ),
 
@@ -644,43 +652,47 @@ LOCATION_RULES = [
 
 
     # ── Heads ────────────────────────────────────────────────────────────────
-    ("Staphy Head", _has("Leghugger")),
+    ("Leghugger Head", _has("Leghugger")),
 
-    ("Mushroom Boi Head", _has("Mushroom Boi!")),
+    ("Mushroom Boi Cap", _has("Mushroom Boi!")),
 
-    ("Magma Blobby Flame",
-        _boss_killed("The Hand of the King")
-    ),
+    ("Magma Blob", _boss_killed("The Hand of the King")),
 
-    ("Red Blowtorch", _has("Pyrotechnics")),
+    ("Bright Red Blowtorch", _has("Pyrotechnics")),
 
     ("Boss Cell Head", _bsc(5)),
 
     ("Guillain Head", _boss_rush_trials_1_2()),
 
-    ("Deep Space Glitchy Head",
+    ("Spatial Anomaly",
      lambda world: lambda state:
         _head_count(35)(world)(state) 
-        or state.can_reach("Throne", "Region", world.player)),
+        or (state.can_reach("Throne", "Region", world.player)
+        and get_bc_level(state, world.player) >= 5)),
 
     ("Red Black Hole",
     lambda world: lambda state: 
         _head_count(7)(world)(state)
-        or (
-                state.can_reach("Throne", "Region", world.player)
-                and get_bc_level(state, world.player) >= 5
-            )
+        or state.can_reach("Throne", "Region", world.player)
     ),
-    ("Pecheur Head",
+
+    ("Fisherman's Hood",
     lambda world: lambda state: 
         _head_count(40)(world)(state)
         or (
                 state.can_reach("Throne", "Region", world.player)
                 and get_bc_level(state, world.player) >= 5
-            )),
+    )),
+    
+    ("Dark Vortex",
+    lambda world: lambda state: 
+        _head_count(15)(world)(state)
+        or (
+                state.can_reach("Throne", "Region", world.player)
+                and get_bc_level(state, world.player) >= 5
+    )),
 
-    (
-    "Blue Black Hole",
+    ("Blue Black Hole",
     lambda world: (
         lambda state:
             state.has("Vine Rune", world.player)
@@ -701,10 +713,9 @@ LOCATION_RULES = [
             and state.count("Progressive Flask", world.player) >= 4
             and state.count("Progressive Recycling", world.player) >= 2
             and state.count("Progressive Gold Reserves", world.player) >= 5
-    )
-    ),
-    (
-    "Green Black Hole",
+    )),
+    
+    ("Green Black Hole",
     lambda world: (
         lambda state:
             sum(
@@ -712,8 +723,7 @@ LOCATION_RULES = [
                 for item, data in ITEM_TABLE.items()
                 if 0x0200 <= data[0] <= 0x07FF
             ) >= 75
-    )
-    ),
+    )),
 ]
 
 
