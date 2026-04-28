@@ -12,6 +12,7 @@ using Serilog;
 using static dc.tool.InventItemKind;
 
 using static DeadCellsArchipelago.EnemyManager;
+using static DeadCellsArchipelago.HeroManager;
 
 namespace DeadCellsArchipelago {
     public static class ItemManager
@@ -326,9 +327,18 @@ namespace DeadCellsArchipelago {
                                 SpawnMobOnPlayer("Shielder", false);
                                 SpawnMobOnPlayer("Spiker", false);
                                 break;
+                            case "Trap_RemoveGold":
+                                break;
+                            case "Trap_BreakWeapon":
+                                break;
+                            case "Trap_InvertControls":
+                                InitSwitchControls();
+                                break;
+                            default:
+                                Log.Warning("=== Not implemented yet ===");
+                                break;
                         }
                     }
-                    Log.Warning("=== if nothing append, I forgot to implement it ===");
                     return false;
                 }
 

@@ -131,7 +131,6 @@ namespace DeadCellsArchipelago{
 
             IdToApName = LoadModApTranslation();
             ApNameToId = Invert(IdToApName);
-
 /*            archipelago.Connect(confData.serverIp, confData.slotName, confData.password);
             ARCHIPELAGO = archipelago;*/
 
@@ -161,6 +160,10 @@ namespace DeadCellsArchipelago{
             Hook_HeroActiveSkillsManager.canUseActiveSkill += OnCanUseActiveSkill;
             Hook_HeroActiveSkillsManager.updateSkills += OnUpdateSkills;
             Hook_Inventory.swapSkills += OnSwapSkills;
+
+            Hook_Controller.bind += OnBind;
+            //Controller
+            //HeroMainSkill
             Log.Information("=== Archipelago Mod loaded ! ===");
         }
 
@@ -170,6 +173,10 @@ namespace DeadCellsArchipelago{
             {    
                 GiveItemInQueue();
                 CheckDeathLink();
+            }
+            if(cooldown != null)
+            {
+                cooldown.update(dt);
             }
         }
 
