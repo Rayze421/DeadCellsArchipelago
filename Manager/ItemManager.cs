@@ -11,6 +11,8 @@ using ModCore.Utilities;
 using Serilog;
 using static dc.tool.InventItemKind;
 
+using static DeadCellsArchipelago.EnemyManager;
+
 namespace DeadCellsArchipelago {
     public static class ItemManager
     {
@@ -314,6 +316,15 @@ namespace DeadCellsArchipelago {
                                     bool useAltSound = false;
                                     HERO.curse(50, "Archipelago trap".AsHaxeString(), new HaxeProxy.Runtime.Ref<bool>(ref hidePopup), new HaxeProxy.Runtime.Ref<bool>(ref useAltSound));
                                 }
+                                break;
+                            case "Trap_SpawnElite":
+                                SpawnMobOnPlayer("Golem", true);
+                                SpawnMobOnPlayer("Hammer", true);
+                                SpawnMobOnPlayer("Comboter", true);
+                                SpawnMobOnPlayer("Harpy", true);
+                                SpawnMobOnPlayer("Necromant", false);
+                                SpawnMobOnPlayer("Shielder", false);
+                                SpawnMobOnPlayer("Spiker", false);
                                 break;
                         }
                     }
