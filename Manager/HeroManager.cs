@@ -15,6 +15,7 @@ namespace DeadCellsArchipelago {
     {
         public static string userWithSkillIssue = "";
         public static bool deathLinkReceived = false;
+        public static bool resetOnNextPrisonStart = false;
         public static Dictionary<int, Control> Controls { get; set; } = [];
         public static Cooldown? cooldown = null;
 
@@ -41,7 +42,7 @@ namespace DeadCellsArchipelago {
                 var originalOnValidate = onValidate;
 
                 onValidate = () => {
-                    ResetDataNewRun();
+                    resetOnNextPrisonStart = true;
                     originalOnValidate.Invoke();
                 };
             }

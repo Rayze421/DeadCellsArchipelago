@@ -17,6 +17,7 @@ using ModCore.Utilities;
 
 using static DeadCellsArchipelago.Translator;
 using static DeadCellsArchipelago.PokeManager;
+using static DeadCellsArchipelago.HeroManager;
 
 namespace DeadCellsArchipelago {
     public static class RoomManager
@@ -69,6 +70,11 @@ namespace DeadCellsArchipelago {
                 if(SAVED_DATA != null && SAVED_DATA.currentLevelId != "PrisonStart")
                 {
                     PrepareBiomeCheck(SAVED_DATA.currentLevelId, " Exit", ldat.id.ToString());
+                }
+                if (resetOnNextPrisonStart)
+                {
+                    ResetDataNewRun();
+                    resetOnNextPrisonStart = false;
                 }
                 PrepareBiomeCheck(ldat.id.ToString(), " Enter", ldat.id.ToString());
             }
