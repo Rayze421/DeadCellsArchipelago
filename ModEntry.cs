@@ -160,10 +160,15 @@ namespace DeadCellsArchipelago{
             Hook_HeroActiveSkillsManager.canUseActiveSkill += OnCanUseActiveSkill;
             Hook_HeroActiveSkillsManager.updateSkills += OnUpdateSkills;
             Hook_Inventory.swapSkills += OnSwapSkills;
+            Hook_TreasureChest.onActivate += OnActivateTreasureChest;
 
             Hook_Controller.bind += OnBind;
             //Controller
             //HeroMainSkill
+            //Challenge
+            //LevelGen
+            //ModCore.Utilities.ArrayUtils
+            //dc.haxe.ds.
             Log.Information("=== Archipelago Mod loaded ! ===");
         }
 
@@ -174,9 +179,37 @@ namespace DeadCellsArchipelago{
                 GiveItemInQueue();
                 CheckDeathLink();
             }
+
             if(cooldown != null)
             {
                 cooldown.update(dt);
+            }
+
+            if (trapChallenge && USER != null && HERO != null)
+            {
+                Room room = USER.game.curLevel.map.getRoomAt(HERO.cx, HERO.cy);
+                if (room != null)
+                {
+                    if (room.name.ToString() == "end")
+                    {
+                        LevelTransition.Class.gotoSub.Invoke(levelMapNotChallenge, null);
+                        trapChallenge = false;
+                        trapChallengeStartEntered = false;
+                        HERO.reduceCurse(1);
+                        trapChallengeCurseReceived = false;
+                    }
+                    if (room.name.ToString() == "start")
+                    {
+                        trapChallengeStartEntered = true;
+                    }
+                    if (!trapChallengeCurseReceived && trapChallengeStartEntered && room.name.ToString() != "start")
+                    {
+                        bool hidePopup = false;
+                        bool useAltSound = false;
+                        HERO.curse(1, "Archipelago Challenge Trap".AsHaxeString(), new Ref<bool>(ref hidePopup), new Ref<bool>(ref useAltSound));
+                        trapChallengeCurseReceived = true;
+                    }
+                }
             }
         }
 

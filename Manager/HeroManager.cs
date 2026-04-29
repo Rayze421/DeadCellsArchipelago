@@ -18,6 +18,9 @@ namespace DeadCellsArchipelago {
         public static bool resetOnNextPrisonStart = false;
         public static Dictionary<int, Control> Controls { get; set; } = [];
         public static Cooldown? cooldown = null;
+        public static bool trapChallenge = false;
+        public static bool trapChallengeStartEntered = false;
+        public static bool trapChallengeCurseReceived = false;
 
         public static void OnHeroDie(Hook_Hero.orig_onDie orig, Hero self)
         {
@@ -56,6 +59,9 @@ namespace DeadCellsArchipelago {
                 SAVED_DATA.currentLevelId = "PrisonStart";
                 SAVED_DATA.isDoingChallenge = false;
                 SAVED_DATA.numberOfPokebombUse = 1;
+                trapChallenge = false;
+                trapChallengeStartEntered = false;
+                trapChallengeCurseReceived = false;
             }
         }
 

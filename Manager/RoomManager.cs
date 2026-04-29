@@ -18,10 +18,18 @@ using ModCore.Utilities;
 using static DeadCellsArchipelago.Translator;
 using static DeadCellsArchipelago.PokeManager;
 using static DeadCellsArchipelago.HeroManager;
+using dc.level.lore;
+using dc.tool.mod.script;
+using System.Reflection;
+using Hashlink.Proxy;
+using HaxeProxy.Runtime.Internals;
 
 namespace DeadCellsArchipelago {
     public static class RoomManager
     {
+        public static LevelMap? levelMapNotChallenge = null;
+        public static LevelMap? levelMapChallenge = null;
+
         public static void InitializeRoomHooks()
         {
             Hook_PrisonCourtyard.buildMainRooms += (orig, self) => { useOriginalHasPermanentItem=false; var res=orig(self); useOriginalHasPermanentItem=true; return res;};
@@ -78,7 +86,26 @@ namespace DeadCellsArchipelago {
                 }
                 PrepareBiomeCheck(ldat.id.ToString(), " Enter", ldat.id.ToString());
             }
-            return orig(self, user, seed, ldat, resetCount);
+            //challenge = new Challenge(user, ldat, new dc.libs.Rand(seed));
+
+            
+            var level = Data.Class.level.byId.get("Challenge".AsHaxeString());
+
+            //HaxeProxyBindingAttribute
+            //Log.Warning($"{level}");
+            //Log.Warning($"Type réel : {level.GetType()}");
+            //Log.Warning($"Virtual : {level.ToVirtual<virtual_baseLootLevel_biome_bonusTripleScrollAfterBC_cellBonus_dlc_doubleUps_eliteRoomChance_eliteWanderChance_flagsProps_group_icon_id_index_loreDescriptions_mapDepth_minGold_mobDensity_mobs_name_nextLevels_parallax_props_quarterUpsBC3_quarterUpsBC4_specificLoots_specificSubBiome_transitionTo_tripleUps_worldDepth_>()}");
+            var levelProxy = ((HashlinkObj)level).AsHaxe();
+            virtual_baseLootLevel_biome_bonusTripleScrollAfterBC_cellBonus_dlc_doubleUps_eliteRoomChance_eliteWanderChance_flagsProps_group_icon_id_index_loreDescriptions_mapDepth_minGold_mobDensity_mobs_name_nextLevels_parallax_props_quarterUpsBC3_quarterUpsBC4_specificLoots_specificSubBiome_transitionTo_tripleUps_worldDepth_ levelVirtual = levelProxy.ToVirtual<virtual_baseLootLevel_biome_bonusTripleScrollAfterBC_cellBonus_dlc_doubleUps_eliteRoomChance_eliteWanderChance_flagsProps_group_icon_id_index_loreDescriptions_mapDepth_minGold_mobDensity_mobs_name_nextLevels_parallax_props_quarterUpsBC3_quarterUpsBC4_specificLoots_specificSubBiome_transitionTo_tripleUps_worldDepth_>();
+            
+            ArrayObj levelMaps = orig(self, user, seed, levelVirtual, resetCount);
+            Log.Warning($"-/ {levelMaps.length} /-");
+            foreach (var item in levelMaps) {
+                levelMapChallenge = item;
+                break;
+            }
+            
+            return orig(self, user, seed, ldat, resetCount).concat(levelMaps);
         }
 
         public static void SendBiomeCheck(string locationId)
@@ -127,11 +154,26 @@ namespace DeadCellsArchipelago {
                 if (self.isExit)
                 {
                     if(SAVED_DATA.isDoingChallenge) PrepareBiomeCheck("Challenge", " Exit", SAVED_DATA.currentLevelId);
+                    if(trapChallenge)
+                    {
+                        self.popText($"It's a trap, I can't escape through there.".AsHaxeString(), 16777215);
+                        return;
+                    }
                 }
                 else
                 {
                     PrepareBiomeCheck("Challenge", " Enter", SAVED_DATA.currentLevelId);
                 }
+            }
+            orig(self, by, lp);
+        }
+
+        public static void OnActivateTreasureChest(Hook_TreasureChest.orig_onActivate orig, TreasureChest self, Hero by, bool lp)
+        {
+            if(trapChallenge)
+            {
+                self.popText($"It's a trap, I can't open this chest.".AsHaxeString(), 16777215);
+                return;
             }
             orig(self, by, lp);
         }

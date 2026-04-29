@@ -599,11 +599,12 @@ ITEM_TABLE: Dict[str, tuple] = {
     # ── AP Trap Items ─────────────────────────────────────────────────
     # These are sent to the Dead Cells player to hinder them mid-run.
     # The mod handles their in-game effect on the client side.
-    "Trap_Curse":           (0x1500, TRAP, DLC_BASE),
-    "Trap_SpawnElite":      (0x1501, TRAP, DLC_BASE),
-    "Trap_RemoveGold":      (0x1502, TRAP, DLC_BASE),
-    "Trap_BreakWeapon":     (0x1503, TRAP, DLC_BASE),
-    "Trap_InvertControls":  (0x1504, TRAP, DLC_BASE),
+    "Trap_Curse":               (0x1500, TRAP, DLC_BASE),
+    "Trap_SpawnElite":          (0x1501, TRAP, DLC_BASE),
+    "Trap_RemoveGold":          (0x1502, TRAP, DLC_BASE),
+    "Trap_BreakWeapon":         (0x1503, TRAP, DLC_BASE),
+    "Trap_InvertControls":      (0x1504, TRAP, DLC_BASE),
+    "Trap_FlawlessChallenge":   (0x1505, TRAP, DLC_BASE),
 
     # region lock items
     "Prison Depths":        (0x1600, PROG, DLC_BASE),

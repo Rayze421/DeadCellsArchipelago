@@ -1,18 +1,22 @@
 
 using System.Text.RegularExpressions;
 using dc;
+using dc.cine;
 using dc.en;
 using dc.en.inter;
 using dc.hl.types;
+using dc.level;
 using dc.pr;
 using dc.tool;
 using dc.ui.hud;
+using HaxeProxy.Runtime;
 using ModCore.Utilities;
 using Serilog;
 using static dc.tool.InventItemKind;
 
 using static DeadCellsArchipelago.EnemyManager;
 using static DeadCellsArchipelago.HeroManager;
+using static DeadCellsArchipelago.RoomManager;
 
 namespace DeadCellsArchipelago {
     public static class ItemManager
@@ -315,7 +319,7 @@ namespace DeadCellsArchipelago {
                                 {
                                     bool hidePopup = false;
                                     bool useAltSound = false;
-                                    HERO.curse(50, "Archipelago trap".AsHaxeString(), new HaxeProxy.Runtime.Ref<bool>(ref hidePopup), new HaxeProxy.Runtime.Ref<bool>(ref useAltSound));
+                                    HERO.curse(50, "Archipelago Curse Trap".AsHaxeString(), new Ref<bool>(ref hidePopup), new Ref<bool>(ref useAltSound));
                                 }
                                 break;
                             case "Trap_SpawnElite":
@@ -328,11 +332,25 @@ namespace DeadCellsArchipelago {
                                 SpawnMobOnPlayer("Spiker", false);
                                 break;
                             case "Trap_RemoveGold":
+                                if(USER != null && HERO != null)
+                                {
+                                    bool noStats = false;
+                                    HERO.substractMoney(USER.game.data.money, new Ref<bool>(ref noStats));
+                                }
                                 break;
                             case "Trap_BreakWeapon":
+                                
                                 break;
                             case "Trap_InvertControls":
                                 InitSwitchControls();
+                                break;
+                            case "Trap_FlawlessChallenge":
+                                if (levelMapChallenge != null && USER != null && HERO != null)
+                                {
+                                    trapChallenge = true;
+                                    levelMapNotChallenge = USER.game.curLevel.map;
+                                    LevelTransition.Class.gotoSub.Invoke(levelMapChallenge, null);
+                                }
                                 break;
                             default:
                                 Log.Warning("=== Not implemented yet ===");
