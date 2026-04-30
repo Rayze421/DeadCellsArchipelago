@@ -70,7 +70,7 @@ namespace DeadCellsArchipelago {
             orig(self, cb);
         }
 
-        //when the level is generating, we do the checks biomes
+        //when the level is generating, we do the checks biomes and add a void challenge for the trap
         public static ArrayObj OnGenerate(Hook_LevelGen.orig_generate orig, LevelGen self, User user, int seed, virtual_baseLootLevel_biome_bonusTripleScrollAfterBC_cellBonus_dlc_doubleUps_eliteRoomChance_eliteWanderChance_flagsProps_group_icon_id_index_loreDescriptions_mapDepth_minGold_mobDensity_mobs_name_nextLevels_parallax_props_quarterUpsBC3_quarterUpsBC4_specificLoots_specificSubBiome_transitionTo_tripleUps_worldDepth_ ldat, Ref<bool> resetCount)
         {
             if(ldat.id.ToString() == "PrisonStart")
@@ -86,20 +86,12 @@ namespace DeadCellsArchipelago {
                 }
                 PrepareBiomeCheck(ldat.id.ToString(), " Enter", ldat.id.ToString());
             }
-            //challenge = new Challenge(user, ldat, new dc.libs.Rand(seed));
 
-            
             var level = Data.Class.level.byId.get("Challenge".AsHaxeString());
-
-            //HaxeProxyBindingAttribute
-            //Log.Warning($"{level}");
-            //Log.Warning($"Type réel : {level.GetType()}");
-            //Log.Warning($"Virtual : {level.ToVirtual<virtual_baseLootLevel_biome_bonusTripleScrollAfterBC_cellBonus_dlc_doubleUps_eliteRoomChance_eliteWanderChance_flagsProps_group_icon_id_index_loreDescriptions_mapDepth_minGold_mobDensity_mobs_name_nextLevels_parallax_props_quarterUpsBC3_quarterUpsBC4_specificLoots_specificSubBiome_transitionTo_tripleUps_worldDepth_>()}");
             var levelProxy = ((HashlinkObj)level).AsHaxe();
             virtual_baseLootLevel_biome_bonusTripleScrollAfterBC_cellBonus_dlc_doubleUps_eliteRoomChance_eliteWanderChance_flagsProps_group_icon_id_index_loreDescriptions_mapDepth_minGold_mobDensity_mobs_name_nextLevels_parallax_props_quarterUpsBC3_quarterUpsBC4_specificLoots_specificSubBiome_transitionTo_tripleUps_worldDepth_ levelVirtual = levelProxy.ToVirtual<virtual_baseLootLevel_biome_bonusTripleScrollAfterBC_cellBonus_dlc_doubleUps_eliteRoomChance_eliteWanderChance_flagsProps_group_icon_id_index_loreDescriptions_mapDepth_minGold_mobDensity_mobs_name_nextLevels_parallax_props_quarterUpsBC3_quarterUpsBC4_specificLoots_specificSubBiome_transitionTo_tripleUps_worldDepth_>();
             
             ArrayObj levelMaps = orig(self, user, seed, levelVirtual, resetCount);
-            Log.Warning($"-/ {levelMaps.length} /-");
             foreach (var item in levelMaps) {
                 levelMapChallenge = item;
                 break;

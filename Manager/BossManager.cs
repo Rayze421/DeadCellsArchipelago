@@ -1,4 +1,5 @@
 using dc;
+using dc.en;
 using dc.en.mob.boss;
 using dc.en.mob.boss.death;
 using Serilog;
@@ -29,7 +30,7 @@ namespace DeadCellsArchipelago {
             Hook_DookuBeast.onDie += (orig, self) => { orig(self); OnBossKilled(self._infos.id.ToString()); };
             Hook_Collector.onDie += (orig, self) => { orig(self); OnBossKilled(self._infos.id.ToString()); };
 
-            Hook_Entity.onDie += OnOnDie;
+            Hook_Mob.onDie += OnOnDie;
             
             Log.Information("=== Boss Hooks loaded ! ===");
         }
@@ -67,11 +68,11 @@ namespace DeadCellsArchipelago {
             }
         }
 
-        public static void OnOnDie(Hook_Entity.orig_onDie orig, Entity self)
+        public static void OnOnDie(Hook_Mob.orig_onDie orig, Mob self)
         {
             orig(self);
 
-            int randomNumber = new Random().Next(1, 10001);
+            int randomNumber = new Random().Next(1, 1001);
             if (randomNumber == 1)
             {
                 DropItemToPlayer("TimeDistorsion");

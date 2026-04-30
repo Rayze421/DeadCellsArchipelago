@@ -6,7 +6,7 @@ using static DeadCellsArchipelago.ItemManager;
 namespace DeadCellsArchipelago {
     public static class EnemyManager
     {
-        public static void SpawnMobOnPlayer(string id, bool elite)
+        public static void SpawnMobOnPlayer(string id, bool elite, bool anger)
         {
             if (HERO != null)
             {
@@ -16,8 +16,31 @@ namespace DeadCellsArchipelago {
                 {
                     mob.setElite(false);
                 }
+                if (anger)
+                {
+                    bool bump = false;
+                    mob.eliteAnger(new Ref<bool>(ref bump));
+                }
                 double reductionValue = 0;
-                mob.setAffectS(8, 1, new Ref<double>(ref reductionValue),true);
+                mob.setAffectS(8, 1, new Ref<double>(ref reductionValue), true);
+            }
+        }
+
+        public static void EliteTrap()
+        {
+            List<List<string>> teams = [
+                ["Demon", "Curser"],
+                ["FlyingShooter", "FatZombie"],
+                ["Golem", "Defender"],
+                ["Hammer", "Necromant"],
+                ["Shielder", "Comboter", "Shocker"],
+                ["PirateChief", "Harpy"],
+                ["Hurler", "Fogger", "ClusterGrenader"],
+            ];
+            List<string> selectedTeam = teams[new Random().Next(0, teams.Count)];
+            foreach (string mob in selectedTeam)
+            {
+                SpawnMobOnPlayer(mob, true, true);
             }
         }
     }

@@ -9,6 +9,7 @@ using dc.ui.pause;
 using dc.hxd.res;
 using dc.tool;
 using dc.tool._Cooldown;
+using dc.ui.hud;
 
 namespace DeadCellsArchipelago {
     public static class HeroManager
@@ -113,6 +114,38 @@ namespace DeadCellsArchipelago {
                 HERO.controller.parent.bind(control1, c2.padKeyA, c2.padKeyB, c2.padKeyC, c2.keyboardKey, c2.alternate1, c2.alternate2, false);
                 HERO.controller.parent.bind(control2, c1.padKeyA, c1.padKeyB, c1.padKeyC, c1.keyboardKey, c1.alternate1, c1.alternate2, true);
                 HERO.controller.parent.bind(control2, c1.padKeyA, c1.padKeyB, c1.padKeyC, c1.keyboardKey, c1.alternate1, c1.alternate2, false);
+            }
+        }
+
+        public static void RemoveARandomWeapon()
+        {
+            if(HERO != null)
+            {
+                List<InventItem> items = new List<InventItem>();
+                for(int i = 0; i < 2; i++)
+                {
+                    InventItem iiw = HERO.inventory.getEquippedWeaponOn(i);
+                    InventItem iis = HERO.inventory.getActiveOn(i);
+                    if(iiw != null)
+                    {
+                        items.Add(iiw);
+                    }
+                    if(iis != null)
+                    {
+                        items.Add(iis);
+                    }
+                }
+                Log.Information($"=|= {items.Count} =|=");
+                if(items.Count > 0)
+                {
+                    InventItem ii = items[new Random().Next(0, items.Count)];
+                    Log.Information($"=|= {ii._itemData.id} =|=");
+                    HERO.inventory.remove(ii);
+                    
+                    bool updateHUD = true;
+                    bool durings = false;
+                    HERO.onEquipedItemsChange(new Ref<bool>(ref updateHUD), new Ref<bool>(ref durings), new Ref<bool>(ref durings));
+                }
             }
         }
 

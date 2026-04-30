@@ -77,7 +77,7 @@ namespace DeadCellsArchipelago {
                             HERO.cy,
                             inventItem,
                             true,
-                            new HaxeProxy.Runtime.Ref<bool>(ref inArmoryValue)
+                            new Ref<bool>(ref inArmoryValue)
                         );
 
                         itemDrop.init();
@@ -323,13 +323,7 @@ namespace DeadCellsArchipelago {
                                 }
                                 break;
                             case "Trap_SpawnElite":
-                                SpawnMobOnPlayer("Golem", true);
-                                SpawnMobOnPlayer("Hammer", true);
-                                SpawnMobOnPlayer("Comboter", true);
-                                SpawnMobOnPlayer("Harpy", true);
-                                SpawnMobOnPlayer("Necromant", false);
-                                SpawnMobOnPlayer("Shielder", false);
-                                SpawnMobOnPlayer("Spiker", false);
+                                EliteTrap();
                                 break;
                             case "Trap_RemoveGold":
                                 if(USER != null && HERO != null)
@@ -339,7 +333,7 @@ namespace DeadCellsArchipelago {
                                 }
                                 break;
                             case "Trap_BreakWeapon":
-                                
+                                RemoveARandomWeapon();
                                 break;
                             case "Trap_InvertControls":
                                 InitSwitchControls();
