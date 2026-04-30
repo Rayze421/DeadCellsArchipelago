@@ -48,8 +48,13 @@ namespace DeadCellsArchipelago {
         {
             if(USER != null && USER.game.curLevel.map.getRoomAt(self.cx, self.cy) != null)
             {   //allow the player to open the mutation door in collector's transition
-            Log.Warning($"=== porte en {USER.game.curLevel.map.getRoomAt(self.cx, self.cy).rTemplate} ===");
+                Log.Warning($"=== porte en {USER.game.curLevel.map.getRoomAt(self.cx, self.cy).rTemplate} ===");
                 if (USER.game.curLevel.map.getRoomAt(self.cx, self.cy).rTemplate.ToString() == "PerkShop" || USER.game.curLevel.map.getRoomAt(self.cx, self.cy).rTemplate.ToString() == "DookuArenaPerkShop")
+                {
+                    self.openFast(self.cx - by.cx >= 0 ? 1 : -1, null);
+                    return;
+                }
+                if (USER.game.curLevel.map.getRoomAt(self.cx, self.cy).rTemplate.ToString() == "OssBoss")
                 {
                     self.openFast(self.cx - by.cx >= 0 ? 1 : -1, null);
                     return;
@@ -84,6 +89,10 @@ namespace DeadCellsArchipelago {
                     ResetDataNewRun();
                     resetOnNextPrisonStart = false;
                 }
+                PrepareBiomeCheck(ldat.id.ToString(), " Enter", ldat.id.ToString());
+            }
+            if(ldat.id.ToString() == "Ossuary")
+            {
                 PrepareBiomeCheck(ldat.id.ToString(), " Enter", ldat.id.ToString());
             }
 
