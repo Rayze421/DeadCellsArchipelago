@@ -644,7 +644,7 @@ namespace DeadCellsArchipelago {
         {
             if (SAVED_DATA != null)
             {
-                if (heroJustDead && aspectsToIter <= 12)//the game use hasUnlockedItem to add aspects in its random give pool
+                if (heroJustDead && k.ToString().Length >= 3 && k.ToString()[..3] == "ASP" && aspectsToIter <= 12)//the game use hasUnlockedItem to add aspects in its random give pool
                 {
                     aspectsToIter++;
                     return SAVED_DATA.IsCheckSent(k.ToString());
