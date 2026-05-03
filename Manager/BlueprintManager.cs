@@ -67,7 +67,7 @@ namespace DeadCellsArchipelago {
         {
             if (showBlueprintLog)
             {
-                orig(self, k, baseRarity, isRevealed, isScoring);
+                orig(self, k, baseRarity, isRevealed, false);
             }
             if (ARCHIPELAGO != null && !ARCHIPELAGO.includeCosmetics && InCosmeticList(k.ToString()))
             {
