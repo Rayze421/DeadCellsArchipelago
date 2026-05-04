@@ -74,11 +74,8 @@ namespace DeadCellsArchipelago {
                 case "BossRune5":
                     SendBscCheck(i._itemData.id.ToString());
                     break;
-                case "LighthouseKey":
-                    Log.Warning($"--- pick LighthouseKey ---");
-                    break;
                 case "ShipwreckKey":
-                    Log.Warning($"--- pick ShipwreckKey ---");
+                    SendItemWithoutBlueprintCheck(i._itemData.id.ToString());
                     break;
                 default:
                     orig(self, from, i);

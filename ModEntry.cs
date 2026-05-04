@@ -185,6 +185,16 @@ namespace DeadCellsArchipelago{
             {    
                 GiveItemInQueue();
                 CheckDeathLink();
+
+                if (shouldGiveItemsNewRun && SAVED_DATA != null)
+                {
+                    shouldGiveItemsNewRun = false;
+                    if (SAVED_DATA.IsItemRecieved("ShipwreckKey"))
+                    {
+                        GiveItemToPlayer("ShipwreckKey");
+                        HERO?.hudInitItems();
+                    }
+                }
             }
 
             if(cooldown != null)

@@ -270,7 +270,7 @@ namespace DeadCellsArchipelago {
             //leaving this blank remove base items in collector's shop (upgrade, weapons and skills)
         }
 
-        //the boolean returned here is for saving or not the item in local data
+        //the boolean returned here is for saving or not the item in local data in item received
         public static bool GiveItemFromArchipelago(string itemName)
         {
             if (ITEM_META_MANAGER != null) {
@@ -308,8 +308,12 @@ namespace DeadCellsArchipelago {
                             LogItem(unlockedName);
                         }
                         return false;
-
-                }//todo: other kinds
+                    case "ShipwreckKey" :
+                        GiveItemToPlayer(itemName);
+                        HERO?.hudInitItems();
+                        LogItem(itemName);
+                        return true;
+                }
                 if (itemName.Length >= 5 && itemName[..5] == "Trap_")
                 {
                     if(ShouldDropItem(itemName))

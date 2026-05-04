@@ -22,6 +22,7 @@ namespace DeadCellsArchipelago {
         public static bool trapChallenge = false;
         public static bool trapChallengeStartEntered = false;
         public static bool trapChallengeCurseReceived = false;
+        public static bool shouldGiveItemsNewRun = false;
 
         public static void OnHeroDie(Hook_Hero.orig_onDie orig, Hero self)
         {
@@ -72,8 +73,6 @@ namespace DeadCellsArchipelago {
             HERO = self;
             
             Log.Information("=== Hero initialized ! ===");
-            DropItemToPlayer("Pokebomb");
-            DropItemToPlayer("ImpaleSpear");
         }
 
         public static void InitSwitchControls()
@@ -92,7 +91,7 @@ namespace DeadCellsArchipelago {
                 key = Cooldown.Class.INDEXES.length - 1;
             }
 
-            var cdInst = new CdInst(key, 20);
+            var cdInst = new CdInst(key, 60);
             cooldown.cdList.push(cdInst);
         }
 
