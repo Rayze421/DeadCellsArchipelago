@@ -175,6 +175,7 @@ namespace DeadCellsArchipelago{
             Hook_CollectorPanel.userFilter += OnUserFilter;
             Hook_ItemMetaManager.countUnlockedItems += OnCountUnlockedItems;
             Hook_LootGen.generateLootOnMobs += OnGenerateLootOnMobs;
+            Hook_Hero.hudInitItems += OnHudInitItems;
             Log.Information("=== Archipelago Mod loaded ! ===");
         }
 

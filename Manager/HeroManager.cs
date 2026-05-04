@@ -72,6 +72,8 @@ namespace DeadCellsArchipelago {
             HERO = self;
             
             Log.Information("=== Hero initialized ! ===");
+            DropItemToPlayer("Pokebomb");
+            DropItemToPlayer("ImpaleSpear");
         }
 
         public static void InitSwitchControls()
@@ -199,6 +201,12 @@ namespace DeadCellsArchipelago {
                 }
             }
             orig(self, k, padKeyA, padKeyB, padKeyC, keyboardKey, alternate1, alternate2, forceBindings_normal);
+        }
+
+        public static void OnHudInitItems(Hook_Hero.orig_hudInitItems orig, Hero self)
+        {
+            orig(self);
+            ResetFrontPokebomb();
         }
     }
 }
