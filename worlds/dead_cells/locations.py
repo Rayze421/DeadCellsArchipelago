@@ -516,12 +516,12 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 1, "item": "PrisonerNeon", "rarity": "Rare",
         "sources": [{'biome': 'PrisonCourtyard', 'min_bc': 1, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'BatKamikaze'}, {'biome': 'SewerShort', 'min_bc': 1, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'BatKamikaze'}, {'biome': 'PrisonDepths', 'min_bc': 1, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'BatKamikaze'}, {'biome': 'SewerDepths', 'min_bc': 1, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'BatKamikaze'}, {'biome': 'StiltVillage', 'min_bc': 1, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'BatKamikaze'}, {'biome': 'AncientTemple', 'min_bc': 1, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'BatKamikaze'}, {'biome': 'Cemetery', 'min_bc': 1, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'BatKamikaze'}, {'biome': 'Crypt', 'min_bc': 1, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'BatKamikaze'}, {'biome': 'Distillery', 'min_bc': 1, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'BatKamikaze'}, {'biome': 'Shipwreck', 'min_bc': 1, 'max_bc': 5, 'dlc': 'TheQueenAndTheSea', 'type': 'blueprint_enemy', 'mob': 'BatKamikaze'}],
     },
-    "Recovery": {
+    "Frenzy": {
         "id": 0x00B2, "region": "Checks", "type": "blueprint_floor",
         "dlc": "", "min_bc": 0, "item": "P_SpeedHeal",
         "sources": [{'biome': 'SewerShort', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
     },
-    "Armadillopack": {
+    "Spite": {
         "id": 0x00B3, "region": "Checks", "type": "blueprint_floor",
         "dlc": "", "min_bc": 0, "item": "P_SuperParry",
         "sources": [{'biome': 'SewerShort', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
@@ -611,7 +611,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 3, "item": "PrisonerDemon", "rarity": "Rare",
         "sources": [{'biome': 'PrisonDepths', 'min_bc': 3, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Comboter'}, {'biome': 'PrisonRoof', 'min_bc': 3, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Comboter'}, {'biome': 'Ossuary', 'min_bc': 3, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Comboter'}, {'biome': 'Cemetery', 'min_bc': 3, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Comboter'}, {'biome': 'Swamp', 'min_bc': 3, 'max_bc': 5, 'dlc': 'TheBadSeed', 'type': 'blueprint_enemy', 'mob': 'Comboter'}, {'biome': 'Tumulus', 'min_bc': 3, 'max_bc': 5, 'dlc': 'FatalFalls', 'type': 'blueprint_enemy', 'mob': 'Comboter'}, {'biome': 'Cliff', 'min_bc': 3, 'max_bc': 5, 'dlc': 'FatalFalls', 'type': 'blueprint_enemy', 'mob': 'Comboter'}, {'biome': 'Bank', 'min_bc': 3, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Comboter'}],
     },
-    "Execution": {
+    "No Mercy": {
         "id": 0x00C5, "region": "Checks", "type": "blueprint_enemy",
         "dlc": "", "min_bc": 0, "item": "P_Execute_LowHealth",
         "sources": [{'biome': 'PrisonDepths', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Comboter'}, {'biome': 'PrisonRoof', 'min_bc': 2, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Comboter'}, {'biome': 'Ossuary', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Comboter'}, {'biome': 'Cemetery', 'min_bc': 2, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Comboter'}, {'biome': 'Swamp', 'min_bc': 0, 'max_bc': 5, 'dlc': 'TheBadSeed', 'type': 'blueprint_enemy', 'mob': 'Comboter'}, {'biome': 'Tumulus', 'min_bc': 0, 'max_bc': 5, 'dlc': 'FatalFalls', 'type': 'blueprint_enemy', 'mob': 'Comboter'}, {'biome': 'Cliff', 'min_bc': 0, 'max_bc': 5, 'dlc': 'FatalFalls', 'type': 'blueprint_enemy', 'mob': 'Comboter'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Comboter'}],
@@ -641,7 +641,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "PerfectHalberd", "rarity": "Rare",
         "sources": [{'biome': 'PrisonCorrupt', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Stomper'}, {'biome': 'Cavern', 'min_bc': 0, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_enemy', 'mob': 'Stomper'}, {'biome': 'Astrolab', 'min_bc': 5, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_enemy', 'mob': 'Stomper'}, {'biome': 'Cliff', 'min_bc': 2, 'max_bc': 5, 'dlc': 'FatalFalls', 'type': 'blueprint_enemy', 'mob': 'Stomper'}],
     },
-    "Blind Faith": {
+    "Tactical Retreat": {
         "id": 0x00CB, "region": "Checks", "type": "blueprint_enemy",
         "dlc": "", "min_bc": 0, "item": "P_DodgeSlow",
         "sources": [{'biome': 'PrisonCorrupt', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Stomper'}, {'biome': 'Cavern', 'min_bc': 0, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_enemy', 'mob': 'Stomper'}, {'biome': 'Astrolab', 'min_bc': 5, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_enemy', 'mob': 'Stomper'}, {'biome': 'Cliff', 'min_bc': 2, 'max_bc': 5, 'dlc': 'FatalFalls', 'type': 'blueprint_enemy', 'mob': 'Stomper'}],
@@ -686,7 +686,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "P_DmgSkl",
         "sources": [{'biome': 'PrisonRoof', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Minimoth'}],
     },
-    "Gastronomy": {
+    "Extended Healing": {
         "id": 0x00D4, "region": "Checks", "type": "blueprint_floor",
         "dlc": "", "min_bc": 0, "item": "P_Hot",
         "sources": [{'biome': 'Ossuary', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
@@ -711,7 +711,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "CeilTurret",
         "sources": [{'biome': 'Ossuary', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'SpikedSatyr'}, {'biome': 'Greenhouse', 'min_bc': 0, 'max_bc': 5, 'dlc': 'TheBadSeed', 'type': 'blueprint_enemy', 'mob': 'SpikedSatyr'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'SpikedSatyr'}],
     },
-    "Armadillo Pack": {
+    "Armadillopack": {
         "id": 0x00D9, "region": "Checks", "type": "blueprint_enemy",
         "dlc": "", "min_bc": 0, "item": "P_Backpack_Shield",
         "sources": [{'biome': 'Ossuary', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'SpikedSatyr'}, {'biome': 'Greenhouse', 'min_bc': 0, 'max_bc': 5, 'dlc': 'TheBadSeed', 'type': 'blueprint_enemy', 'mob': 'SpikedSatyr'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'SpikedSatyr'}],
@@ -796,7 +796,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "HookWhip", "rarity": "Rare",
         "sources": [{'biome': 'StiltVillage', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'PirateChief'}, {'biome': 'Shipwreck', 'min_bc': 2, 'max_bc': 5, 'dlc': 'TheQueenAndTheSea', 'type': 'blueprint_enemy', 'mob': 'PirateChief'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'PirateChief'}],
     },
-    "Masochist": {
+    "Heart of Ice": {
         "id": 0x00EA, "region": "Checks", "type": "blueprint_enemy",
         "dlc": "", "min_bc": 0, "item": "P_CDR_locked",
         "sources": [{'biome': 'StiltVillage', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'PirateChief'}, {'biome': 'Shipwreck', 'min_bc': 2, 'max_bc': 5, 'dlc': 'TheQueenAndTheSea', 'type': 'blueprint_enemy', 'mob': 'PirateChief'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'PirateChief'}],
@@ -811,7 +811,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "PortableDoor",
         "sources": [{'biome': 'AncientTemple', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
     },
-    "Instinct of the Master of Arms": {
+    "Masochist": {
         "id": 0x00ED, "region": "Checks", "type": "blueprint_floor",
         "dlc": "", "min_bc": 0, "item": "P_Traps",
         "sources": [{'biome': 'AncientTemple', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
@@ -831,7 +831,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "FireBall",
         "sources": [{'biome': 'AncientTemple', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'OrbLauncher'}],
     },
-    "Parting Gift": {
+    "Ranger's Gear": {
         "id": 0x00F1, "region": "Checks", "type": "blueprint_enemy",
         "dlc": "", "min_bc": 0, "item": "P_DmgSkillRanged",
         "sources": [{'biome': 'AncientTemple', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Duelist'}, {'biome': 'Cliff', 'min_bc': 0, 'max_bc': 5, 'dlc': 'FatalFalls', 'type': 'blueprint_enemy', 'mob': 'Duelist'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Duelist'}],
@@ -846,7 +846,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 2, "item": "PrisonerHyperlight", "rarity": "Rare",
         "sources": [{'biome': 'AncientTemple', 'min_bc': 4, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Demon'}, {'biome': 'Cavern', 'min_bc': 2, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_enemy', 'mob': 'Demon'}, {'biome': 'Castle', 'min_bc': 4, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Demon'}, {'biome': 'Bank', 'min_bc': 2, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Demon'}, {'biome': 'DookuCastleHard', 'min_bc': 4, 'max_bc': 5, 'dlc': 'Purple', 'type': 'blueprint_enemy', 'mob': 'Demon'}],
     },
-    "Dead Inside": {
+    "Parting Gift": {
         "id": 0x00F4, "region": "Checks", "type": "blueprint_floor",
         "dlc": "", "min_bc": 0, "item": "P_DeathBomb",
         "sources": [{'biome': 'Cemetery', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
@@ -891,7 +891,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "Shovel", "rarity": "Rare",
         "sources": [{'biome': 'Cemetery', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'FlyZombie'}],
     },
-    "Shared Suffering": {
+    "Networking": {
         "id": 0x00FD, "region": "Checks", "type": "blueprint_enemy",
         "dlc": "", "min_bc": 0, "item": "P_ShareDamage",
         "sources": [{'biome': 'Cemetery', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'FlyZombie'}],
@@ -1006,10 +1006,10 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "RiseOfTheGiant", "min_bc": 4, "item": "Giant4",
         "sources": [{'biome': 'Giant', 'min_bc': 4, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_enemy'}],
     },
-    "Alienation": {
+    "Acceptance": {
         "id": 0x0114, "region": "Checks", "type": "blueprint_floor",
-        "dlc": "", "min_bc": 0, "item": "P_EasierCurse",
-        "sources": [{'biome': 'Castle', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
+        "dlc": "", "min_bc": 3, "item": "P_EasierCurse",
+        "sources": [{'biome': 'Castle', 'min_bc': 3, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
     },
     "Knight's Outfit": {
         "id": 0x0115, "region": "Checks", "type": "skin",
@@ -1026,7 +1026,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "Tornado", "rarity": "Rare",
         "sources": [{'biome': 'Castle', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'CastleKnight'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'CastleKnight'}, {'biome': 'DookuCastle', 'min_bc': 3, 'max_bc': 5, 'dlc': 'Purple', 'type': 'blueprint_enemy', 'mob': 'CastleKnight'}],
     },
-    "Necromancy": {
+    "Soldier's Resistance": {
         "id": 0x0118, "region": "Checks", "type": "blueprint_enemy",
         "dlc": "", "min_bc": 0, "item": "P_ScaledHealth",
         "sources": [{'biome': 'Castle', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'CastleKnight'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'CastleKnight'}, {'biome': 'DookuCastle', 'min_bc': 3, 'max_bc': 5, 'dlc': 'Purple', 'type': 'blueprint_enemy', 'mob': 'CastleKnight'}],
@@ -1036,7 +1036,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "QuickFists", "rarity": "Rare",
         "sources": [{'biome': 'Castle', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Lancer'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Lancer'}],
     },
-    "Soldier's Resistance": {
+    "Dead Inside": {
         "id": 0x011A, "region": "Checks", "type": "blueprint_enemy",
         "dlc": "", "min_bc": 0, "item": "P_Health",
         "sources": [{'biome': 'Castle', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Lancer'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Lancer'}],
@@ -1436,7 +1436,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "Purple", "min_bc": 4, "item": "Dooku4",
         "sources": [{'biome': 'DookuArena', 'min_bc': 4, 'max_bc': 5, 'dlc': 'Purple', 'type': 'blueprint_enemy'}],
     },
-    "Caltrops": {
+    "Crow's Foot": {
         "id": 0x016A, "region": "Checks", "type": "blueprint_floor",
         "dlc": "", "min_bc": 0, "item": "P_Caltrops",
         "sources": [{'biome': 'Challenge', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
@@ -1551,7 +1551,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "P_Ammo",
         "sources": [{'biome': 'Bridge', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy'}],
     },
-    "Acceptance": {
+    "Alienation": {
         "id": 0x0185, "region": "Checks", "type": "blueprint_enemy",
         "dlc": "", "min_bc": 0, "item": "P_Curse",
         "sources": [{'biome': 'Bridge', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy'}],
@@ -1581,12 +1581,12 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "EvilSword",
         "sources": [{'biome': 'BeholderPit', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy'}],
     },
-    "Extended Healing": {
+    "Gastronomy": {
         "id": 0x018B, "region": "Checks", "type": "blueprint_enemy",
         "dlc": "", "min_bc": 0, "item": "P_Food",
         "sources": [{'biome': 'BeholderPit', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy'}],
     },
-    "Rally": {
+    "Recovery": {
         "id": 0x018C, "region": "Checks", "type": "blueprint_enemy",
         "dlc": "", "min_bc": 0, "item": "P_Rally",
         "sources": [{'biome': 'BeholderPit', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy'}],
