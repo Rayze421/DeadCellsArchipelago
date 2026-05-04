@@ -19,7 +19,7 @@ namespace DeadCellsArchipelago {
 
         public static void OnApplyItemPickEffect(Hook_Hero.orig_applyItemPickEffect orig, Hero self, Entity from, InventItem i)
         {   //called each time the player take any item not blueprint
-            Log.Warning($"=== pick effect on {i._itemData.id} {i._itemData.name} ===");
+            //Log.Warning($"=== pick effect on {i._itemData.id} {i._itemData.name} ===");
             bool noStats = false;
             Random rnd = new Random();
             int msgNumber = 0;
@@ -73,6 +73,12 @@ namespace DeadCellsArchipelago {
                 case "BossRune4":
                 case "BossRune5":
                     SendBscCheck(i._itemData.id.ToString());
+                    break;
+                case "LighthouseKey":
+                    Log.Warning($"--- pick LighthouseKey ---");
+                    break;
+                case "ShipwreckKey":
+                    Log.Warning($"--- pick ShipwreckKey ---");
                     break;
                 default:
                     orig(self, from, i);

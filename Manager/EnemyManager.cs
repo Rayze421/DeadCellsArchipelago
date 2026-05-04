@@ -2,6 +2,7 @@ using dc.en;
 using HaxeProxy.Runtime;
 using ModCore.Utilities;
 using static DeadCellsArchipelago.ItemManager;
+using static DeadCellsArchipelago.RuneManager;
 
 namespace DeadCellsArchipelago {
     public static class EnemyManager
@@ -42,6 +43,13 @@ namespace DeadCellsArchipelago {
             {
                 SpawnMobOnPlayer(mob, true, true);
             }
+        }
+
+        public static void OnGenerateLootOnMobs(dc.level.Hook_LootGen.orig_generateLootOnMobs orig, dc.level.LootGen self)
+        {
+            useOriginalHasPermanentItem = false;
+            orig(self);
+            useOriginalHasPermanentItem = true;
         }
     }
 }

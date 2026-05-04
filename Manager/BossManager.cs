@@ -40,7 +40,6 @@ namespace DeadCellsArchipelago {
 
         private static void OnBossKilled(string bossName)
         {
-            Log.Information($"=== {bossName} killed! TODO: send check to Archipelago ===");
             if (SAVED_DATA != null && !SAVED_DATA.IsCheckSent(bossName)){
                 SendBossCheck(bossName);
             }

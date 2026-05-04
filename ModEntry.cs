@@ -17,6 +17,7 @@ using static DeadCellsArchipelago.Translator;
 using static DeadCellsArchipelago.MainMenuManager;
 using static DeadCellsArchipelago.ImageManager;
 using static DeadCellsArchipelago.PokeManager;
+using static DeadCellsArchipelago.EnemyManager;
 using dc.en.mob;
 using dc._Data;
 using dc.pr;
@@ -57,6 +58,7 @@ using dc.ui.pause;
 using dc.hxd.res;
 using dc.ui.hud;
 using dc.tool.weap.dual;
+using dc.en.mob.boss;
 
 
 namespace DeadCellsArchipelago{
@@ -172,6 +174,7 @@ namespace DeadCellsArchipelago{
             Hook_LeaderboardPanel.set_visible += OnSetVisible;
             Hook_CollectorPanel.userFilter += OnUserFilter;
             Hook_ItemMetaManager.countUnlockedItems += OnCountUnlockedItems;
+            Hook_LootGen.generateLootOnMobs += OnGenerateLootOnMobs;
             Log.Information("=== Archipelago Mod loaded ! ===");
         }
 
