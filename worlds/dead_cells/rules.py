@@ -564,6 +564,9 @@ LOCATION_RULES = [
 
     ("Promenade of the Condemned Exit", _has("Vine Rune")),
 
+    # ── Dilapidated Arboretum Entrance ───────────────────────────────────────
+    ("Royal Gardener Outfit", _has("Teleportation Rune")),
+
     # ── Half life lore room ──────────────────────────────────────────────────
     ("Crowbar", _has("Teleportation Rune")),
     ("Gordon Freeman Outfit", _has("Teleportation Rune")),

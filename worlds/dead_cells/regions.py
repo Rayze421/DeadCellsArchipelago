@@ -86,6 +86,7 @@ TRANSITIONS = {
     "Greenhouse": [
         {"to": "PrisonDepths", "require": ["Spider Rune", "Prison Depths"]},
         {"to": "Swamp",        "require": "Morass of the Banished"},
+        {"to": "PrisonRoof",   "require": None}
     ],
     "PrisonCourtyard": [
         {"to": "Ossuary", "require": ["Vine Rune", "Teleportation Rune", "Ossuary"]},
