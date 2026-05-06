@@ -81,7 +81,7 @@ TRANSITIONS = {
         {"to": "PrisonCourtyard", "require": None},
         {"to": "SewerShort", "require": "Vine Rune"},
         {"to": "Greenhouse", "require": ["Teleportation Rune", "Dilapidated Arboretum"]},
-        {"to": "PurpleGarden", "require": "Castle Outskirts"},
+        {"to": "PurpleGarden", "require": "Castle Outskirts"}
     ],
     "Greenhouse": [
         {"to": "PrisonDepths", "require": ["Spider Rune", "Prison Depths"]},
@@ -97,7 +97,6 @@ TRANSITIONS = {
         {"to": "PrisonCorrupt", "require": ["Spider Rune", "Corrupted Prison"]},
         {"to": "PrisonRoof", "require": None},
         {"to": "SewerDepths", "require": ["Ram Rune", "Ancient Sewers"]},
-        {"to": "DookuCastle", "require": ["DookuBeast", "Dracula's Castle"]},
     ],
     "PrisonDepths": [
         {"to": "Ossuary", "require": "Ossuary"},
@@ -106,40 +105,37 @@ TRANSITIONS = {
     "PrisonCorrupt": [
         {"to": "SewerDepths", "require": "Ancient Sewers"},
         {"to": "PrisonRoof", "require": "Progressive Stem Cell"},
-        {"to": "DookuCastle", "require": ["DookuBeast", "Dracula's Castle"]},
     ],
     "PrisonRoof": [
         {"to": "Bridge", "require": None},
         {"to": "BeholderPit", "require": ["Progressive Stem Cell:3", "Insufferable Crypt"]},
     ],
     "Ossuary": [
-        {"to": "Bridge", "require": None},
-        {"to": "DeathArena", "require": ["DookuBeast", "Defiled Necropolis"]},
+        {"to": "Bridge", "require": None}
     ],
     "SewerDepths": [
-        {"to": "BeholderPit", "require": "Insufferable Crypt"},
+        {"to": "BeholderPit", "require": "Insufferable Crypt"}
     ],
     "Bridge": [
         {"to": "Tumulus", "require": "Fractured Shrines"},
         {"to": "StiltVillage", "require": "Stilt Village"},
-        {"to": "AncientTemple", "require": ["Spider Rune", "Slumbering Sanctuary"]},
+        {"to": "AncientTemple", "require": ["Spider Rune", "Slumbering Sanctuary"]}
     ],
     "BeholderPit": [
         {"to": "AncientTemple", "require": "Slumbering Sanctuary"},
-        {"to": "Cemetery", "require": ["Spider Rune", "Graveyard"]},
+        {"to": "Cemetery", "require": ["Spider Rune", "Graveyard"]}
     ],
     "StiltVillage": [
         {"to": "ClockTower", "require": "Clock Tower"},
-        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]},
+        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]}
     ],
     "AncientTemple": [
-        {"to": "Cavern", "require": ["Giant", "Progressive Stem Cell:2", "Cavern"]},
         {"to": "ClockTower", "require": "Clock Tower"},
-        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]},
+        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]}
     ],
     "Cemetery": [
         {"to": "Cavern", "require": ["Homunculus Rune", "Cavern", "The Hand of the King"]},
-        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]},
+        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]}
     ],
     "ClockTower": [
         {"to": "TopClockTower", "require": "Clock Room"},
@@ -152,31 +148,28 @@ TRANSITIONS = {
         {"to": "Shipwreck", "require": ["Lighthouse Key", "Infested Shipwreck"]},
         {"to": "Distillery", "require": ["Derelict Distillery", "The Hand of the King"]},
         {"to": "Castle", "require": "High Peak Castle"},
-        {"to": "DookuCastleHard", "require": ["Death", "Dracula's Castle"]},
+        {"to": "DookuCastleHard", "require": ["Castle Outskirts", "Dracula's Castle", "Defiled Necropolis"]},
     ],
     "Cavern": [
-        {"to": "GardenerStage", "require": ["GardenerBoss", "Mausoleum"]},
         {"to": "Giant", "require": "Guardian's Haven"},
     ],
     "Giant": [
         {"to": "Shipwreck", "require": ["Lighthouse Key", "Infested Shipwreck"]},
         {"to": "Distillery", "require": "Derelict Distillery"},
         {"to": "Castle", "require": "High Peak Castle"},
-        {"to": "DookuCastleHard", "require": ["DookuBeast", "Dracula's Castle"]},
         {"to": "Throne", "require": "Throne Room"},
     ],
     "Castle": [
-        {"to": "DookuArena", "require": ["DookuBeast", "Dracula's Castle"]},
         {"to": "Throne", "require": "Throne Room"},
     ],
     "Distillery": [
-        {"to": "Lighthouse", "require": ["AmazonSurvival", "AmazonTactic", "AmazonBrutal", "Lighthouse"]},
         {"to": "Throne", "require": "Throne Room"},
     ],
     "Throne": [
         {"to": "Astrolab", "require": ["Progressive Stem Cell:5", "Astrolab"]},
         {"to": "Bank", "require": None},
         {"to": "End", "require": "Homunculus Rune"},
+        {"to": "Distillery", "require": "Derelict Distillery"},
     ],
     "Astrolab": [
         {"to": "Observatory", "require": "Observatory"},
@@ -195,7 +188,7 @@ TRANSITIONS = {
     "Tumulus": [
         {"to": "ClockTower", "require": "Clock Tower"},
         {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]},
-        {"to": "Cliff", "require": [["Cultist Outfit", "Undying Shores"], ["Undying Shores", "Region:Tumulus", "Homunculus Rune"]]},
+        {"to": "Cliff", "require": [["Cultist Outfit", "Undying Shores"], ["Undying Shores", "Homunculus Rune"]]},
     ],
     "Cliff": [
         {"to": "GardenerStage", "require": "Mausoleum"},
@@ -204,7 +197,6 @@ TRANSITIONS = {
         {"to": "Shipwreck", "require": ["Lighthouse Key", "Infested Shipwreck"]},
         {"to": "Distillery", "require": "Derelict Distillery"},
         {"to": "Castle", "require": "High Peak Castle"},
-        {"to": "DookuCastleHard", "require": ["DookuBeast", "Dracula's Castle"]},
     ],
     "Shipwreck": [
         {"to": "Lighthouse", "require": "Lighthouse"},
@@ -216,9 +208,8 @@ TRANSITIONS = {
         {"to": "End", "require": None},
     ],
     "PurpleGarden": [
-        {"to": "PrisonCorrupt", "require": ["Spider Rune", "DookuBeast", "Corrupted Prison"]},
         {"to": "DookuCastle", "require": "Dracula's Castle"},
-        {"to": "Ossuary", "require": ["Teleportation Rune", "DookuBeast", "Ossuary"]},
+        {"to": "Ossuary", "require": ["Teleportation Rune", "Ossuary", "DookuBeast"]}
     ],
     "DookuCastle": [
         {"to": "Bridge", "require": "DookuBeast"},
@@ -238,7 +229,6 @@ TRANSITIONS = {
     "Bank": [],
     "Challenge": [],
 }
-
 
 def _has_boss_kill(state, player: int, boss: str) -> bool:
     return state.can_reach_location(BOSS_LOCATION[boss], player)
