@@ -134,7 +134,7 @@ TRANSITIONS = {
         {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]}
     ],
     "Cemetery": [
-        {"to": "Cavern", "require": ["Homunculus Rune", "Cavern", "The Hand of the King"]},
+        {"to": "Cavern", "require": ["Homunculus Rune", "Cavern", "The Hand of the King"]}, ###Flag for future proper Event###
         {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]}
     ],
     "ClockTower": [
@@ -142,20 +142,18 @@ TRANSITIONS = {
     ],
     "Crypt": [
         {"to": "TopClockTower", "require": "Clock Room"},
-        {"to": "Giant", "require": ["Giant", "Progressive Stem Cell:2", "Guardian's Haven"]},
     ],
     "TopClockTower": [
         {"to": "Shipwreck", "require": ["Lighthouse Key", "Infested Shipwreck"]},
         {"to": "Distillery", "require": ["Derelict Distillery", "The Hand of the King"]},
         {"to": "Castle", "require": "High Peak Castle"},
-        {"to": "DookuCastleHard", "require": ["Castle Outskirts", "Dracula's Castle", "Defiled Necropolis"]},
+        {"to": "DookuCastleHard", "require": ["Death"]}, ###Flag for future proper Event### #Technically cannot be done if routed exclusively from Castlevania biomes?
     ],
     "Cavern": [
         {"to": "Giant", "require": "Guardian's Haven"},
     ],
     "Giant": [
         {"to": "Shipwreck", "require": ["Lighthouse Key", "Infested Shipwreck"]},
-        {"to": "Distillery", "require": "Derelict Distillery"},
         {"to": "Castle", "require": "High Peak Castle"},
         {"to": "Throne", "require": "Throne Room"},
     ],
@@ -195,7 +193,6 @@ TRANSITIONS = {
     ],
     "GardenerStage": [
         {"to": "Shipwreck", "require": ["Lighthouse Key", "Infested Shipwreck"]},
-        {"to": "Distillery", "require": "Derelict Distillery"},
         {"to": "Castle", "require": "High Peak Castle"},
     ],
     "Shipwreck": [
@@ -209,10 +206,10 @@ TRANSITIONS = {
     ],
     "PurpleGarden": [
         {"to": "DookuCastle", "require": "Dracula's Castle"},
-        {"to": "Ossuary", "require": ["Teleportation Rune", "Ossuary", "DookuBeast"]}
+        {"to": "Ossuary", "require": ["Teleportation Rune", "Ossuary", "DookuBeast"]} ###Flag for future proper Event### 
     ],
     "DookuCastle": [
-        {"to": "Bridge", "require": "DookuBeast"},
+        {"to": "Bridge", "require": "DookuBeast"}, ###Flag for future proper Event###
         {"to": "DeathArena", "require": "Defiled Necropolis"},
     ],
     "DookuCastleHard": [

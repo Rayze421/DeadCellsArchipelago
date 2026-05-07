@@ -211,6 +211,7 @@ class DeadCellsWorld(World):
                 return False
 
         return True
+    
 
     # ── AP World interface ────────────────────────────────────────────────────
 
@@ -323,6 +324,18 @@ class DeadCellsWorld(World):
             and "Cultist Outfit" not in itempool
         ):
             itempool.append("Cultist Outfit")
+
+    # Redundancy: Remove Astrolab and Observatory keys from item fill if <5 BSC settings
+        if (
+            "Astrolab" in itempool
+            and self.options.boss_cells.value != 5
+        ):
+            itempool.remove("Astrolab")
+        if (
+            "Observatory" in itempool
+            and self.options.boss_cells.value != 5
+        ):
+            itempool.remove("Observatory")
 
     # Calculate remaining slots
         remaining_slots = total_locations - len(itempool)
