@@ -137,7 +137,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "P_Wishes",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
     },
-    "The Royal Gardener’s Outfit": {
+    "The Royal Gardener's Outfit": {
         "id": 0x0066, "region": "Checks", "type": "skin",
         "dlc": "TheBadSeed", "min_bc": 0, "item": "RoyalGardener",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': 'TheBadSeed', 'type': 'blueprint_floor'}],
@@ -147,7 +147,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "FreemanSkin",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
     },
-    "Knight’s Outfit": {
+    "Knight's Outfit": {
         "id": 0x0068, "region": "Checks", "type": "skin",
         "dlc": "", "min_bc": 0, "item": "SoulKnight",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
@@ -252,7 +252,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "HollowKnight",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'item_no_blueprint'}],
     },
-    "Pentinent’s Outfit": {
+    "Pentinent's Outfit": {
         "id": 0x007D, "region": "Checks", "type": "skin",
         "dlc": "", "min_bc": 0, "item": "Blasphemous",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'item_no_blueprint'}],
@@ -267,7 +267,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "HyperLightDrifter",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'item_no_blueprint'}],
     },
-    "Explorer’s Outfit": {
+    "Explorer's Outfit": {
         "id": 0x0080, "region": "Checks", "type": "skin",
         "dlc": "", "min_bc": 0, "item": "CurseofTheDeadGods",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'item_no_blueprint'}],
@@ -367,7 +367,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 1, "item": "Owl",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 1, 'max_bc': 1, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'KunaiMaster'}, {'biome': 'PrisonDepths', 'min_bc': 1, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'KunaiMaster'}, {'biome': 'Crypt', 'min_bc': 1, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'KunaiMaster'}, {'biome': 'Castle', 'min_bc': 1, 'max_bc': 3, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'KunaiMaster'}, {'biome': 'Cliff', 'min_bc': 1, 'max_bc': 5, 'dlc': 'FatalFalls', 'type': 'blueprint_enemy', 'mob': 'KunaiMaster'}, {'biome': 'DookuCastle', 'min_bc': 1, 'max_bc': 2, 'dlc': 'Purple', 'type': 'blueprint_enemy', 'mob': 'KunaiMaster'}, {'biome': 'DookuCastleHard', 'min_bc': 1, 'max_bc': 2, 'dlc': 'Purple', 'type': 'blueprint_enemy', 'mob': 'KunaiMaster'}],
     },
-    "Legendary Warrior’s Outfit": {
+    "Legendary Warrior's Outfit": {
         "id": 0x0094, "region": "Checks", "type": "skin",
         "dlc": "", "min_bc": 3, "item": "PrisonerSonGoku", "rarity": "Rare",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 3, 'max_bc': 1, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'KunaiMaster'}, {'biome': 'PrisonDepths', 'min_bc': 3, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'KunaiMaster'}, {'biome': 'Crypt', 'min_bc': 3, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'KunaiMaster'}, {'biome': 'Castle', 'min_bc': 3, 'max_bc': 3, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'KunaiMaster'}, {'biome': 'Cliff', 'min_bc': 3, 'max_bc': 5, 'dlc': 'FatalFalls', 'type': 'blueprint_enemy', 'mob': 'KunaiMaster'}, {'biome': 'DookuCastle', 'min_bc': 3, 'max_bc': 2, 'dlc': 'Purple', 'type': 'blueprint_enemy', 'mob': 'KunaiMaster'}, {'biome': 'DookuCastleHard', 'min_bc': 3, 'max_bc': 2, 'dlc': 'Purple', 'type': 'blueprint_enemy', 'mob': 'KunaiMaster'}],
@@ -662,7 +662,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "Katana",
         "sources": [{'biome': 'PrisonCorrupt', 'min_bc': 2, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Samurai'}, {'biome': 'StiltVillage', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Samurai'}, {'biome': 'Crypt', 'min_bc': 2, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Samurai'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Samurai'}],
     },
-    "Blade Master’s Outfit": {
+    "Blade Master's Outfit": {
         "id": 0x00CF, "region": "Checks", "type": "skin",
         "dlc": "", "min_bc": 1, "item": "PrisonerKillBill", "rarity": "Rare",
         "sources": [{'biome': 'PrisonCorrupt', 'min_bc': 2, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Samurai'}, {'biome': 'StiltVillage', 'min_bc': 1, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Samurai'}, {'biome': 'Crypt', 'min_bc': 2, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Samurai'}, {'biome': 'Bank', 'min_bc': 1, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Samurai'}],
@@ -852,7 +852,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "P_DeathBomb",
         "sources": [{'biome': 'Cemetery', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
     },
-    "Little Bone’s Outfit": {
+    "Little Bone's Outfit": {
         "id": 0x00F5, "region": "Checks", "type": "skin",
         "dlc": "", "min_bc": 0, "item": "Skul",
         "sources": [{'biome': 'Cemetery', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
@@ -957,7 +957,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "RiseOfTheGiant", "min_bc": 4, "item": "PrisonerSanta",
         "sources": [{'biome': 'Cavern', 'min_bc': 4, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_floor'}],
     },
-    "The Boy’s Axe": {
+    "The Boy's Axe": {
         "id": 0x010A, "region": "Checks", "type": "blueprint_enemy",
         "dlc": "RiseOfTheGiant", "min_bc": 0, "item": "GodAxe",
         "sources": [{'biome': 'Cavern', 'min_bc': 0, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_enemy', 'mob': 'Earthquaker'}],
@@ -987,12 +987,12 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 4, "item": "PrisonerShaman", "rarity": "Rare",
         "sources": [{'biome': 'Cavern', 'min_bc': 4, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_enemy', 'mob': 'Arbiter'}, {'biome': 'Bank', 'min_bc': 4, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Arbiter'}],
     },
-    "Disappointed Giant’s Outfit": {
+    "Disappointed Giant's Outfit": {
         "id": 0x0110, "region": "Checks", "type": "skin",
         "dlc": "RiseOfTheGiant", "min_bc": 1, "item": "Giant1",
         "sources": [{'biome': 'Giant', 'min_bc': 1, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_enemy'}],
     },
-    "Cursed Giant’s Outfit": {
+    "Cursed Giant's Outfit": {
         "id": 0x0111, "region": "Checks", "type": "skin",
         "dlc": "RiseOfTheGiant", "min_bc": 2, "item": "Giant2",
         "sources": [{'biome': 'Giant', 'min_bc': 2, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_enemy'}],
@@ -1002,7 +1002,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "RiseOfTheGiant", "min_bc": 3, "item": "Giant3",
         "sources": [{'biome': 'Giant', 'min_bc': 3, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_enemy'}],
     },
-    "Frustrated Giant’s Outfit": {
+    "Frustrated Giant's Outfit": {
         "id": 0x0113, "region": "Checks", "type": "skin",
         "dlc": "RiseOfTheGiant", "min_bc": 4, "item": "Giant4",
         "sources": [{'biome': 'Giant', 'min_bc': 4, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_enemy'}],
@@ -1097,7 +1097,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "RiseOfTheGiant", "min_bc": 5, "item": "KingWhite",
         "sources": [{'biome': 'Observatory', 'min_bc': 5, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'item_no_blueprint'}],
     },
-    "Gardener’s Outfit": {
+    "Gardener's Outfit": {
         "id": 0x0126, "region": "Checks", "type": "skin",
         "dlc": "TheBadSeed", "min_bc": 0, "item": "PrisonerGardener",
         "sources": [{'biome': 'Greenhouse', 'min_bc': 0, 'max_bc': 5, 'dlc': 'TheBadSeed', 'type': 'blueprint_floor'}],
@@ -1117,7 +1117,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "TheBadSeed", "min_bc": 0, "item": "SpawnFriendlyHardy",
         "sources": [{'biome': 'Greenhouse', 'min_bc': 0, 'max_bc': 5, 'dlc': 'TheBadSeed', 'type': 'blueprint_enemy', 'mob': 'ThrowableMushroom'}],
     },
-    "Mushroom Boi’s Outfit": {
+    "Mushroom Boi's Outfit": {
         "id": 0x012A, "region": "Checks", "type": "skin",
         "dlc": "TheBadSeed", "min_bc": 1, "item": "PrisonerFriendlyHardy",
         "sources": [{'biome': 'Greenhouse', 'min_bc': 1, 'max_bc': 5, 'dlc': 'TheBadSeed', 'type': 'blueprint_enemy', 'mob': 'ThrowableMushroom'}],
@@ -1127,7 +1127,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "TheBadSeed", "min_bc": 0, "item": "SmokeBomb", "rarity": "Rare",
         "sources": [{'biome': 'Swamp', 'min_bc': 0, 'max_bc': 5, 'dlc': 'TheBadSeed', 'type': 'blueprint_enemy', 'mob': 'Fugitive'}],
     },
-    "Banished’s Outfit": {
+    "Banished's Outfit": {
         "id": 0x012C, "region": "Checks", "type": "skin",
         "dlc": "TheBadSeed", "min_bc": 2, "item": "PrisonerFugitive",
         "sources": [{'biome': 'Swamp', 'min_bc': 2, 'max_bc': 5, 'dlc': 'TheBadSeed', 'type': 'blueprint_enemy', 'mob': 'Fugitive'}],
@@ -1137,7 +1137,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "TheBadSeed", "min_bc": 0, "item": "Blowgun",
         "sources": [{'biome': 'Swamp', 'min_bc': 0, 'max_bc': 5, 'dlc': 'TheBadSeed', 'type': 'blueprint_enemy', 'mob': 'Blowgunner'}],
     },
-    "Blowgunner’s Outfit": {
+    "Blowgunner's Outfit": {
         "id": 0x012E, "region": "Checks", "type": "skin",
         "dlc": "TheBadSeed", "min_bc": 0, "item": "PrisonerBlowgunner",
         "sources": [{'biome': 'Swamp', 'min_bc': 0, 'max_bc': 5, 'dlc': 'TheBadSeed', 'type': 'blueprint_enemy', 'mob': 'Blowgunner'}],
@@ -1312,7 +1312,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "TheQueenAndTheSea", "min_bc": 4, "item": "Queen4",
         "sources": [{'biome': 'QueenArena', 'min_bc': 4, 'max_bc': 5, 'dlc': 'TheQueenAndTheSea', 'type': 'blueprint_enemy'}],
     },
-    "Gentleman’s Outfit": {
+    "Gentleman's Outfit": {
         "id": 0x0151, "region": "Checks", "type": "skin",
         "dlc": "", "min_bc": 0, "item": "Banker",
         "sources": [{'biome': 'Bank', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'blueprint_floor'}],
@@ -1787,7 +1787,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "TheQueenAndTheSea", "min_bc": 0, "item": "QueenFlame",
         "sources": [{'biome': 'QueenArena', 'min_bc': 0, 'max_bc': 5, 'dlc': 'TheQueenAndTheSea', 'type': 'item_no_blueprint'}],
     },
-    "Fallen Collector’s Outfit": {
+    "Fallen Collector's Outfit": {
         "id": 0x0214, "region": "Checks", "type": "skin",
         "dlc": "RiseOfTheGiant", "min_bc": 5, "item": "CollectorDefault",
         "sources": [{'biome': 'Observatory', 'min_bc': 5, 'max_bc': 5, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_enemy'}],
