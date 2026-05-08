@@ -72,6 +72,8 @@ REGION_DLC = {
 }
 
 
+
+
 TRANSITIONS = {
     "Menu": [
         {"to": "PrisonStart", "require": None},
@@ -134,8 +136,8 @@ TRANSITIONS = {
         {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]}
     ],
     "Cemetery": [
-        {"to": "Cavern", "require": ["Homunculus Rune", "Cavern", "The Hand of the King"]}, ###Flag for future proper Event###
-        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]}
+        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]},
+        {"to": "Cavern", "require": ["Homunculus Rune", "Graveyard", "Hand of the King"]}, ###Flag for future proper Event###
     ],
     "ClockTower": [
         {"to": "TopClockTower", "require": "Clock Room"},
@@ -147,7 +149,7 @@ TRANSITIONS = {
         {"to": "Shipwreck", "require": ["Lighthouse Key", "Infested Shipwreck"]},
         {"to": "Distillery", "require": ["Derelict Distillery", "The Hand of the King"]},
         {"to": "Castle", "require": "High Peak Castle"},
-        {"to": "DookuCastleHard", "require": ["Death"]}, ###Flag for future proper Event### #Technically cannot be done if routed exclusively from Castlevania biomes?
+        {"to": "DookuCastleHard", "require": ["Defiled Necropolis", "Dracula's Castle", "Castle's Outskirts"]}, ###Flag for future proper Event### #Technically cannot be done if routed exclusively from Castlevania biomes?
     ],
     "Cavern": [
         {"to": "Giant", "require": "Guardian's Haven"},
@@ -168,6 +170,7 @@ TRANSITIONS = {
         {"to": "Bank", "require": None},
         {"to": "End", "require": "Homunculus Rune"},
         {"to": "Distillery", "require": "Derelict Distillery"},
+
     ],
     "Astrolab": [
         {"to": "Observatory", "require": "Observatory"},
