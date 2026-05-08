@@ -536,7 +536,7 @@ ITEM_TABLE: Dict[str, tuple] = {
 	"Richter Outfit":                    (0x1283, USFL, DLC_PURPLE),
 	"Sypha Outfit":                      (0x1284, USFL, DLC_PURPLE),
 	"Trevor Outfit":                     (0x1285, USFL, DLC_PURPLE),
-	"Maria Renard Outfit":                      (0x1286, USFL, DLC_PURPLE),
+	"Maria Renard Outfit":               (0x1286, USFL, DLC_PURPLE),
 	"Hector Outfit":                     (0x1287, USFL, DLC_PURPLE),
 	"Haunted Armor Outfit":              (0x1288, USFL, DLC_PURPLE),
 	"Death Outfit":                      (0x1289, USFL, DLC_PURPLE),
@@ -639,6 +639,22 @@ ITEM_TABLE: Dict[str, tuple] = {
     "Defiled Necropolis":   (0x161D, PROG, DLC_PURPLE),
     "Master's Keep":        (0x161E, PROG, DLC_PURPLE),
 
+    # Boss Visit Set Items
+    "Visit Fisherman":          (None, PROG, DLC_QUEEN_AND_SEA),
+   
+    "Concierge Defeat":         (None, PROG, DLC_BASE),
+    "Conjunctivius Defeat":     (None, PROG, DLC_BASE),
+    "Mama Tick Defeat":         (None, PROG, DLC_BAD_SEED),
+    "Death Defeat":             (None, PROG, DLC_PURPLE),
+   
+    "Time Keeper Defeat":       (None, PROG, DLC_BASE),
+    "Scarecrow Defeat":         (None, PROG, DLC_FATAL_FALLS),
+    "Giant Defeat":             (None, PROG, DLC_RISE_OF_GIANT),
+
+    "Hand of the King Defeat":  (None, PROG, DLC_BASE),
+    "Queen Defeat":             (None, PROG, DLC_BASE),
+    "Dracula Defeat":           (None, PROG, DLC_PURPLE),
+    "Collector Defeat":         (None, PROG, DLC_RISE_OF_GIANT)
 }
 
 

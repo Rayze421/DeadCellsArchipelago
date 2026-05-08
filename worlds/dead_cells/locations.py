@@ -99,7 +99,7 @@ LOCATION_TABLE: Dict[str, dict] = {
     "Challenge Exit": {"id": 0x004D, "region": "Challenge", "type": "biome_exit", "dlc": "", "item": None, "sources": [{'biome': 'Shipwreck', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'biome_exit'}],},
     "Vine Rune": {"id": 0x004E, "region": "PrisonCourtyard", "type": "rune", "dlc": "", "item": "LadderKey", "sources": [{'biome': 'PrisonCourtyard', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'rune'}],},
     "Teleportation Rune": {"id": 0x004F, "region": "SewerShort", "type": "rune", "dlc": "", "item": "TeleportKey", "sources": [{'biome': 'SewerShort', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'rune'}],},
-    "Customization Rune": {"id": 0x0050, "region": "PrisonRoof", "type": "rune", "dlc": "", "item": "CustomKey", "sources": [{'biome': 'Roof', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'rune'}],},
+    "Customization Rune": {"id": 0x0050, "region": "PrisonRoof", "type": "rune", "dlc": "", "item": "CustomKey", "sources": [{'biome': 'PrisonRoof', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'rune'}],},
     "Ram Rune": {"id": 0x0051, "region": "Ossuary", "type": "rune", "dlc": "", "item": "BreakableGroundKey", "sources": [{'biome': 'Ossuary', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'rune'}],},
     "Spider Rune": {"id": 0x0052, "region": "AncientTemple", "type": "rune", "dlc": "", "item": "WallJumpKey", "sources": [{'biome': 'AncientTemple', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'rune'}],},
     "Explorer's Rune": {"id": 0x0053, "region": "Crypt", "type": "rune", "dlc": "", "item": "ExploKey", "sources": [{'biome': 'Crypt', 'min_bc': 0, 'max_bc': 5, 'dlc': '', 'type': 'rune'}],},
@@ -2131,9 +2131,10 @@ LOCATION_TABLE: Dict[str, dict] = {
     "Scarecrow Defeat": {"id": None, "region": "GardenerStage", "type": "event", "dlc": "FatalFalls", "item": "Scarecrow Defeat"},
     "Giant Defeat": {"id": None, "region": "Giant", "type": "event", "dlc": "RiseOfTheGiant", "item": "Giant Defeat"},
     
-    "Hand Defeat": {"id": None, "region": "Throne", "type": "event", "dlc": "", "item": "Hand Defeat"},
+    "Hand of the King Defeat": {"id": None, "region": "Throne", "type": "event", "dlc": "", "item": "Hand of the King Defeat"},
     "Queen Defeat": {"id": None, "region": "QueenArena", "type": "event", "dlc": "TheQueenAndTheSea", "item": "Queen Defeat"},
     "Dracula Defeat": {"id": None, "region": "DookuArena", "type": "event", "dlc": "Purple", "item": "Dracula Defeat"},
+    "Collector Defeat": {"id": None, "region": "Observatory", "type": "event", "dlc": "RiseOfTheGiant", "item": "Collector Defeat"},
 
 }
 

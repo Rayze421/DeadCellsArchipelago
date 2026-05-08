@@ -19,7 +19,7 @@ from .items import (
 )
 from .locations import (
     LOCATION_TABLE, BASE_ID as LOC_BASE_ID,
-    get_valid_locations, location_id,
+    get_valid_locations, location_id
 )
 from .regions import create_regions, REGION_DLC
 from .rules import set_rules as apply_location_rules
