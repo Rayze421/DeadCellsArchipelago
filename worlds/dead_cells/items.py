@@ -640,21 +640,18 @@ ITEM_TABLE: Dict[str, tuple] = {
     "Master's Keep":        (0x161E, PROG, DLC_PURPLE),
 
     # Boss Visit Set Items
-    "Visit Fisherman":          (None, PROG, DLC_QUEEN_AND_SEA),
-   
-    "Concierge Defeat":         (None, PROG, DLC_BASE),
-    "Conjunctivius Defeat":     (None, PROG, DLC_BASE),
-    "Mama Tick Defeat":         (None, PROG, DLC_BAD_SEED),
-    "Death Defeat":             (None, PROG, DLC_PURPLE),
-   
-    "Time Keeper Defeat":       (None, PROG, DLC_BASE),
-    "Scarecrow Defeat":         (None, PROG, DLC_FATAL_FALLS),
-    "Giant Defeat":             (None, PROG, DLC_RISE_OF_GIANT),
-
-    "Hand of the King Defeat":  (None, PROG, DLC_BASE),
-    "Queen Defeat":             (None, PROG, DLC_BASE),
-    "Dracula Defeat":           (None, PROG, DLC_PURPLE),
-    "Collector Defeat":         (None, PROG, DLC_RISE_OF_GIANT)
+    "Visit Fisherman":          (0x1700, PROG, DLC_QUEEN_AND_SEA),
+    "Concierge Defeat":         (0x1701, PROG, DLC_BASE),
+    "Conjunctivius Defeat":     (0x1702, PROG, DLC_BASE),
+    "Mama Tick Defeat":         (0x1703, PROG, DLC_BAD_SEED),
+    "Death Defeat":             (0x1704, PROG, DLC_PURPLE),   
+    "Time Keeper Defeat":       (0x1705, PROG, DLC_BASE),
+    "Scarecrow Defeat":         (0x1706, PROG, DLC_FATAL_FALLS),
+    "Giant Defeat":             (0x1707, PROG, DLC_RISE_OF_GIANT),
+    "Hand of the King Defeat":  (0x1708, PROG, DLC_BASE),
+    "Queen Defeat":             (0x1709, PROG, DLC_BASE),
+    "Dracula Defeat":           (0x170A, PROG, DLC_PURPLE),
+    "Collector Defeat":         (0x170B, PROG, DLC_RISE_OF_GIANT)
 }
 
 
