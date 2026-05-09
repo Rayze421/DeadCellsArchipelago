@@ -667,6 +667,17 @@ LOCATION_RULES = [
 
     ("Guillain Head", _boss_rush_trials_1_2()),
 
+    ("Concierge Flame", _boss_rush_trials_1_2()),
+    ("Conjunctivius Tentacles", _boss_rush_trials_1_2()),
+    ("Mama Tick Eye", _boss_rush_trials_1_2()),
+    ("Time Keeper Mask", _boss_rush_trials_1_2()),
+    ("Giant Flame", _boss_rush_trials_1_2()),
+    ("Scarecrow Hat", _boss_rush_trials_1_2()),
+    ("Hand of the King Flame", _boss_rush_trials_1_2()),
+    ("Servant Mask", _boss_rush_trials_1_2()),
+    ("Queen Flame", _boss_rush_trials_1_2()),
+    ("Collector Hood", _boss_rush_trials_1_2()),
+
     ("Spatial Anomaly",
      lambda world: lambda state:
         _head_count(35)(world)(state) 
