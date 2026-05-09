@@ -317,7 +317,7 @@ def _source_meets_rarity(state, player, source):
     """
     return (
         source.get("rarity") not in ("Rare", "Legendary")
-        or state.has("Specialist's Showroom", player)
+        or state.has("The Specialist's Showroom", player)
     )
 
 def create_regions(world: "DeadCellsWorld") -> None:
