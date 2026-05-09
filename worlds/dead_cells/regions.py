@@ -137,7 +137,7 @@ TRANSITIONS = {
     ],
     "Cemetery": [
         {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]},
-        {"to": "Cavern", "require": ["Homunculus Rune", "Graveyard", "Hand of the King"]}, ###Flag for future proper Event###
+        {"to": "Cavern", "require": ["Homunculus Rune", "Cavern", "Hand of the King Defeat"]}
     ],
     "ClockTower": [
         {"to": "TopClockTower", "require": "Clock Room"},
@@ -149,7 +149,7 @@ TRANSITIONS = {
         {"to": "Shipwreck", "require": ["Lighthouse Key", "Infested Shipwreck"]},
         {"to": "Distillery", "require": ["Derelict Distillery", "The Hand of the King"]},
         {"to": "Castle", "require": "High Peak Castle"},
-        {"to": "DookuCastleHard", "require": ["Defiled Necropolis", "Dracula's Castle", "Castle's Outskirts"]}, ###Flag for future proper Event### #Technically cannot be done if routed exclusively from Castlevania biomes?
+        {"to": "DookuCastleHard", "require": [["Death Defeat", "Vine Rune"], ["Death Defeat", "Teleportation Rune", "Dilapidated Arboretum"]]}, ###Flag for future proper Event### #Technically cannot be done if routed exclusively from Castlevania biomes?
     ],
     "Cavern": [
         {"to": "Giant", "require": "Guardian's Haven"},
@@ -206,13 +206,14 @@ TRANSITIONS = {
     ],
     "QueenArena": [
         {"to": "End", "require": None},
+        {"to": "Bank", "require": None},
     ],
     "PurpleGarden": [
         {"to": "DookuCastle", "require": "Dracula's Castle"},
-        {"to": "Ossuary", "require": ["Teleportation Rune", "Ossuary", "DookuBeast"]} ###Flag for future proper Event### 
+        {"to": "Ossuary", "require": ["Teleportation Rune", "Ossuary", "Dracula Defeat"]}
     ],
     "DookuCastle": [
-        {"to": "Bridge", "require": "DookuBeast"}, ###Flag for future proper Event###
+        {"to": "Bridge", "require": "Dracula Defeat"},
         {"to": "DeathArena", "require": "Defiled Necropolis"},
     ],
     "DookuCastleHard": [
