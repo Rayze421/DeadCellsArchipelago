@@ -137,7 +137,7 @@ TRANSITIONS = {
     ],
     "Cemetery": [
         {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]},
-        {"to": "Cavern", "require": ["Homunculus Rune", "Cavern", "Hand of the King Defeat"]}
+        {"to": "Cavern", "require": ["Homunculus Rune", "Cavern", "Hand of the King Defeat"]} #So damn close to just mapping every individual Cavern/Giant location to it's own logic
     ],
     "ClockTower": [
         {"to": "TopClockTower", "require": "Clock Room"},
@@ -146,7 +146,7 @@ TRANSITIONS = {
         {"to": "TopClockTower", "require": "Clock Room"},
     ],
     "TopClockTower": [
-        {"to": "Shipwreck", "require": ["Lighthouse Key", "Infested Shipwreck"]},
+        {"to": "Shipwreck", "require": ["Crowned Key", "Infested Shipwreck"]},
         {"to": "Distillery", "require": ["Derelict Distillery", "The Hand of the King"]},
         {"to": "Castle", "require": "High Peak Castle"},
         {"to": "DookuCastleHard", "require": [["Death Defeat", "Vine Rune"], ["Death Defeat", "Teleportation Rune", "Dilapidated Arboretum"]]}, ###Flag for future proper Event### #Technically cannot be done if routed exclusively from Castlevania biomes?
@@ -155,7 +155,7 @@ TRANSITIONS = {
         {"to": "Giant", "require": "Guardian's Haven"},
     ],
     "Giant": [
-        {"to": "Shipwreck", "require": ["Lighthouse Key", "Infested Shipwreck"]},
+        {"to": "Shipwreck", "require": ["Crowned Key", "Infested Shipwreck"]},
         {"to": "Castle", "require": "High Peak Castle"},
         {"to": "Throne", "require": "Throne Room"},
     ],
@@ -170,7 +170,6 @@ TRANSITIONS = {
         {"to": "Bank", "require": None},
         {"to": "End", "require": "Homunculus Rune"},
         {"to": "Distillery", "require": "Derelict Distillery"},
-
     ],
     "Astrolab": [
         {"to": "Observatory", "require": "Observatory"},
@@ -195,7 +194,7 @@ TRANSITIONS = {
         {"to": "GardenerStage", "require": "Mausoleum"},
     ],
     "GardenerStage": [
-        {"to": "Shipwreck", "require": ["Lighthouse Key", "Infested Shipwreck"]},
+        {"to": "Shipwreck", "require": ["Crowned Key", "Infested Shipwreck"]},
         {"to": "Castle", "require": "High Peak Castle"},
     ],
     "Shipwreck": [
