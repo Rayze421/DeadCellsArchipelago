@@ -71,7 +71,7 @@ BASE_META = {
     "Random Melee Weapon",
     "Progressive Recycling",
     "Restock",
-    "Specialist's Showroom",
+    "The Specialist's Showroom",
     "Hunter's Mirror",
     "Backpack",
 }
