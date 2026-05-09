@@ -82,146 +82,146 @@ TRANSITIONS = {
     "PrisonStart": [
         {"to": "PrisonCourtyard", "require": None},
         {"to": "SewerShort", "require": "Vine Rune"},
-        {"to": "Greenhouse", "require": ["Teleportation Rune", "Dilapidated Arboretum"]},
-        {"to": "PurpleGarden", "require": "Castle Outskirts"}
+        {"to": "Greenhouse", "require": ["Teleportation Rune", "Dilapidated Arboretum Unlock"]},
+        {"to": "PurpleGarden", "require": "Castle Outskirts Unlock"}
     ],
     "Greenhouse": [
-        {"to": "PrisonDepths", "require": ["Spider Rune", "Prison Depths"]},
-        {"to": "Swamp",        "require": "Morass of the Banished"},
+        {"to": "PrisonDepths", "require": ["Spider Rune", "Prison Depths Unlock"]},
+        {"to": "Swamp",        "require": "Morass of the Banished Unlock"},
         {"to": "PrisonRoof",   "require": None}
     ],
     "PrisonCourtyard": [
-        {"to": "Ossuary", "require": ["Vine Rune", "Teleportation Rune", "Ossuary"]},
+        {"to": "Ossuary", "require": ["Vine Rune", "Teleportation Rune", "Ossuary Unlock"]},
         {"to": "PrisonRoof", "require": "Vine Rune"},
-        {"to": "PrisonDepths", "require": ["Spider Rune", "Vine Rune", "Prison Depths"]},
+        {"to": "PrisonDepths", "require": ["Spider Rune", "Vine Rune", "Prison Depths Unlock"]},
     ],
     "SewerShort": [
-        {"to": "PrisonCorrupt", "require": ["Spider Rune", "Corrupted Prison"]},
+        {"to": "PrisonCorrupt", "require": ["Spider Rune", "Corrupted Prison Unlock"]},
         {"to": "PrisonRoof", "require": None},
-        {"to": "SewerDepths", "require": ["Ram Rune", "Ancient Sewers"]},
+        {"to": "SewerDepths", "require": ["Ram Rune", "Ancient Sewers Unlock"]},
     ],
     "PrisonDepths": [
-        {"to": "Ossuary", "require": "Ossuary"},
-        {"to": "SewerDepths", "require": ["Progressive Stem Cell", "Ancient Sewers"]},
+        {"to": "Ossuary", "require": "Ossuary Unlock"},
+        {"to": "SewerDepths", "require": ["Progressive Stem Cell", "Ancient Sewers Unlock"]},
     ],
     "PrisonCorrupt": [
-        {"to": "SewerDepths", "require": "Ancient Sewers"},
+        {"to": "SewerDepths", "require": "Ancient Sewers Unlock"},
         {"to": "PrisonRoof", "require": "Progressive Stem Cell"},
     ],
     "PrisonRoof": [
         {"to": "Bridge", "require": None},
-        {"to": "BeholderPit", "require": ["Progressive Stem Cell:3", "Insufferable Crypt"]},
+        {"to": "BeholderPit", "require": ["Progressive Stem Cell:3", "Insufferable Crypt Unlock"]},
     ],
     "Ossuary": [
         {"to": "Bridge", "require": None}
     ],
     "SewerDepths": [
-        {"to": "BeholderPit", "require": "Insufferable Crypt"}
+        {"to": "BeholderPit", "require": "Insufferable Crypt Unlock"}
     ],
     "Bridge": [
-        {"to": "Tumulus", "require": "Fractured Shrines"},
-        {"to": "StiltVillage", "require": "Stilt Village"},
-        {"to": "AncientTemple", "require": ["Spider Rune", "Slumbering Sanctuary"]}
+        {"to": "Tumulus", "require": "Fractured Shrines Unlock"},
+        {"to": "StiltVillage", "require": "Stilt Village Unlock"},
+        {"to": "AncientTemple", "require": ["Spider Rune", "Slumbering Sanctuary Unlock"]}
     ],
     "BeholderPit": [
-        {"to": "AncientTemple", "require": "Slumbering Sanctuary"},
-        {"to": "Cemetery", "require": ["Spider Rune", "Graveyard"]}
+        {"to": "AncientTemple", "require": "Slumbering Sanctuary Unlock"},
+        {"to": "Cemetery", "require": ["Spider Rune", "Graveyard Unlock"]}
     ],
     "StiltVillage": [
-        {"to": "ClockTower", "require": "Clock Tower"},
-        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]}
+        {"to": "ClockTower", "require": "Clock Tower Unlock"},
+        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher Unlock"]}
     ],
     "AncientTemple": [
-        {"to": "ClockTower", "require": "Clock Tower"},
-        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]}
+        {"to": "ClockTower", "require": "Clock Tower Unlock"},
+        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher Unlock"]}
     ],
     "Cemetery": [
-        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]},
-        {"to": "Cavern", "require": ["Homunculus Rune", "Cavern", "Hand of the King Defeat"]} #So damn close to just mapping every individual Cavern/Giant location to it's own logic
+        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher Unlock"]},
+        {"to": "Cavern", "require": ["Homunculus Rune", "Cavern Unlock", "Hand of the King Defeat"]} #So damn close to just mapping every individual Cavern/Giant location to it's own logic
     ],
     "ClockTower": [
-        {"to": "TopClockTower", "require": "Clock Room"},
+        {"to": "TopClockTower", "require": "Clock Room Unlock"},
     ],
     "Crypt": [
-        {"to": "TopClockTower", "require": "Clock Room"},
+        {"to": "TopClockTower", "require": "Clock Room Unlock"},
     ],
     "TopClockTower": [
-        {"to": "Shipwreck", "require": ["Crowned Key", "Infested Shipwreck"]},
-        {"to": "Distillery", "require": ["Derelict Distillery", "The Hand of the King"]},
-        {"to": "Castle", "require": "High Peak Castle"},
-        {"to": "DookuCastleHard", "require": [["Death Defeat", "Vine Rune"], ["Death Defeat", "Teleportation Rune", "Dilapidated Arboretum"]]}, ###Flag for future proper Event### #Technically cannot be done if routed exclusively from Castlevania biomes?
+        {"to": "Shipwreck", "require": ["Crowned Key", "Infested Shipwreck Unlock"]},
+        {"to": "Distillery", "require": ["Derelict Distillery", "The Hand of the King Unlock"]},
+        {"to": "Castle", "require": "High Peak Castle Unlock"},
+        {"to": "DookuCastleHard", "require": [["Death Defeat", "Vine Rune"], ["Death Defeat", "Teleportation Rune", "Dilapidated Arboretum Unlock"]]}, ###Flag for future proper Event### #Technically cannot be done if routed exclusively from Castlevania biomes?
     ],
     "Cavern": [
-        {"to": "Giant", "require": "Guardian's Haven"},
+        {"to": "Giant", "require": "Guardian's Haven Unlock"},
     ],
     "Giant": [
-        {"to": "Shipwreck", "require": ["Crowned Key", "Infested Shipwreck"]},
-        {"to": "Castle", "require": "High Peak Castle"},
-        {"to": "Throne", "require": "Throne Room"},
+        {"to": "Shipwreck", "require": ["Crowned Key", "Infested Shipwreck Unlock"]},
+        {"to": "Castle", "require": "High Peak Castle Unlock"},
+        {"to": "Throne", "require": "Throne Room Unlock"},
     ],
     "Castle": [
-        {"to": "Throne", "require": "Throne Room"},
+        {"to": "Throne", "require": "Throne Room Unlock"},
     ],
     "Distillery": [
-        {"to": "Throne", "require": "Throne Room"},
+        {"to": "Throne", "require": "Throne Room Unlock"},
     ],
     "Throne": [
-        {"to": "Astrolab", "require": ["Progressive Stem Cell:5", "Astrolab"]},
+        {"to": "Astrolab", "require": ["Progressive Stem Cell:5", "Astrolab Unlock"]},
         {"to": "Bank", "require": None},
         {"to": "End", "require": "Homunculus Rune"},
-        {"to": "Distillery", "require": "Derelict Distillery"},
+        {"to": "Distillery", "require": "Derelict Distillery Unlock"},
     ],
     "Astrolab": [
-        {"to": "Observatory", "require": "Observatory"},
+        {"to": "Observatory", "require": "Observatory Unlock"},
     ],
     "Observatory": [
         {"to": "End", "require": None},
     ],
     "Swamp": [
-        {"to": "SwampHeart", "require": "Nest"},
+        {"to": "SwampHeart", "require": "Nest Unlock"},
     ],
     "SwampHeart": [
-        {"to": "StiltVillage", "require": "Stilt Village"},
-        {"to": "Cemetery", "require": ["Spider Rune", "Graveyard"]},
-        {"to": "Tumulus", "require": "Fractured Shrines"},
+        {"to": "StiltVillage", "require": "Stilt Village Unlock"},
+        {"to": "Cemetery", "require": ["Spider Rune", "Graveyard Unlock"]},
+        {"to": "Tumulus", "require": "Fractured Shrines Unlock"},
     ],
     "Tumulus": [
-        {"to": "ClockTower", "require": "Clock Tower"},
-        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher"]},
-        {"to": "Cliff", "require": [["Cultist Outfit", "Undying Shores"], ["Undying Shores", "Homunculus Rune"]]},
+        {"to": "ClockTower", "require": "Clock Tower Unlock"},
+        {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher Unlock"]},
+        {"to": "Cliff", "require": [["Cultist Outfit", "Undying Shores Unlock"], ["Undying Shores Unlock", "Homunculus Rune"]]},
     ],
     "Cliff": [
-        {"to": "GardenerStage", "require": "Mausoleum"},
+        {"to": "GardenerStage", "require": "Mausoleum Unlock"},
     ],
     "GardenerStage": [
-        {"to": "Shipwreck", "require": ["Crowned Key", "Infested Shipwreck"]},
-        {"to": "Castle", "require": "High Peak Castle"},
+        {"to": "Shipwreck", "require": ["Crowned Key", "Infested Shipwreck Unlock"]},
+        {"to": "Castle", "require": "High Peak Castle Unlock"},
     ],
     "Shipwreck": [
-        {"to": "Lighthouse", "require": "Lighthouse"},
+        {"to": "Lighthouse", "require": "Lighthouse Unlock"},
     ],
     "Lighthouse": [
-        {"to": "QueenArena", "require": "Crown"},
+        {"to": "QueenArena", "require": "Crown Unlock"},
     ],
     "QueenArena": [
         {"to": "End", "require": None},
         {"to": "Bank", "require": None},
     ],
     "PurpleGarden": [
-        {"to": "DookuCastle", "require": "Dracula's Castle"},
-        {"to": "Ossuary", "require": ["Teleportation Rune", "Ossuary", "Dracula Defeat"]}
+        {"to": "DookuCastle", "require": "Dracula's Castle Unlock"},
+        {"to": "Ossuary", "require": ["Teleportation Rune", "Ossuary Unlock", "Dracula Defeat"]}
     ],
     "DookuCastle": [
         {"to": "Bridge", "require": "Dracula Defeat"},
-        {"to": "DeathArena", "require": "Defiled Necropolis"},
+        {"to": "DeathArena", "require": "Defiled Necropolis Unlock"},
     ],
     "DookuCastleHard": [
-        {"to": "DookuArena", "require": "Master's Keep"},
+        {"to": "DookuArena", "require": "Master's Keep Unlock"},
     ],
     "DeathArena": [
-        {"to": "Cemetery", "require": ["Spider Rune", "Graveyard"]},
-        {"to": "StiltVillage", "require": "Stilt Village"},
-        {"to": "AncientTemple", "require": ["Spider Rune", "Slumbering Sanctuary"]},
+        {"to": "Cemetery", "require": ["Spider Rune", "Graveyard Unlock"]},
+        {"to": "StiltVillage", "require": "Stilt Village Unlock"},
+        {"to": "AncientTemple", "require": ["Spider Rune", "Slumbering Sanctuary Unlock"]},
     ],
     "DookuArena": [
         {"to": "End", "require": None},
