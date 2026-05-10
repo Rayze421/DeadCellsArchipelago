@@ -563,6 +563,27 @@ LOCATION_RULES = [
     ),
 
     ("Promenade of the Condemned Exit", _has("Vine Rune")),
+    ("Ancient Sewers Exit", _has("Insufferable Crypt Unlock")),
+    ("Morass of the Banished Exit", _has("Nest Unlock")),
+    ("Prison Depths Exit", _has_any_of("Ossuary Unlock", ["Ancient Sewers Unlock, Progressive Stem Cell"])),
+    ("Corrupted Prison Exit", _has_any_of("Ancient Sewers Unlock", "Progressive Stem Cell")),
+    ("Insufferable Crypt Exit", _has_any_of("Slumbering Sanctuary Unlock", ["Graveyard Unlock", "Spider Rune"])),
+    ("Stilt Village Exit", _has_any_of("Clock Tower Unlock", ["Forgotten Sepulcher Unlock", "Teleportation Rune"])),
+    ("Slumbering Sanctuary Exit", _has_any_of ("Clock Tower Unlock", ["Forgotten Sepulcher Unlock", "Teleportation Rune"])),
+    ("Graveyard Exit", _has_any_of(["Forgotten Sepulcher Unlock", "Teleportation Rune"], ["Cavern Unlock", "Hand of the King Defeat", "Homunculus Rune"])),
+    ("Clock Tower Exit", _has("Clock Room Unlock")),
+    ("Forgotten Sepulcher Exit", _has("Clock Room Unlock")),
+    ("Cavern Exit", _has("Guardian's Haven Unlock")),
+    ("High Peak Castle Exit", _has("Throne Room Unlock")),
+    ("Astrolab Exit", _has("Observatory Unlock")),
+    ("Fractured Shrines Exit", _has_any_of("Clock Tower Unlock", ["Forgotten Sepulcher Unlock", "Teleportation Rune"], ["Undying Shores Unlock", "Homunculus Rune"], ["Undying Shores Unlock", "Cultist Outfit"])),
+    ("Undying Shores Exit", _has("Mausoleum Unlock")),
+    ("Infested Shipwreck Exit", _has("Lighthouse Unlock")),
+    ("Lighthouse Exit", _has("Crown Unlock")),
+    ("Castle Outskirts Exit", _has("Dracula's Castle Unlock")),
+    ("Dracula's Castle Exit", _has("Defiled Necropolis Unlock")),
+    ("2nd Dracula's Castle Exit", _has("Master's Keep Unlock")),
+
 
     # ── Dilapidated Arboretum Entrance ───────────────────────────────────────
     ("The Royal Gardener's Outfit", _has("Teleportation Rune")),
