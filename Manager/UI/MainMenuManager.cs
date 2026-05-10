@@ -33,7 +33,7 @@ namespace DeadCellsArchipelago {
                 double XY = 0;
                 dc.h2d.Tile bgTileApMenu = Assets.Class.ui.getTile("walterWhite".AsHaxeString(), new Ref<int>(ref frame), new Ref<double>(ref XY), new Ref<double>(ref XY), null);
                 dc.h2d.Tile frameTileApMenu = Assets.Class.ui.getTile("boxLegendary".AsHaxeString(), new Ref<int>(ref frame), new Ref<double>(ref XY), new Ref<double>(ref XY), null);
-                var logoTile = LoadTileFromPng(GetResPath("logo.png"));
+                dc.h2d.Tile logoTile = LoadTileFromPng(GetResPath("logo.png"));
 
 
                 var bgApMenu = new dc.h2d.Bitmap(bgTileApMenu, apMenuContainer)
@@ -331,14 +331,6 @@ namespace DeadCellsArchipelago {
         {
             var json = JsonConvert.SerializeObject(confData, Formatting.Indented);
             File.WriteAllText(GetConfFilePath(), json);
-        }
-
-        public static dc.h3d.Vector ColorVectorRGBA(double r, double g, double b, double A)
-        {
-            double R = r /255;
-            double G = g /255;
-            double B = b /255;
-            return new dc.h3d.Vector(new Ref<double>(ref R), new Ref<double>(ref G), new Ref<double>(ref B), new Ref<double>(ref A));
         }
 
         public static bool OnSetVisible(Hook_LeaderboardPanel.orig_set_visible orig, LeaderboardPanel self, bool v)

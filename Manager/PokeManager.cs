@@ -7,7 +7,7 @@ using dc.ui.hud;
 using HaxeProxy.Runtime;
 using ModCore.Utilities;
 using static DeadCellsArchipelago.ItemManager;
-using static DeadCellsArchipelago.MainMenuManager;
+using static DeadCellsArchipelago.ImageManager;
 
 namespace DeadCellsArchipelago {
     public static class PokeManager

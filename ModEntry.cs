@@ -181,6 +181,8 @@ namespace DeadCellsArchipelago{
             //DefaultPause
             //dc.h2d.Layers
             Hook_DefaultPause.update += OnUpdateDefaultPause;
+            Hook_Inventory.swapSkills += OnSwapSkillsApMenu;
+            Hook_Inventory.swapWeapons += OnSwapWeaponsApMenu;
             Log.Information("=== Archipelago Mod loaded ! ===");
         }
 

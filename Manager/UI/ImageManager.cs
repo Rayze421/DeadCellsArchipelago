@@ -50,5 +50,13 @@ namespace DeadCellsArchipelago {
         {
             return Path.Combine(AppContext.BaseDirectory, "..", "..", "mods", "DeadCellsArchipelago", "res", name);;
         }
+
+        public static dc.h3d.Vector ColorVectorRGBA(double r, double g, double b, double A)
+        {
+            double R = r /255;
+            double G = g /255;
+            double B = b /255;
+            return new dc.h3d.Vector(new Ref<double>(ref R), new Ref<double>(ref G), new Ref<double>(ref B), new Ref<double>(ref A));
+        }
     }
 }

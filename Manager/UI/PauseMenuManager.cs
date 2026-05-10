@@ -1,27 +1,78 @@
+using dc;
 using dc.h2d;
 using dc.h2d.col;
+using dc.tool;
 using dc.ui;
+using dc.ui.hud;
+using dc.ui.icon;
 using dc.ui.pause;
 using HaxeProxy.Runtime;
 using ModCore.Utilities;
 using Serilog;
 
 using static DeadCellsArchipelago.ImageManager;
+using static DeadCellsArchipelago.ItemManager;
 
 namespace DeadCellsArchipelago {
     public static class PauseMenuManager
     {
+        public static DefaultPause? defaultPause;
         public static bool showClassicMenu { get; set; } = true;
         public static Bitmap? logoBitmap = null;
         public static bool changedMethodCall = false;
         public static dc.ui.Text? apMenuButton = null;
+        public static SkillShopSlot buttonWeapon1 = new SkillShopSlot();
+        public static SkillShopSlot buttonWeapon2 = new SkillShopSlot();
+        public static SkillShopSlot buttonSkill1 = new SkillShopSlot();
+        public static SkillShopSlot buttonSkill2 = new SkillShopSlot();
+        public static Bitmap? cellBitmap = null;
+        public static dc.ui.Text? cellsNumber = null;
+        public static int shopPrice = 400;
+        
 
         public static void OnUpdateDefaultPause(Hook_DefaultPause.orig_update orig, DefaultPause self)
         {
+            defaultPause = self;
             orig(self);
 
-            ActualiseMenu(self);
+            ActualiseVanillaMenu(self);
+            AddMenuButton(self);
 
+            AddCellsCount(self);
+            AddIncolorMenu(self);
+        }
+
+        public static void ActualiseVanillaMenu(DefaultPause self)
+        {
+            self.title.visible = showClassicMenu;
+
+            self.weaLeft.visible = showClassicMenu;
+            self.arrowTopWea.visible = showClassicMenu;
+            self.ciSwapWea.visible = showClassicMenu;
+            self.arrowBotWea.visible = showClassicMenu;
+            self.weaRight.visible = showClassicMenu;
+
+            self.skillLeft.visible = showClassicMenu;
+            self.arrowTopSki.visible = showClassicMenu;
+            self.ciSwapSki.visible = showClassicMenu;
+            self.arrowBotSki.visible = showClassicMenu;
+            self.skillRight.visible = showClassicMenu;
+
+            self.amulet.visible = showClassicMenu;
+            self.backpackBox?.visible = showClassicMenu;
+            self.backpackFlow?.visible = showClassicMenu;
+            self.fbPerks.visible = showClassicMenu;
+            self.flowPerks.visible = showClassicMenu;
+            
+            self.botMenu.visible = showClassicMenu;
+            self.bg.botGradient.visible = showClassicMenu;
+            self.selection.visible = showClassicMenu;
+
+            self.locked = !showClassicMenu;
+        }
+
+        private static void AddMenuButton(DefaultPause self)
+        {
             if (!changedMethodCall)
             {
                 changedMethodCall = true;
@@ -29,9 +80,7 @@ namespace DeadCellsArchipelago {
                 self.uponClosing = () =>
                 {
                     previousAction.Invoke();
-                    logoBitmap = null;
-                    changedMethodCall = false;
-                    apMenuButton = null;
+                    ResetUI();
                 };
             }
 
@@ -85,33 +134,109 @@ namespace DeadCellsArchipelago {
             }
         }
 
-        public static void ActualiseMenu(DefaultPause self)
+        private static void AddCellsCount(DefaultPause self)
         {
-            self.title.visible = showClassicMenu;
+            if (HERO != null)
+            {
+                if (cellBitmap == null)
+                {
+                    int frame = 0;
+                    double XY = 0;
+                    var logoTile = Assets.Class.gameElements.getTile("cell".AsHaxeString(), new Ref<int>(ref frame), new Ref<double>(ref XY), new Ref<double>(ref XY), null);
 
-            self.weaLeft.visible = showClassicMenu;
-            self.arrowTopWea.visible = showClassicMenu;
-            self.ciSwapWea.visible = showClassicMenu;
-            self.arrowBotWea.visible = showClassicMenu;
-            self.weaRight.visible = showClassicMenu;
+                    cellBitmap = new Bitmap(logoTile, self.bg)
+                    {
+                        x = 700,
+                        y = 10,
+                    };
+                }
+                
+                if (cellsNumber == null)
+                {
+                    Bounds boundsLogo = cellBitmap.getSize(new Bounds());
+                    double scale = 1;
+                    cellsNumber = new dc.ui.Text(self.bg, true, false, new Ref<double>(ref scale), null, null)
+                    {
+                        x = cellBitmap.x + boundsLogo.xMax
+                    };
+                    cellsNumber.set_text($" {HERO.cells}".AsHaxeString());
+                    cellsNumber.y = cellBitmap.y + ((boundsLogo.yMax - cellsNumber.textHeight) /2);
+                    cellsNumber.set_textColor(dc.ui.Text.Class.COLORS.get("CE".AsHaxeString()));
+                }
+            }
 
-            self.skillLeft.visible = showClassicMenu;
-            self.arrowTopSki.visible = showClassicMenu;
-            self.ciSwapSki.visible = showClassicMenu;
-            self.arrowBotSki.visible = showClassicMenu;
-            self.skillRight.visible = showClassicMenu;
+            cellBitmap?.visible = !showClassicMenu;
+            cellsNumber?.visible = !showClassicMenu;
+        }
 
-            self.amulet.visible = showClassicMenu;
-            self.backpackBox.visible = showClassicMenu;
-            self.backpackFlow.visible = showClassicMenu;
-            self.fbPerks.visible = showClassicMenu;
-            self.flowPerks.visible = showClassicMenu;
+        private static void AddIncolorMenu(DefaultPause self)
+        {
+            AddIncolorWeapons(self, false);
+            AddIncolorSkills(self, false);
+
+            buttonWeapon1.SetVisible(!showClassicMenu);
+            buttonWeapon2.SetVisible(!showClassicMenu);
+            buttonSkill1.SetVisible(!showClassicMenu);
+            buttonSkill2.SetVisible(!showClassicMenu);
             
-            self.botMenu.visible = showClassicMenu;
-            self.bg.botGradient.visible = showClassicMenu;
-            self.selection.visible = showClassicMenu;
+        }
 
-            self.locked = !showClassicMenu;
+        private static void AddIncolorWeapons(DefaultPause self, bool invert)
+        {
+            if(!invert)
+            {
+                buttonWeapon1.InitButton(self, 100, 100, () => HERO?.inventory.getEquippedWeaponOn(0), self.weaLeft);
+                buttonWeapon2.InitButton(self, 250, 100, () => HERO?.inventory.getEquippedWeaponOn(1), self.weaRight);
+            }
+            else
+            {
+                buttonWeapon1.InitButton(self, 100, 100, () => HERO?.inventory.getEquippedWeaponOn(1), self.weaLeft);
+                buttonWeapon2.InitButton(self, 250, 100, () => HERO?.inventory.getEquippedWeaponOn(0), self.weaRight);
+            }
+            
+        }
+
+        private static void AddIncolorSkills(DefaultPause self, bool invert)
+        {
+            if(!invert)
+            {
+                buttonSkill1.InitButton(self, 250, 250, () => HERO?.inventory.getActiveOn(0), self.skillRight);
+                buttonSkill2.InitButton(self, 100, 250, () => HERO?.inventory.getActiveOn(1), self.skillLeft);
+            }
+            else
+            {
+                buttonSkill1.InitButton(self, 250, 250, () => HERO?.inventory.getActiveOn(1), self.skillRight);
+                buttonSkill2.InitButton(self, 100, 250, () => HERO?.inventory.getActiveOn(0), self.skillLeft);
+            }
+        }
+
+        public static void ResetUI()
+        {
+            logoBitmap = null;
+            changedMethodCall = false;
+            apMenuButton = null;
+            buttonWeapon1.Reset();
+            buttonWeapon2.Reset();
+            buttonSkill1.Reset();
+            buttonSkill2.Reset();
+            cellBitmap = null;
+            cellsNumber = null;
+        }
+
+        public static void OnSwapWeaponsApMenu(Hook_Inventory.orig_swapWeapons orig, Inventory self)
+        {
+            buttonWeapon1.Reset();
+            buttonWeapon2.Reset();
+            if (defaultPause != null) AddIncolorWeapons(defaultPause, true);
+            orig(self);
+        }
+
+        public static void OnSwapSkillsApMenu(Hook_Inventory.orig_swapSkills orig, Inventory self)
+        {
+            buttonSkill1.Reset();
+            buttonSkill2.Reset();
+            if (defaultPause != null) AddIncolorSkills(defaultPause, true);
+            orig(self);
         }
     }
 }
