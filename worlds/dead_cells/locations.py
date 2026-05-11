@@ -2120,17 +2120,17 @@ LOCATION_TABLE: Dict[str, dict] = {
     },
 
 
-    "Concierge Defeat":        {"id": 0x0257, "region": "Bridge", "type": "event", "dlc": "", "item": "Concierge Defeat"},
-    "Conjunctivius Defeat":    {"id": 0x0258, "region": "BeholderPit", "type": "event", "dlc": "", "item": "Conjunctivius Defeat"},
-    "Mama Tick Defeat":        {"id": 0x0259, "region": "SwampHeart", "type": "event", "dlc": "TheBadSeed", "item": "Mama Tick Defeat"},
-    "Death Defeat":            {"id": 0x025A, "region": "DeathArena", "type": "event", "dlc": "Purple", "item": "Death Defeat"},
-    "Time Keeper Defeat":      {"id": 0x025B, "region": "TopClockTower", "type": "event", "dlc": "", "item": "Time Keeper Defeat"},
-    "Scarecrow Defeat":        {"id": 0x025C, "region": "GardenerStage", "type": "event", "dlc": "FatalFalls", "item": "Scarecrow Defeat"},
-    "Giant Defeat":            {"id": 0x025D, "region": "Giant", "type": "event", "dlc": "RiseOfTheGiant", "item": "Giant Defeat"},
-    "Hand of the King Defeat": {"id": 0x025E, "region": "Throne", "type": "event", "dlc": "", "item": "Hand of the King Defeat"},
-    "Queen Defeat":            {"id": 0x026F, "region": "QueenArena", "type": "event", "dlc": "TheQueenAndTheSea", "item": "Queen Defeat"},
-    "Dracula Defeat":          {"id": 0x0260, "region": "DookuArena", "type": "event", "dlc": "Purple", "item": "Dracula Defeat"},
-    "Collector Defeat":        {"id": 0x0261, "region": "Observatory", "type": "event", "dlc": "RiseOfTheGiant", "item": "Collector Defeat"},
+    "Concierge Defeat":        {"id": 0x0257, "region": "Bridge", "type": "event", "dlc": "", "item": "Concierge Defeated"},
+    "Conjunctivius Defeat":    {"id": 0x0258, "region": "BeholderPit", "type": "event", "dlc": "", "item": "Conjunctivius Defeated"},
+    "Mama Tick Defeat":        {"id": 0x0259, "region": "SwampHeart", "type": "event", "dlc": "TheBadSeed", "item": "Mama Tick Defeated"},
+    "Death Defeat":            {"id": 0x025A, "region": "DeathArena", "type": "event", "dlc": "Purple", "item": "Death Defeated"},
+    "Time Keeper Defeat":      {"id": 0x025B, "region": "TopClockTower", "type": "event", "dlc": "", "item": "Time Keeper Defeated"},
+    "Scarecrow Defeat":        {"id": 0x025C, "region": "GardenerStage", "type": "event", "dlc": "FatalFalls", "item": "Scarecrow Defeated"},
+    "Giant Defeat":            {"id": 0x025D, "region": "Giant", "type": "event", "dlc": "RiseOfTheGiant", "item": "Giant Defeated"},
+    "Hand of the King Defeat": {"id": 0x025E, "region": "Throne", "type": "event", "dlc": "", "item": "Hand of the King Defeated"},
+    "Queen Defeat":            {"id": 0x026F, "region": "QueenArena", "type": "event", "dlc": "TheQueenAndTheSea", "item": "Queen Defeated"},
+    "Dracula Defeat":          {"id": 0x0260, "region": "DookuArena", "type": "event", "dlc": "Purple", "item": "Dracula Defeated"},
+    "Collector Defeat":        {"id": 0x0261, "region": "Observatory", "type": "event", "dlc": "RiseOfTheGiant", "item": "Collector Defeated"},
 
 }
 
