@@ -137,7 +137,7 @@ TRANSITIONS = {
     ],
     "Cemetery": [
         {"to": "Crypt", "require": ["Teleportation Rune", "Forgotten Sepulcher Unlock"]},
-        {"to": "Cavern", "require": ["Homunculus Rune", "Cavern Unlock", "Hand of the King Defeat"]} #So damn close to just mapping every individual Cavern/Giant location to it's own logic
+        {"to": "Cavern", "require": ["Homunculus Rune", "Cavern Unlock", "Hand of the King Defeated"]} #So damn close to just mapping every individual Cavern/Giant location to it's own logic
     ],
     "ClockTower": [
         {"to": "TopClockTower", "require": "Clock Room Unlock"},
@@ -147,9 +147,8 @@ TRANSITIONS = {
     ],
     "TopClockTower": [
         {"to": "Shipwreck", "require": ["Crowned Key", "Infested Shipwreck Unlock"]},
-        {"to": "Distillery", "require": ["Derelict Distillery", "The Hand of the King Unlock"]},
         {"to": "Castle", "require": "High Peak Castle Unlock"},
-        {"to": "DookuCastleHard", "require": [["Death Defeat", "Vine Rune"], ["Death Defeat", "Teleportation Rune", "Dilapidated Arboretum Unlock"]]}, ###Flag for future proper Event### #Technically cannot be done if routed exclusively from Castlevania biomes?
+        {"to": "DookuCastleHard", "require": [["Death Defeated", "Vine Rune"], ["Death Defeated", "Teleportation Rune", "Dilapidated Arboretum Unlock"]]}, ###Flag for future proper Event### #Technically cannot be done if routed exclusively from Castlevania biomes?
     ],
     "Cavern": [
         {"to": "Giant", "require": "Guardian's Haven Unlock"},
@@ -209,10 +208,10 @@ TRANSITIONS = {
     ],
     "PurpleGarden": [
         {"to": "DookuCastle", "require": "Dracula's Castle Unlock"},
-        {"to": "Ossuary", "require": ["Teleportation Rune", "Ossuary Unlock", "Dracula Defeat"]}
+        {"to": "Ossuary", "require": ["Teleportation Rune", "Ossuary Unlock", "Dracula Defeated"]}
     ],
     "DookuCastle": [
-        {"to": "Bridge", "require": "Dracula Defeat"},
+        {"to": "Bridge", "require": "Dracula Defeated"},
         {"to": "DeathArena", "require": "Defiled Necropolis Unlock"},
     ],
     "DookuCastleHard": [
