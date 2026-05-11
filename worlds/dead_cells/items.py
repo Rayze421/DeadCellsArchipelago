@@ -639,6 +639,18 @@ ITEM_TABLE: Dict[str, tuple] = {
     "Defiled Necropolis Unlock":   (0x161D, PROG, DLC_PURPLE),
     "Master's Keep Unlock":        (0x161E, PROG, DLC_PURPLE),
 
+    # Boss Visit Set Items
+    "Concierge Defeated":         (0x1700, PROG, DLC_BASE),
+    "Conjunctivius Defeated":     (0x1701, PROG, DLC_BASE),
+    "Mama Tick Defeated":         (0x1702, PROG, DLC_BAD_SEED),
+    "Death Defeated":             (0x1703, PROG, DLC_PURPLE),   
+    "Time Keeper Defeated":       (0x1704, PROG, DLC_BASE),
+    "Scarecrow Defeated":         (0x1705, PROG, DLC_FATAL_FALLS),
+    "Giant Defeated":             (0x1706, PROG, DLC_RISE_OF_GIANT),
+    "Hand of the King Defeated":  (0x1707, PROG, DLC_BASE),
+    "Queen Defeated":             (0x1708, PROG, DLC_BASE),
+    "Dracula Defeated":           (0x1709, PROG, DLC_PURPLE),
+    "Collector Defeated":         (0x170A, PROG, DLC_RISE_OF_GIANT)
 }
 
 
