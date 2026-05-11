@@ -2118,21 +2118,19 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "ASP_Firestarter",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'item_no_blueprint'}],
     },
-
-
-#Boss Event Locations
-# These should send along with the proper boss checks, and exclusively hold their coresponding "Defeated" item
-    "Concierge Defeat":        {"id": 0x0257, "region": "Bridge", "type": "event", "dlc": "", "item": "Concierge Defeated"},
-    "Conjunctivius Defeat":    {"id": 0x0258, "region": "BeholderPit", "type": "event", "dlc": "", "item": "Conjunctivius Defeated"},
-    "Mama Tick Defeat":        {"id": 0x0259, "region": "SwampHeart", "type": "event", "dlc": "TheBadSeed", "item": "Mama Tick Defeated"},
-    "Death Defeat":            {"id": 0x025A, "region": "DeathArena", "type": "event", "dlc": "Purple", "item": "Death Defeated"},
-    "Time Keeper Defeat":      {"id": 0x025B, "region": "TopClockTower", "type": "event", "dlc": "", "item": "Time Keeper Defeated"},
-    "Scarecrow Defeat":        {"id": 0x025C, "region": "GardenerStage", "type": "event", "dlc": "FatalFalls", "item": "Scarecrow Defeated"},
-    "Giant Defeat":            {"id": 0x025D, "region": "Giant", "type": "event", "dlc": "RiseOfTheGiant", "item": "Giant Defeated"},
-    "Hand of the King Defeat": {"id": 0x025E, "region": "Throne", "type": "event", "dlc": "", "item": "Hand of the King Defeated"},
-    "Queen Defeat":            {"id": 0x026F, "region": "QueenArena", "type": "event", "dlc": "TheQueenAndTheSea", "item": "Queen Defeated"},
-    "Dracula Defeat":          {"id": 0x0260, "region": "DookuArena", "type": "event", "dlc": "Purple", "item": "Dracula Defeated"},
-    "Collector Defeat":        {"id": 0x0261, "region": "Observatory", "type": "event", "dlc": "RiseOfTheGiant", "item": "Collector Defeated"},
+    # Boss Event Locations
+    # These should send along with the proper boss checks, and exclusively hold their coresponding "Defeated" item
+    "Concierge Defeat":        {"id": 0x0257, "region": "Bridge", "type": "boss", "dlc": "", "item": "Concierge Defeated"},
+    "Conjunctivius Defeat":    {"id": 0x0258, "region": "BeholderPit", "type": "boss", "dlc": "", "item": "Conjunctivius Defeated"},
+    "Mama Tick Defeat":        {"id": 0x0259, "region": "SwampHeart", "type": "boss", "dlc": "TheBadSeed", "item": "Mama Tick Defeated"},
+    "Death Defeat":            {"id": 0x025A, "region": "DeathArena", "type": "boss", "dlc": "Purple", "item": "Death Defeated"},
+    "Time Keeper Defeat":      {"id": 0x025B, "region": "TopClockTower", "type": "boss", "dlc": "", "item": "Time Keeper Defeated"},
+    "Scarecrow Defeat":        {"id": 0x025C, "region": "GardenerStage", "type": "boss", "dlc": "FatalFalls", "item": "Scarecrow Defeated"},
+    "Giant Defeat":            {"id": 0x025D, "region": "Giant", "type": "boss", "dlc": "RiseOfTheGiant", "item": "Giant Defeated"},
+    "Hand of the King Defeat": {"id": 0x025E, "region": "Throne", "type": "boss", "dlc": "", "item": "Hand of the King Defeated"},
+    "Queen Defeat":            {"id": 0x026F, "region": "QueenArena", "type": "boss", "dlc": "TheQueenAndTheSea", "item": "Queen Defeated"},
+    "Dracula Defeat":          {"id": 0x0260, "region": "DookuArena", "type": "boss", "dlc": "Purple", "item": "Dracula Defeated"},
+    "Collector Defeat":        {"id": 0x0261, "region": "Observatory", "type": "boss", "dlc": "RiseOfTheGiant", "item": "Collector Defeated"},
 }
 
 def location_id(name: str) -> int:
