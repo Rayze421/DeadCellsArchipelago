@@ -640,6 +640,7 @@ ITEM_TABLE: Dict[str, tuple] = {
     "Master's Keep Unlock":        (0x161E, PROG, DLC_PURPLE),
 
     # Boss Visit Set Items
+    # These should be exclusively set to their corresponding "Boss Defeat" location and are used in region logic
     "Concierge Defeated":         (0x1700, PROG, DLC_BASE),
     "Conjunctivius Defeated":     (0x1701, PROG, DLC_BASE),
     "Mama Tick Defeated":         (0x1702, PROG, DLC_BAD_SEED),
