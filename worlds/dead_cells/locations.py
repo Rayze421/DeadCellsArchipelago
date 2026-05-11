@@ -1,5 +1,10 @@
-from typing import Dict, Set
-from BaseClasses import Location
+from typing import Dict, Set, TYPE_CHECKING
+from BaseClasses import Location, ItemClassification
+
+if TYPE_CHECKING:
+    from .__init__ import DeadCellsWorld
+
+from . import items
 
 BASE_ID = 0xDEAD_1000
 
@@ -2120,17 +2125,6 @@ LOCATION_TABLE: Dict[str, dict] = {
     },
 
 
-    "Concierge Defeat":        {"id": 0x0257, "region": "Bridge", "type": "event", "dlc": "", "item": "Concierge Defeat"},
-    "Conjunctivius Defeat":    {"id": 0x0258, "region": "BeholderPit", "type": "event", "dlc": "", "item": "Conjunctivius Defeat"},
-    "Mama Tick Defeat":        {"id": 0x0259, "region": "SwampHeart", "type": "event", "dlc": "TheBadSeed", "item": "Mama Tick Defeat"},
-    "Death Defeat":            {"id": 0x025A, "region": "DeathArena", "type": "event", "dlc": "Purple", "item": "Death Defeat"},
-    "Time Keeper Defeat":      {"id": 0x025B, "region": "TopClockTower", "type": "event", "dlc": "", "item": "Time Keeper Defeat"},
-    "Scarecrow Defeat":        {"id": 0x025C, "region": "GardenerStage", "type": "event", "dlc": "FatalFalls", "item": "Scarecrow Defeat"},
-    "Giant Defeat":            {"id": 0x025D, "region": "Giant", "type": "event", "dlc": "RiseOfTheGiant", "item": "Giant Defeat"},
-    "Hand of the King Defeat": {"id": 0x025E, "region": "Throne", "type": "event", "dlc": "", "item": "Hand of the King Defeat"},
-    "Queen Defeat":            {"id": 0x026F, "region": "QueenArena", "type": "event", "dlc": "TheQueenAndTheSea", "item": "Queen Defeat"},
-    "Dracula Defeat":          {"id": 0x0260, "region": "DookuArena", "type": "event", "dlc": "Purple", "item": "Dracula Defeat"},
-    "Collector Defeat":        {"id": 0x0261, "region": "Observatory", "type": "event", "dlc": "RiseOfTheGiant", "item": "Collector Defeat"},
 
 }
 
@@ -2157,6 +2151,54 @@ def get_valid_locations(enabled_dlcs, disabled_types, bc_level, created_location
 
         valid_locations[loc_name] = loc_data
         return valid_locations
+
+def create_events(world: DeadCellsWorld) -> None:
+    Bridge = world.create_regions("Bridge")
+    BeholderPit = world.get_region("BeholderPit")
+    SwampHeart = world.get_region("SwampHeart")
+    DeathArena = world.get_region("DeathArena")
+    TopClockTower = world.get_region("TopClockTower")
+    GardenerStage = world.get_region("GardenerStage")
+    Giant = world.get_region("Giant")
+    QueenArena = world.get_region("QueenArena")
+    DookuArena = world.get_region("DookuArena")
+    Throne = world.get_region("Throne")
+    Observatory = world.get_region("Observatory")
+
+    Bridge.add_event(
+        "Concierge Defeat", "Concierge Defeated", location_type=DeadCellsLocation, item_type=items.DeadCellsItem
+    )
+    BeholderPit.add_event(
+        "Conjunctivius Defeat", "Conjunctivius Defeated", location_type=DeadCellsLocation, item_type=items.DeadCellsItem
+    )
+    SwampHeart.add_event(
+        "Mama Tick Defeat", "Mama Tick Defeated", location_type=DeadCellsLocation, item_type=items.DeadCellsItem
+    )
+    DeathArena.add_event(
+        "Death Defeated", "Death Defeated", location_type=DeadCellsLocation, item_type=items.DeadCellsItem
+    )
+    TopClockTower.add_event(
+        "Time Keeper Defeat", "Time Keeper Defeated", location_type=DeadCellsLocation, item_type=items.DeadCellsItem
+    )
+    GardenerStage.add_event(
+        "Scarecrow Defeat", "Scarecrow Defeated", location_type=DeadCellsLocation, item_type=items.DeadCellsItem
+    )
+    Giant.add_event(
+        "Giant Defeat", "Giant Defeated", location_type=DeadCellsLocation, item_type=items.DeadCellsItem
+    )
+    Throne.add_event(
+        "Hand of the King Defeat", "Hand of the King Defeated", location_type=DeadCellsLocation, item_type=items.DeadCellsItem
+    )
+    QueenArena.add_event(
+        "Queen Defeat", "Queen Defeated", location_type=DeadCellsLocation, item_type=items.DeadCellsItem
+    )
+    DookuArena.add_event(
+        "Dracula Defeat", "Dracula Defeated", location_type=DeadCellsLocation, item_type=items.DeadCellsItem
+    )
+    Observatory.add_event(
+        "Collector Defeat", "Collector Defeated", location_type=DeadCellsLocation, item_type=items.DeadCellsItem
+    )
+    
 
 def _assert_no_duplicate_ids() -> None:
     seen: Dict[int, str] = {}
