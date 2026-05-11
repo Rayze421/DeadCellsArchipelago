@@ -108,7 +108,7 @@ LOCATION_TABLE: Dict[str, dict] = {
     "The Time Keeper": {"id": 0x0056, "region": "TopClockTower", "type": "boss", "dlc": "", "item": None, "sources": [{'biome': 'TopClockTower', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'boss'}],},
     "The Giant": {"id": 0x0057, "region": "Giant", "type": "boss", "dlc": "RiseOfTheGiant", "item": None, "sources": [{'biome': 'Giant', 'min_bc': 0, 'max_bc': 255, 'dlc': 'RiseOfTheGiant', 'type': 'boss'}],},
     "The Hand of the King": {"id": 0x0058, "region": "Throne", "type": "boss", "dlc": "", "item": None, "sources": [{'biome': 'Throne', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'boss'}],},
-    "The Collector": {"id": 0x0059, "region": "Observatory", "type": "boss", "dlc": "RiseOfTheGiant", "item": None, "sources": [{'biome': 'Astrolab', 'min_bc': 5, 'max_bc': 255, 'dlc': 'RiseOfTheGiant', 'type': 'boss'}],},
+    "The Collector": {"id": 0x0059, "region": "Observatory", "type": "boss", "dlc": "RiseOfTheGiant", "item": None, "sources": [{'biome': 'Observatory', 'min_bc': 5, 'max_bc': 255, 'dlc': 'RiseOfTheGiant', 'type': 'boss'}],},
     "Mama Tick": {"id": 0x005A, "region": "SwampHeart", "type": "boss", "dlc": "TheBadSeed", "item": None, "sources": [{'biome': 'SwampHeart', 'min_bc': 0, 'max_bc': 255, 'dlc': 'TheBadSeed', 'type': 'boss'}],},
     "Scarecrow": {"id": 0x005B, "region": "GardenerStage", "type": "boss", "dlc": "FatalFalls", "item": None, "sources": [{'biome': 'GardenerStage', 'min_bc': 0, 'max_bc': 255, 'dlc': 'FatalFalls', 'type': 'boss'}],},
     "Calliope": {"id": 0x005C, "region": "Lighthouse", "type": "boss", "dlc": "TheQueenAndTheSea", "item": None, "sources": [{'biome': 'Lighthouse', 'min_bc': 0, 'max_bc': 255, 'dlc': 'TheQueenAndTheSea', 'type': 'boss'}],},
@@ -2120,17 +2120,17 @@ LOCATION_TABLE: Dict[str, dict] = {
     },
     # Boss Event Locations
     # These should send along with the proper boss checks, and exclusively hold their coresponding "Defeated" item
-    "Concierge Defeat":        {"id": 0x0257, "region": "Bridge", "type": "boss", "dlc": "", "item": "Concierge Defeated"},
-    "Conjunctivius Defeat":    {"id": 0x0258, "region": "BeholderPit", "type": "boss", "dlc": "", "item": "Conjunctivius Defeated"},
-    "Mama Tick Defeat":        {"id": 0x0259, "region": "SwampHeart", "type": "boss", "dlc": "TheBadSeed", "item": "Mama Tick Defeated"},
-    "Death Defeat":            {"id": 0x025A, "region": "DeathArena", "type": "boss", "dlc": "Purple", "item": "Death Defeated"},
-    "Time Keeper Defeat":      {"id": 0x025B, "region": "TopClockTower", "type": "boss", "dlc": "", "item": "Time Keeper Defeated"},
-    "Scarecrow Defeat":        {"id": 0x025C, "region": "GardenerStage", "type": "boss", "dlc": "FatalFalls", "item": "Scarecrow Defeated"},
-    "Giant Defeat":            {"id": 0x025D, "region": "Giant", "type": "boss", "dlc": "RiseOfTheGiant", "item": "Giant Defeated"},
-    "Hand of the King Defeat": {"id": 0x025E, "region": "Throne", "type": "boss", "dlc": "", "item": "Hand of the King Defeated"},
-    "Queen Defeat":            {"id": 0x026F, "region": "QueenArena", "type": "boss", "dlc": "TheQueenAndTheSea", "item": "Queen Defeated"},
-    "Dracula Defeat":          {"id": 0x0260, "region": "DookuArena", "type": "boss", "dlc": "Purple", "item": "Dracula Defeated"},
-    "Collector Defeat":        {"id": 0x0261, "region": "Observatory", "type": "boss", "dlc": "RiseOfTheGiant", "item": "Collector Defeated"},
+    "Concierge Defeat":        {"id": 0x0257, "region": "Bridge", "type": "boss", "dlc": "", "item": None, "sources": [{'biome': 'Bridge', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'boss'}],},
+    "Conjunctivius Defeat":    {"id": 0x0258, "region": "BeholderPit", "type": "boss", "dlc": "", "item": None, "sources": [{'biome': 'BeholderPit', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'boss'}],},
+    "Mama Tick Defeat":        {"id": 0x0259, "region": "SwampHeart", "type": "boss", "dlc": "TheBadSeed", "item": None, "sources": [{'biome': 'SwampHeart', 'min_bc': 0, 'max_bc': 255, 'dlc': 'TheBadSeed', 'type': 'boss'}],},
+    "Death Defeat":            {"id": 0x025A, "region": "DeathArena", "type": "boss", "dlc": "Purple", "item": None, "sources": [{'biome': 'DeathArena', 'min_bc': 0, 'max_bc': 255, 'dlc': 'Purple', 'type': 'boss'}],},
+    "Time Keeper Defeat":      {"id": 0x025B, "region": "TopClockTower", "type": "boss", "dlc": "", "item": None, "sources": [{'biome': 'TopClockTower', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'boss'}],},
+    "Scarecrow Defeat":        {"id": 0x025C, "region": "GardenerStage", "type": "boss", "dlc": "FatalFalls", "item": None, "sources": [{'biome': 'GardenerStage', 'min_bc': 0, 'max_bc': 255, 'dlc': 'FatalFalls', 'type': 'boss'}],},
+    "Giant Defeat":            {"id": 0x025D, "region": "Giant", "type": "boss", "dlc": "RiseOfTheGiant", "item": None, "sources": [{'biome': 'Giant', 'min_bc': 0, 'max_bc': 255, 'dlc': 'RiseOfTheGiant', 'type': 'boss'}],},
+    "Hand of the King Defeat": {"id": 0x025E, "region": "Throne", "type": "boss", "dlc": "", "item": None, "sources": [{'biome': 'Throne', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'boss'}],},
+    "Queen Defeat":            {"id": 0x026F, "region": "QueenArena", "type": "boss", "dlc": "TheQueenAndTheSea", "item": None, "sources": [{'biome': 'QueenArena', 'min_bc': 0, 'max_bc': 255, 'dlc': 'TheQueenAndTheSea', 'type': 'boss'}],},
+    "Dracula Defeat":          {"id": 0x0260, "region": "DookuArena", "type": "boss", "dlc": "Purple", "item": None, "sources": [{'biome': 'DookuArena', 'min_bc': 0, 'max_bc': 255, 'dlc': 'Purple', 'type': 'boss'}],},
+    "Collector Defeat":        {"id": 0x0261, "region": "Observatory", "type": "boss", "dlc": "RiseOfTheGiant", "item": None, "sources": [{'biome': 'Observatory', 'min_bc': 5, 'max_bc': 255, 'dlc': 'RiseOfTheGiant', 'type': 'boss'}],},
 }
 
 def location_id(name: str) -> int:
