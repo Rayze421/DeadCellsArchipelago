@@ -341,51 +341,51 @@ class DeadCellsWorld(World):
         ):
             itempool.remove("Observatory")
 
-    #Handle Boss Defeat items to not generate without the associated DLC
+    # Handle Boss Defeat items to not generate without the associated DLC
         if (
-        "Mama Tick Defeated" in itempool
-        and DLC_BAD_SEED not in self.enabled_dlcs
+            "Mama Tick Defeated" in itempool
+            and DLC_BAD_SEED not in self.enabled_dlcs
         ):
             itempool.remove("Mama Tick Defeated")
         if (
-        "Scarecrow Defeated" in itempool
-        and DLC_FATAL_FALLS not in self.enabled_dlcs
+            "Scarecrow Defeated" in itempool
+            and DLC_FATAL_FALLS not in self.enabled_dlcs
         ):
             itempool.remove("Scarecrow Defeated")
         if (
-        "Giant Defeated" in itempool
-        and DLC_RISE_OF_GIANT not in self.enabled_dlcs
+            "Giant Defeated" in itempool
+            and DLC_RISE_OF_GIANT not in self.enabled_dlcs
         ):
             itempool.remove("Giant Defeated")
         if (
-        "Collector Defeated" in itempool
-        and DLC_RISE_OF_GIANT not in self.enabled_dlcs
+            "Collector Defeated" in itempool
+            and DLC_RISE_OF_GIANT not in self.enabled_dlcs
         ):
             itempool.remove("Collector Defeated")
         if (
-        "Queen Defeated" in itempool
-        and DLC_QUEEN_AND_SEA not in self.enabled_dlcs
+            "Queen Defeated" in itempool
+            and DLC_QUEEN_AND_SEA not in self.enabled_dlcs
         ):
             itempool.remove("Queen Defeated")
         if (
-        "Death Defeated" in itempool
-        and DLC_PURPLE not in self.enabled_dlcs
+            "Death Defeated" in itempool
+            and DLC_PURPLE not in self.enabled_dlcs
         ):
             itempool.remove("Death Defeated")
         if (
-        "Dracula Defeated" in itempool
-        and DLC_PURPLE not in self.enabled_dlcs
+            "Dracula Defeated" in itempool
+            and DLC_PURPLE not in self.enabled_dlcs
         ):
             itempool.remove("Dracula Defeated")
 
 
-    #Force "Boss Defeat" locations to hold their associated "Boss Defeated" items
-    #    if (
-    #        "Concierge Defeated" in itempool
-    #        and "Concierge Defeat" in self.created_locations
-    #    ):
-    #        itempool.remove("Concierge Defeated"),
-    #        "Concierge Defeat" == self.create_item("Concierge Defeated")
+    #Force "Boss Defeat" locations to hold their associated "Boss Defeated" items if theyre still in the pool
+   #    if (
+   #        "Concierge Defeated" in itempool
+   #        and "Concierge Defeat" in self.created_locations
+   #    ):
+   #        itempool.remove("Concierge Defeated"),
+   #        "Concierge Defeat" == self.create_item("Concierge Defeated")
 
     # Calculate remaining slots
         remaining_slots = total_locations - len(itempool)
