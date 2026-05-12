@@ -1039,8 +1039,8 @@ LOCATION_TABLE: Dict[str, dict] = {
     },
     "Dead Inside": {
         "id": 0x011A, "region": "Checks", "type": "blueprint_enemy",
-        "dlc": "", "min_bc": 0, "item": "P_Health",
-        "sources": [{'biome': 'Castle', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Lancer'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Lancer'}],
+        "dlc": "", "min_bc": 4, "item": "P_Health",
+        "sources": [{'biome': 'Castle', 'min_bc': 4, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Lancer'}, {'biome': 'Bank', 'min_bc': 4, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Lancer'}],
     },
     "Barrel Launcher": {
         "id": 0x011B, "region": "Checks", "type": "blueprint_enemy",
@@ -2038,7 +2038,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "BlobbyFlame",
         "sources": [{'biome': 'SewerShort', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'item_no_blueprint'}],
     },
-    "Glitchy Head": {
+    "Glitch Head": {
         "id": 0x0247, "region": "Checks", "type": "head",
         "dlc": "RiseOfTheGiant", "min_bc": 5, "item": "GlitchyHead",
         "sources": [{'biome': 'Observatory', 'min_bc': 5, 'max_bc': 255, 'dlc': 'RiseOfTheGiant', 'type': 'item_no_blueprint'}],
@@ -2058,7 +2058,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "RiseOfTheGiant", "min_bc": 0, "item": "BlobbyFlameMagma",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 255, 'dlc': 'RiseOfTheGiant', 'type': 'item_no_blueprint'}],
     },
-    "Malaise Blob": {
+    "Shadow Blob": {
         "id": 0x024B, "region": "Checks", "type": "head",
         "dlc": "", "min_bc": 0, "item": "BlobbyFlameMalaise",
         "sources": [{'biome': 'Crypt', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'item_no_blueprint'}],
@@ -2164,3 +2164,58 @@ def _assert_no_duplicate_ids() -> None:
         if oid in seen: raise ValueError(f"Duplicate ID 0x{oid:04X}: '{seen[oid]}' and '{name}'")
         seen[oid] = name
 _assert_no_duplicate_ids()
+
+
+deadcells_location_groups = {
+    "Boss Heads":{ # All heads recieved for completing a given boss a (large) number of times
+        "Concierge Flame",
+        "Conjunctivius Tentacles",
+        "Mama Tick Eye",
+        "Time Keeper Mask",
+        "Giant Flame", 
+        "Scarecrow Hat",
+        "Hand of the King Flame",
+        "Servant Mask",
+        "Queen Flame",
+        "Collector Hood"
+    },
+    "Flawless Cosmetics": { # Any cosmetic that requires doing a stage/boss without getting hit
+        "Flawless Torch",
+        "Black Hole",
+        "Sanquine Vortex",
+        "Flawless Concierge Outfit",
+        "Flawless Conjunctivius Outfit",
+        "Flawless Tick Outfit",
+        "Flawless Temporal Outfit",
+        "Flawless Giant Outfit",
+        "Flawless Scarecrow Outfit",
+        "Flawless Hand of the King Outfit",
+        "Flawless Servant Outfit",
+        "Flawless Queen Outfit",
+        "Flawless Death Outfit",
+        "Flawless Dracula Outfit",
+        "White King Outfit",
+        "Golden Outfit",
+        "Explorer's Outfit",
+        "Zero Outfit",
+        "Delayed Hedgehog Outfit",
+    },
+    "Dying checks": { # Any location unlocked by Dying specifically
+        "Toxin Lover",
+        "Firestarter",
+        "Shatter",
+        "Assassin",
+        "Relentless",
+        "Blood Drinker",
+        "Damned",
+        "Gotta Go Fast",
+        "Grenadier",
+        "Menagerie",
+        "Stomper",
+        "Superconductor",
+        "Tinker",
+        "Shadow Blob",
+        "Magma Blob",
+        "Toxic Blob"
+    }
+}

@@ -223,14 +223,14 @@ BOSS_RUSH_TIER_3 = [
 HEAD_ITEMS = [
 
     # boss flames
-    "Bobby Flame",
+    "Bobby Head",
     "Concierge Flame",
     "Giant Flame",
     "Queen Flame",
     "Hand of the King Flame",
 
     # boss themed heads
-    "Conjunctivius Head",
+    "Conjunctivius Tentacles",
     "Mama Tick Eye",
     "Time Keeper Mask",
     "Scarecrow Hat",
@@ -246,10 +246,10 @@ HEAD_ITEMS = [
     "Blue Hole",
 
     # vortex heads
-    "Hello Darkness Vortex",
-    "Bad Seed Vortex",
-    "Queen and the Sea Vortex",
-    "Foundry Vortex",
+    "Vortex",
+    "Sanguine Vortex",
+    "Abyssal Vortex",
+    "Dark Vortex",
 
     # misc
     "Guillain Head",
@@ -260,15 +260,15 @@ HEAD_ITEMS = [
     "Evil Minion Head",
 
     # blob heads
-    "Blobby Flame",
-    "Magma Blobby Flame",
-    "Malaise Blobby Flame",
-    "Gum Blobby Flame",
+    "Toxic Blob",
+    "Magma Flame",
+    "Shadow Flame",
+    "Sweet Blob",
 
     # glitch heads
-    "Glitchy Head",
-    "Deep Space Glitchy Head",
-    "Red Glitchy Head",
+    "Glitch Head",
+    "Spacial Anomaly",
+    "Menacing Anomaly",
 
     # mushroom
     "Mushroom Boi Head",
@@ -277,7 +277,7 @@ HEAD_ITEMS = [
     "Dark Blowtorch",
     "Blowtorch",
     "Golden Blowtorch",
-    "Red Blowtorch",
+    "Bright Red Blowtorch",
 
     # misc uniques
     "Biter Head",
