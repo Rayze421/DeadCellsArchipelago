@@ -752,7 +752,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 2, "item": "Behemoth2",
         "sources": [{'biome': 'Bridge', 'min_bc': 2, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy'}],
     },
-    "Blacksmith Concierge Outfit": {
+    "Ascended Concierge Outfit": {
         "id": 0x00E1, "region": "Checks", "type": "skin",
         "dlc": "", "min_bc": 3, "item": "Behemoth3",
         "sources": [{'biome': 'Bridge', 'min_bc': 3, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy'}],
@@ -932,7 +932,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 1, "item": "Assassin1",
         "sources": [{'biome': 'TopClockTower', 'min_bc': 1, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy'}],
     },
-    "Red Temporal Outfit": {
+    "Volcanic Temporal Outfit": {
         "id": 0x0105, "region": "Checks", "type": "skin",
         "dlc": "", "min_bc": 2, "item": "Assassin2",
         "sources": [{'biome': 'TopClockTower', 'min_bc': 2, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy'}],
@@ -1397,7 +1397,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "Purple", "min_bc": 3, "item": "Adele3",
         "sources": [{'biome': 'DeathArena', 'min_bc': 3, 'max_bc': 255, 'dlc': 'Purple', 'type': 'blueprint_enemy'}],
     },
-    "Pale Death Outfit": {
+    "Spectral Death Outfit": {
         "id": 0x0162, "region": "Checks", "type": "skin",
         "dlc": "Purple", "min_bc": 4, "item": "Adele4",
         "sources": [{'biome': 'DeathArena', 'min_bc': 4, 'max_bc': 255, 'dlc': 'Purple', 'type': 'blueprint_enemy'}],

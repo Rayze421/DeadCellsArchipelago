@@ -54,7 +54,7 @@ SKIN_ITEMS = [
     "Classic Concierge Outfit",
     "Piccolo Concierge Outfit",
     "Misunderstood Concierge Outfit",
-    "Blacksmith Concierge Outfit",
+    "Ascended Concierge Outfit",
     "Ultimate Concierge Outfit",
 
     # conjunctivius
@@ -67,8 +67,8 @@ SKIN_ITEMS = [
     # time keeper
     "Classic Temporal Outfit",
     "Desert Temporal Outfit",
-    "Red Temporal Outfit",
-    "White Shadow Temporal Outfit",
+    "Volcanic Temporal Outfit",
+    "Hunter's Temporal Outfit",
     "Collector's Temporal Outfit",
 
     # giant
@@ -92,16 +92,16 @@ SKIN_ITEMS = [
     "Giant Tick Outfit",
     "Annoyed Tick Outfit",
     "Irritated Tick Outfit",
-    "Scarlet Mama Tick Outfit",
-    "Vibrant Mama Tick Outfit",
+    "Mad Tick Outfit",
+    "Furious Mama Tick Outfit",
     "Sacrificial Tick Outfit",
 
     # scarecrow
     "Classic Scarecrow Outfit",
     "Green Thumb Scarecrow Outfit",
     "Wicked Scarecrow of the West Outfit",
-    "Festering Scarecrow Outfit",
-    "Murderous Scarecrow Outfit",
+    "Cutecrow Outfit",
+    "Gothic Scarecrow Outfit",
     "Cultist Outfit",
 
     # flawless boss outfits
@@ -187,13 +187,13 @@ SKIN_ITEMS = [
     "Sanguine Death Outfit",
     "Red Death Outfit",
     "Edgy Death Outfit",
-    "Pale Death Outfit",
+    "Spectral Death Outfit",
     "Flawless Death Outfit",
 
     # dracula
     "Dracula Outfit",
     "Mathias Cronqvist Outfit",
-    "Grand Dracula Outfit",
+    "Doctor Dracula Outfit",
     "Pompous Dracula Outfit",
     "Vigilante Dracula Outfit",
     "Flawless Dracula Outfit",
