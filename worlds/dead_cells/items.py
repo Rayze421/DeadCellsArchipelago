@@ -260,7 +260,7 @@ ITEM_TABLE: Dict[str, tuple] = {
     "Indulgence":           (0x0520, USFL, DLC_BASE),
 
     # ── Grenades (Useful) ─────────────────────────────────────────────
-    "Powerful Gernade":         (0x0600, USFL, DLC_BASE),
+    "Powerful Grenade":         (0x0600, USFL, DLC_BASE),
     "Infantry Grenade":         (0x0601, USFL, DLC_BASE),
     "Cluster Grenade":          (0x0602, USFL, DLC_BASE),
     "Magnetic Grenade":         (0x0603, USFL, DLC_BASE),

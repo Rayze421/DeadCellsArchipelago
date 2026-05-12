@@ -538,7 +538,7 @@ LOCATION_RULES = [
     ("Spartan Sandals", _has("Vine Rune")),
     ("Corrupted Power", _has("Vine Rune")),
     ("Explosive Decoy", _has("Vine Rune")),
-    ("Powerful Gernade", _has("Vine Rune")),
+    ("Powerful Grenade", _has("Vine Rune")),
     ("Cleaver", _has("Vine Rune")),
     ("Knife Dance", _has("Vine Rune")),
     ("Execution", _has("Vine Rune")),

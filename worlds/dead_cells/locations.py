@@ -477,7 +477,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "Shockwave", "rarity": "Rare",
         "sources": [{'biome': 'PrisonCourtyard', 'min_bc': 3, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'Ossuary', 'min_bc': 4, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'AncientTemple', 'min_bc': 2, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'ClockTower', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'Castle', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'Tumulus', 'min_bc': 2, 'max_bc': 255, 'dlc': 'FatalFalls', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'Shipwreck', 'min_bc': 0, 'max_bc': 255, 'dlc': 'TheQueenAndTheSea', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'Bank', 'min_bc': 3, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}],
     },
-    "Powerful Gernade": {
+    "Powerful Grenade": {
         "id": 0x00AA, "region": "Checks", "type": "blueprint_enemy",
         "dlc": "", "min_bc": 0, "item": "ExplosiveGrenade",
         "sources": [{'biome': 'PrisonCourtyard', 'min_bc': 3, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'Ossuary', 'min_bc': 4, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'AncientTemple', 'min_bc': 2, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'ClockTower', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'Castle', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'Tumulus', 'min_bc': 2, 'max_bc': 255, 'dlc': 'FatalFalls', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'Shipwreck', 'min_bc': 0, 'max_bc': 255, 'dlc': 'TheQueenAndTheSea', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'Bank', 'min_bc': 3, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'ClusterGrenader'}],
@@ -539,8 +539,8 @@ LOCATION_TABLE: Dict[str, dict] = {
     },
     "Donatello Outfit": {
         "id": 0x00B6, "region": "Checks", "type": "skin",
-        "dlc": "", "min_bc": 0, "item": "PrisonerSewers", "rarity": "Rare",
-        "sources": [{'biome': 'SewerShort', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Scorpio'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Scorpio'}],
+        "dlc": "", "min_bc": 2, "item": "PrisonerSewers", "rarity": "Rare",
+        "sources": [{'biome': 'SewerShort', 'min_bc': 2, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Scorpio'}, {'biome': 'Bank', 'min_bc': 2, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Scorpio'}],
     },
     "What Doesn't Kill Me": {
         "id": 0x00B7, "region": "Checks", "type": "blueprint_enemy",
