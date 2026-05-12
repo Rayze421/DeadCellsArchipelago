@@ -19,7 +19,7 @@ from .items import (
 )
 from .locations import (
     LOCATION_TABLE, BASE_ID as LOC_BASE_ID,
-    get_valid_locations, location_id
+    get_valid_locations, location_id, deadcells_location_groups
 )
 from .regions import create_regions, REGION_DLC
 from .rules import set_rules as apply_location_rules
@@ -163,6 +163,7 @@ class DeadCellsWorld(World):
         name: LOC_BASE_ID + data["id"]
         for name, data in LOCATION_TABLE.items()
     }
+    location_name_groups = deadcells_location_groups
 
     # Populated in generate_early, used throughout
     enabled_dlcs: Set[str] = set()
