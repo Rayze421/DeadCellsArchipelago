@@ -644,7 +644,7 @@ ITEM_TABLE: Dict[str, tuple] = {
     "Concierge Defeated":         (0x1700, PROG, DLC_BASE),
     "Conjunctivius Defeated":     (0x1701, PROG, DLC_BASE),
     "Mama Tick Defeated":         (0x1702, PROG, DLC_BAD_SEED),
-    "Death Defeated":             (0x1703, PROG, DLC_PURPLE),   
+    "Death Defeated":             (0x1703, PROG, DLC_PURPLE),
     "Time Keeper Defeated":       (0x1704, PROG, DLC_BASE),
     "Scarecrow Defeated":         (0x1705, PROG, DLC_FATAL_FALLS),
     "Giant Defeated":             (0x1706, PROG, DLC_RISE_OF_GIANT),
