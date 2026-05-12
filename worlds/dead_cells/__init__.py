@@ -44,7 +44,7 @@ BASE_WEAPONS = {
     "Throwing Knife",
     "Electric Whip",
     "Firebrands",
-    "Ice Blast",
+    "Frost Blast",
 
     "Cudgel",
     "Greed Shield",
