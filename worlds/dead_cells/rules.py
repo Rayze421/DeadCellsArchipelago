@@ -158,7 +158,7 @@ SKIN_ITEMS = [
     "Modernized Bomber Outfit",
     "ZERO Outfit",
     "Commando Outfit",
-    "Terraria Outfit",
+    "Familiar Outfit",
     "Ironclad Outfit",
 
     # boss rush
