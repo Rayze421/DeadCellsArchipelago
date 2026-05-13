@@ -383,6 +383,7 @@ class DeadCellsWorld(World):
 
 
     #Force "Boss Defeat" locations to hold their associated "Boss Defeated" items if theyre still in the pool
+    #My understanding of where this "Pseudo-Plando" SHOULD go but nothing ive tried worked
    #    if (
    #        "Concierge Defeated" in itempool
    #        and "Concierge Defeat" in self.created_locations
