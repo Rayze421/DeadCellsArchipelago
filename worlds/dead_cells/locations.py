@@ -2200,7 +2200,7 @@ deadcells_location_groups = {
         "Zero Outfit",
         "Delayed Hedgehog Outfit",
     },
-    "Dying checks": { # Any location unlocked by Dying specifically
+    "Dying Checks": { # Any location unlocked by Dying specifically
         "Toxin Lover",
         "Firestarter",
         "Shatter",
@@ -2217,5 +2217,5 @@ deadcells_location_groups = {
         "Shadow Blob",
         "Magma Blob",
         "Toxic Blob"
-    }
+    },
 }

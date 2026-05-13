@@ -15,7 +15,8 @@ from .items import (
     DLC_RISE_OF_GIANT, DLC_BAD_SEED, DLC_FATAL_FALLS,
     DLC_QUEEN_AND_SEA, DLC_PURPLE,
     get_items_for_dlcs, get_filler_items, get_trap_items,
-    get_progression_items, item_id, PROG, USFL, FILR, TRAP, is_cosmetic
+    get_progression_items, item_id, PROG, USFL, FILR, TRAP, is_cosmetic,
+    deadcells_item_groups
 )
 from .locations import (
     LOCATION_TABLE, BASE_ID as LOC_BASE_ID,
@@ -164,6 +165,7 @@ class DeadCellsWorld(World):
         for name, data in LOCATION_TABLE.items()
     }
     location_name_groups = deadcells_location_groups
+    item_name_groups = deadcells_item_groups
 
     # Populated in generate_early, used throughout
     enabled_dlcs: Set[str] = set()
