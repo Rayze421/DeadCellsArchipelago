@@ -102,8 +102,8 @@ BASE_PERKS = {
 # ─────────────────────────────────────
 
 BASE_SKINS = {
-    "GOG Outfit",
-    "French Outfit",
+    "Galaxy Outfit",
+    "Baguette Outfit",
     "Retro Outfit",
     "Snowman Outfit",
     "Santa Outfit",
@@ -115,8 +115,8 @@ BASE_SKINS = {
 # ─────────────────────────────────────
 
 BASE_HEADS = {
-    "Violet Black Hole",
-    "Hello Darkness Vortex",
+    "Violet Hole",
+    "Vortex",
     "Blowtorch",
 }
 

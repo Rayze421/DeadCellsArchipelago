@@ -156,7 +156,7 @@ SKIN_ITEMS = [
     # indie crossovers
     "Shovel Knight Outfit",
     "Modernized Bomber Outfit",
-    "Katana ZERO Outfit",
+    "ZERO Outfit",
     "Commando Outfit",
     "Terraria Outfit",
     "Ironclad Outfit",
@@ -616,7 +616,7 @@ LOCATION_RULES = [
     ),
 
     ("Modernized Bomber Outfit", _has("Baseball Bat")),
-    ("Katana ZERO Outfit", _has("Hattori's Katana")),
+    ("ZERO Outfit", _has("Hattori's Katana")),
     ("Shovel Knight Outfit", _has("Shovel")),
 
 

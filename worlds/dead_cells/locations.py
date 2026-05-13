@@ -277,7 +277,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "HotlineMiamiChicken",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'item_no_blueprint'}],
     },
-    "Katana ZERO Outfit": {
+    "ZERO Outfit": {
         "id": 0x0082, "region": "Checks", "type": "skin",
         "dlc": "", "min_bc": 0, "item": "KatanaZero",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'item_no_blueprint'}],
@@ -2182,7 +2182,7 @@ deadcells_location_groups = {
     "Flawless Cosmetics": { # Any cosmetic that requires doing a stage/boss without getting hit
         "Flawless Torch",
         "Black Hole",
-        "Sanquine Vortex",
+        "Sanguine Vortex",
         "Flawless Concierge Outfit",
         "Flawless Conjunctivius Outfit",
         "Flawless Tick Outfit",
