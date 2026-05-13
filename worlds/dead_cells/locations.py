@@ -247,7 +247,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 0, "item": "DashSword",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'item_no_blueprint'}],
     },
-    "Hollow Knight Outfit": {
+    "Vessel's Outfit": {
         "id": 0x007C, "region": "Checks", "type": "skin",
         "dlc": "", "min_bc": 0, "item": "HollowKnight",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'item_no_blueprint'}],
@@ -952,7 +952,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "RiseOfTheGiant", "min_bc": 0, "item": "ThrowingSpear",
         "sources": [{'biome': 'Cavern', 'min_bc': 0, 'max_bc': 255, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_floor'}],
     },
-    "Santa Outfit": {
+    "Festive Outfit": {
         "id": 0x0109, "region": "Checks", "type": "skin",
         "dlc": "RiseOfTheGiant", "min_bc": 4, "item": "PrisonerSanta",
         "sources": [{'biome': 'Cavern', 'min_bc': 4, 'max_bc': 255, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_floor'}],

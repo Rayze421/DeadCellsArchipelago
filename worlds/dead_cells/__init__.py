@@ -93,7 +93,7 @@ BASE_PERKS = {
     "Spite",
     "Frenzy",
     "Ygdar Orus Li Ox",
-    "Critical Recovery",
+    "Instinct of the Master of Arms",
 }
 
 
@@ -105,8 +105,8 @@ BASE_SKINS = {
     "Galaxy Outfit",
     "Baguette Outfit",
     "Retro Outfit",
-    "Snowman Outfit",
-    "Santa Outfit",
+    "Winter Outfit",
+    "Reverse Burglar's Outfit",
 }
 
 

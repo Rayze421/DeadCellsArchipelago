@@ -114,11 +114,11 @@ SKIN_ITEMS = [
     "Flawless Scarecrow Outfit",
 
     # misc
-    "Snowman Outfit",
-    "Santa Outfit",
+    "Festive Outfit",
+    "Reverse Burglar's Outfit",
 
     # crossover outfits
-    "Hollow Knight Outfit",
+    "Vessel's Outfit",
     "Pentinent's Outfit",
     "Luchador's Outfit",
     "Little Bone's Outfit",
@@ -573,7 +573,7 @@ LOCATION_RULES = [
     ("HEV Outfit", _has("Teleportation Rune")),
 
     # ── Collab skins ─────────────────────────────────────────────────────────
-    ("Hollow Knight Outfit", _has("Pure Nail")),
+    ("Vessel's Outfit", _has("Pure Nail")),
     ("Pentinent's Outfit", _has("Face Flask")),
 
     (
