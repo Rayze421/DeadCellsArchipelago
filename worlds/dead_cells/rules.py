@@ -39,7 +39,7 @@ SKIN_ITEMS = [
     "Golden Outfit", "Legendary Warrior's Outfit", "Ninja Outfit", "Ghost Outfit",
     "Donatello Outfit", "Santa Outfit", "Fisherman's Outfit", "Skeleton Outfit",
     "Carduus Outfit", "Aphrodite Outfit", "Shaman Outfit", "Cloud Outfit",
-    "Hyper Light Drifter Outfit", "A Thousand and One Nights Outfit", "Dictator Outfit", "Warrior Outfit",
+    "The Magician's Outfit", "A Thousand and One Nights Outfit", "Dictator Outfit", "Warrior Outfit",
     "Mage Outfit", "Neon Outfit", "Bobby Outfit", "Demon Outfit",
     "Robin Hood Outfit", "Desert Dweller Outfit", "Galaxy Outfit", "Baguette Outfit",
     "Festive Outfit", "Gardener's Outfit", "Mushroom Boi's Outfit", "Mushroom Outfit",
@@ -122,7 +122,7 @@ SKIN_ITEMS = [
     "Pentinent's Outfit",
     "Luchador's Outfit",
     "Little Bone's Outfit",
-    "Hyper Light Drifter Outfit",
+    "The Magician's Outfit",
     "Explorer's Outfit",
     "Knight's Outfit",
 
