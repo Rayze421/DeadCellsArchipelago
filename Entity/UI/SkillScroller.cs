@@ -4,6 +4,7 @@ using ModCore.Utilities;
 using Serilog;
 
 using static DeadCellsArchipelago.ItemManager;
+using static DeadCellsArchipelago.RoomManager;
 
 namespace DeadCellsArchipelago {
     public class SkillScroller<T> where T : Line
@@ -14,23 +15,28 @@ namespace DeadCellsArchipelago {
         public Flow? flow;
         public Mask? mask;
         public List<T> lines;
-        public int tempHeight = 109;
+        public int tempHeight;
+        public int tempWidth;
         public double lastMousePosY;
+        public double lastMousePosX;
         public int lastHighlight = -1;
+        public int lastHighlightCell = -1;
         public bool empty = true;
         public int maskHeight;
+        public bool interactiveLines;
 
 
-        public SkillScroller(double x, double y, dc.h2d.Object parent, int maskHeight)
+        public SkillScroller(double x, double y, dc.h2d.Object parent, int maskHeight, bool interactiveLines)
         {
             posX = x;
             posY = y;
             this.parent = parent;
+            this.interactiveLines = interactiveLines;
             lines = new List<T>();
             this.maskHeight = maskHeight;
         }
 
-        public void Refresh()
+        public void Refresh(int verticalSpacing)
         {
             if(flow == null) {
                 mask = new Mask(0, maskHeight, parent)
@@ -44,57 +50,74 @@ namespace DeadCellsArchipelago {
                 };
                 flow.set_isVertical(true);
                 flow.set_multiline(true);
-                flow.set_verticalSpacing(10);
+                flow.set_verticalSpacing(verticalSpacing);
+                tempHeight = verticalSpacing;
+                tempWidth = 50;
                 flow.set_overflow(true);
                 flow.set_enableInteractive(true);
 
                 flow.interactive.onWheel = (e) => {
                     double res = flow.y;
-                    int scrollMultiplier = 60;
+                    int scrollMultiplier = 100;
                     if (e.wheelDelta > 0)
                     {
-                        res = Math.Max(flow.y - e.wheelDelta * scrollMultiplier, -(flow.get_outerHeight()-400));
+                        res = Math.Max(flow.y - e.wheelDelta * scrollMultiplier, -(flow.get_outerHeight()-maskHeight));
                     }
                     else
                     {
                         res = Math.Min(flow.y - e.wheelDelta * scrollMultiplier, 0);
                     }
-                    lastMousePosY += flow.y - res;
-                    UpdateHighlight(false);
+
+                    if(interactiveLines)
+                    {
+                        lastMousePosY += flow.y - res;
+                        UpdateHighlight(false);
+                    }
 
                     flow.y = res;
                     flow.posChanged = true;
 
                 };
                 flow.interactive.onMove = (e) => {
-                    lastMousePosY = e.relY;
-                    UpdateHighlight(false);
+                    if(interactiveLines)
+                    {
+                        lastMousePosY = e.relY;
+                        lastMousePosX = e.relX;
+                        UpdateHighlight(false);
+                    }
                 };
                 flow.interactive.onOut = (e) =>
                 {
-                    UpdateHighlight(true);
+                    if(interactiveLines)
+                    {
+                        UpdateHighlight(true);
+                    }
                 };
                 flow.interactive.onClick = (e) =>
                 {
-                    if (lastHighlight != -1)
+                    if (lastHighlight != -1 && interactiveLines)
                     {
                         if (typeof(T) == typeof(ItemLine))
                         {
                             DropItemToPlayer(((ItemLine)(Line) lines[lastHighlight]).itemId);
+                        }
+                        else if (lastHighlightCell != -1 && typeof(T) == typeof(BiomeLine))
+                        {
+                            ((BiomeLine)(Line) lines[lastHighlight]).SetPopUpTracker(lastHighlightCell);
                         }
                     }
                 };
             }
         }
 
-        public void SetContentItemLine(List<string> newList)
+        public void SetContentItemLine(List<string> newList, int color)
         {
             if (flow == null || mask == null) return;
             if (typeof(T) == typeof(ItemLine))
             {
                 int index = 0;
                 foreach (string id in newList) {
-                    lines.Add((T)(Line) new ItemLine(0, 0, id));
+                    lines.Add((T)(Line) new ItemLine(0, 0, id, color));
                     lines[index].AddParent(flow);
                     if(mask.width < lines[index].bgBox.wid)
                     {
@@ -102,6 +125,37 @@ namespace DeadCellsArchipelago {
                     }
                     index ++;
                 }
+                tempHeight += 100 -1;
+            }
+            mask.updateMask();
+        }
+
+        public void SetContentBiomeLine()
+        {
+            if (flow == null || mask == null) return;
+            if (typeof(T) == typeof(BiomeLine))
+            {
+                List<string> allBiomesIds = GetBiomesId();
+                int index = 0;
+                for(int i = 0; i < allBiomesIds.Count; i+=3) {
+                    lines.Add((T)(Line) new BiomeLine(0, 0, allBiomesIds[i], allBiomesIds[i+1], allBiomesIds[i+2]));
+                    lines[index].AddParent(flow);
+
+                    for(int u = 0; u < 3; u++) {
+                        if (!CanTakeExit(allBiomesIds[i+u]))
+                        {
+                            ((BiomeLine)(Line)lines[index]).Locked(u);
+                        }
+                    }
+
+                    if(mask.width < ((BiomeLine)(Line) lines[index]).flow.get_outerWidth())
+                    {
+                        mask.width = ((BiomeLine)(Line) lines[index]).flow.get_outerWidth();
+                    }
+                    index ++;
+                }
+                tempHeight += 180;
+                tempWidth += 320;
             }
             mask.updateMask();
         }
@@ -121,8 +175,33 @@ namespace DeadCellsArchipelago {
                 }
                 else
                 {
-                    ((ItemLine)(Line) lines[lastHighlight]).StopHighlight();
-                    lastHighlight = -1;
+                    if (lastHighlight != -1)
+                    {
+                        ((ItemLine)(Line) lines[lastHighlight]).StopHighlight();
+                        lastHighlight = -1;
+                    }
+                }
+            }
+            else if (typeof(T) == typeof(BiomeLine))
+            {
+                if (!onOut)
+                {
+                    if(lastHighlight != -1)
+                    {
+                        ((BiomeLine)(Line) lines[lastHighlight]).StopHighlight(lastHighlightCell);
+                    }
+                    ((BiomeLine)(Line) lines[(int) lastMousePosY / tempHeight]).Highlight((int) lastMousePosX / tempWidth);
+                    lastHighlight = (int) lastMousePosY / tempHeight;
+                    lastHighlightCell = (int) lastMousePosX / tempWidth;
+                }
+                else
+                {
+                    if (lastHighlight != -1)
+                    {
+                        ((BiomeLine)(Line) lines[lastHighlight]).StopHighlight(lastHighlightCell);
+                        lastHighlight = -1;
+                        lastHighlightCell = -1;
+                    }
                 }
             }
         }
@@ -130,6 +209,19 @@ namespace DeadCellsArchipelago {
         public void SetVisible(bool visible)
         {
             mask?.visible = visible;
+        }
+
+        public List<string> GetBiomesId()
+        {
+            return [
+                /*"Other",*/ "PrisonStart", "PrisonStart", "PrisonCourtyard", "SewerShort", "PurpleGarden", "Greenhouse",
+                "PrisonDepths", "PrisonCorrupt", "PrisonRoof", "Ossuary", "SewerDepths", "DookuCastle",
+                "Swamp", "Bridge", "BeholderPit", "DeathArena", "SwampHeart", "StiltVillage",
+                "AncientTemple", "Tumulus", "Cemetery", "ClockTower", "Crypt", "Cliff",
+                "Cavern", "TopClockTower", "GardenerStage", "Giant", "Castle", "DookuCastleHard",
+                "Shipwreck", "Distillery", "Throne", "DookuArena", "Lighthouse", "QueenArena",
+                "Astrolab", "Observatory", "Bank"
+            ];
         }
     }
 }

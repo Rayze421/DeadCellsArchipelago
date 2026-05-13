@@ -6,10 +6,10 @@ namespace DeadCellsArchipelago {
     {
         public UIBox bgBox;
 
-        public Line(double width, double height, double x, double y)
+        public Line(double width, double height, double x, double y, int color)
         {
             bgBox = new UIBox("boxMain".AsHaxeString(), width, height, 0, 0);
-            bgBox.colorizeSG(660257);
+            bgBox.colorizeSG(color);
             bgBox.x = x;
             bgBox.y = y;
         }

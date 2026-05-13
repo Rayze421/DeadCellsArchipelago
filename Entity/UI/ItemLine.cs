@@ -14,8 +14,8 @@ namespace DeadCellsArchipelago {
         public dc.ui.Text text;
         public string itemId;
 
-        public ItemLine(double x, double y, string itemId)
-            : base(700, 100, x, y)
+        public ItemLine(double x, double y, string itemId, int color)
+            : base(700, 100, x, y, color)
         {
             bool ctrlShow = false;
             double scaleSkill = 1.0/3;

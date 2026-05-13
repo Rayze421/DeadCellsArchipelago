@@ -22,6 +22,7 @@ namespace DeadCellsArchipelago {
         public static bool showClassicMenu { get; set; } = true;
         public static Bitmap? logoBitmap = null;
         public static bool changedMethodCall = false;
+        public static bool changedMethodCallController = false;
         public static dc.ui.Text? apMenuButton = null;
         public static SkillShopSlot buttonWeapon1 = new SkillShopSlot();
         public static SkillShopSlot buttonWeapon2 = new SkillShopSlot();
@@ -31,6 +32,9 @@ namespace DeadCellsArchipelago {
         public static dc.ui.Text? cellsNumber = null;
         public static int shopPrice = 400;
         public static SkillScroller<ItemLine>? scrollerFiller;
+        public static SkillScroller<BiomeLine>? scrollerBiome;
+        public static PopUpTracker? popUpTracker;
+        public static bool showPopUp;
 
         
 
@@ -43,9 +47,11 @@ namespace DeadCellsArchipelago {
             AddMenuButton(self);
 
             AddCellsCount(self);
+
             AddIncolorMenu(self);
             AddFillerMenu(self);
-            
+            AddBiomeMenu(self);
+            AddPopUpMenu(self);
             
         }
 
@@ -88,6 +94,27 @@ namespace DeadCellsArchipelago {
                 {
                     previousAction.Invoke();
                     ResetUI();
+                };
+            }
+
+            if (!changedMethodCallController)
+            {
+                changedMethodCallController = true;
+                HlAction<int, bool> previousAct = self.controller.onActPressed;
+                self.controller.onActPressed = (int i, bool b) =>
+                {
+                    if(showPopUp && i == 8)
+                    {
+                        showPopUp = false;
+                    }
+                    else if(!showClassicMenu && i == 8)
+                    {
+                        showClassicMenu = true;
+                    }
+                    else
+                    {
+                        previousAct.Invoke(i, b);
+                    }
                 };
             }
 
@@ -200,7 +227,7 @@ namespace DeadCellsArchipelago {
                 buttonWeapon1.InitButton(self, 100, 100, () => HERO?.inventory.getEquippedWeaponOn(1), self.weaLeft);
                 buttonWeapon2.InitButton(self, 250, 100, () => HERO?.inventory.getEquippedWeaponOn(0), self.weaRight);
             }
-            
+             
         }
 
         private static void AddIncolorSkills(DefaultPause self, bool invert)
@@ -220,16 +247,36 @@ namespace DeadCellsArchipelago {
         private static void AddFillerMenu(DefaultPause self) {
             if (scrollerFiller == null)
             {
-                scrollerFiller = new SkillScroller<ItemLine>(50, 550, self.bg, 450);
-                scrollerFiller.Refresh();
+                scrollerFiller = new SkillScroller<ItemLine>(50, 550, self.bg, 500, true);
+                scrollerFiller.Refresh(10);
 
                 List<string> ids = new List<string>();
                 for (int i = 0; i < 20; i++) {
                     ids.Add($"Gardener{(i%4)+1}");
                 }
-                scrollerFiller.SetContentItemLine(ids);
+                scrollerFiller.SetContentItemLine(ids, 660257);
             }
             scrollerFiller.SetVisible(!showClassicMenu);
+        }
+
+        private static void AddBiomeMenu(DefaultPause self) {
+            if (scrollerBiome == null)
+            {
+                scrollerBiome = new SkillScroller<BiomeLine>(800, 150, self.bg, 900, true);
+                scrollerBiome.Refresh(25);
+                scrollerBiome.SetContentBiomeLine();
+            }
+            scrollerBiome.SetVisible(!showClassicMenu);
+        }
+
+        private static void AddPopUpMenu(DefaultPause self) {
+            if (popUpTracker == null)
+            {
+                popUpTracker = new PopUpTracker(self.bg);
+                showPopUp = false;
+                popUpTracker.AddFillerMenu();
+            }
+            popUpTracker.SetVisible(showPopUp && !showClassicMenu);
         }
 
         public static void ResetUI()
@@ -244,6 +291,9 @@ namespace DeadCellsArchipelago {
             cellBitmap = null;
             cellsNumber = null;
             scrollerFiller = null;
+            scrollerBiome = null;
+            popUpTracker = null;
+            showPopUp = false;
         }
 
         public static void OnSwapWeaponsApMenu(Hook_Inventory.orig_swapWeapons orig, Inventory self)

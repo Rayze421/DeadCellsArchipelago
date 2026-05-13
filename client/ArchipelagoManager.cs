@@ -29,6 +29,11 @@ namespace DeadCellsArchipelago
         public bool includeCosmetics;
         public bool disableDeathLinkForAspects;
         public bool respawnUpScroll;
+        public bool riseOfTheGiant;
+        public bool theBadSeed;
+        public bool fatalFalls;
+        public bool theQueenAndTheSea;
+        public bool returnToCastlevania;
         
         public bool IsConnected => _isConnected;
         
@@ -70,6 +75,11 @@ namespace DeadCellsArchipelago
                     includeCosmetics = Convert.ToBoolean(slotData["include_cosmetics"]);
                     disableDeathLinkForAspects = Convert.ToBoolean(slotData["death_link_aspect"]);
                     respawnUpScroll = Convert.ToBoolean(slotData["respawn_up"]);
+                    riseOfTheGiant = Convert.ToBoolean(slotData["dlc_rise_of_the_giant"]);
+                    theBadSeed = Convert.ToBoolean(slotData["dlc_the_bad_seed"]);
+                    fatalFalls = Convert.ToBoolean(slotData["dlc_fatal_falls"]);
+                    theQueenAndTheSea = Convert.ToBoolean(slotData["dlc_the_queen_and_the_sea"]);
+                    returnToCastlevania = Convert.ToBoolean(slotData["dlc_return_to_castlevania"]);
 
                     if (deathLinkEnabled >= 0)
                     {

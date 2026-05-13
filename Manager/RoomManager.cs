@@ -252,6 +252,7 @@ namespace DeadCellsArchipelago {
                 case "PrisonRoof":
                 case "Bridge":
                 case "DookuCastleHard":
+                case "Bank":
                     return true;
             }
             return false;
