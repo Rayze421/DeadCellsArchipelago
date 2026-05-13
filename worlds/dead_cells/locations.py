@@ -2197,7 +2197,7 @@ deadcells_location_groups = {
         "White King Outfit",
         "Golden Outfit",
         "Explorer's Outfit",
-        "Zero Outfit",
+        "ZERO Outfit",
         "Delayed Hedgehog Outfit",
     },
     "Respawn Checks": { # Any location unlocked by Dying specifically
