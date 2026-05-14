@@ -114,7 +114,7 @@ SKIN_ITEMS = [
     "Flawless Scarecrow Outfit",
 
     # misc
-    "Festive Outfit",
+    "Winter Outfit",
     "Reverse Burglar's Outfit",
 
     # crossover outfits
