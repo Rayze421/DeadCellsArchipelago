@@ -1,7 +1,10 @@
+using dc.h2d.col;
 using dc.hxd;
 using HaxeProxy.Runtime;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
+using Serilog;
+using dc.ui.hud;
 
 namespace DeadCellsArchipelago {
     public static class ImageManager
@@ -48,7 +51,7 @@ namespace DeadCellsArchipelago {
 
         public static string GetResPath(string name)
         {
-            return Path.Combine(AppContext.BaseDirectory, "..", "..", "mods", "DeadCellsArchipelago", "res", name);;
+            return Path.Combine(AppContext.BaseDirectory, "..", "..", "mods", "DeadCellsArchipelago", "res", name);
         }
 
         public static dc.h3d.Vector ColorVectorRGBA(double r, double g, double b, double A)
@@ -57,6 +60,25 @@ namespace DeadCellsArchipelago {
             double G = g /255;
             double B = b /255;
             return new dc.h3d.Vector(new Ref<double>(ref R), new Ref<double>(ref G), new Ref<double>(ref B), new Ref<double>(ref A));
+        }
+
+        public static void CenterX(dc.h2d.Object parent, dc.h2d.Object child)
+        {
+            Bounds boundsParent = parent.getSize(new Bounds());
+            Bounds boundsChild = child.getSize(new Bounds());
+
+            if (parent is Skill) child.x = ((boundsParent.xMax*((Skill) parent).get_pixelScale()) - boundsChild.xMax) /2;
+            else child.x = (boundsParent.xMax - boundsChild.xMax) /2;
+            child.posChanged = true;
+        }
+
+        public static void CenterY(dc.h2d.Object parent, dc.h2d.Object child)
+        {
+            Bounds boundsParent = parent.getSize(new Bounds());
+            Bounds boundsChild = child.getSize(new Bounds());
+            if (parent is Skill) child.y = ((boundsParent.yMax*((Skill) parent).get_pixelScale()) - boundsChild.yMax) /2;
+            else child.y = (boundsParent.yMax - boundsChild.yMax) /2;
+            child.posChanged = true;
         }
     }
 }

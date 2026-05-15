@@ -5,6 +5,8 @@ using Serilog;
 
 using static DeadCellsArchipelago.ItemManager;
 using static DeadCellsArchipelago.RoomManager;
+using static DeadCellsArchipelago.TrackerData;
+using static DeadCellsArchipelago.PauseMenuManager;
 
 namespace DeadCellsArchipelago {
     public class SkillScroller<T> where T : Line
@@ -103,6 +105,8 @@ namespace DeadCellsArchipelago {
                         }
                         else if (lastHighlightCell != -1 && typeof(T) == typeof(BiomeLine))
                         {
+                            popUpTracker?.biomeLineIndex = lastHighlight;
+                            popUpTracker?.biomeCellIndex = lastHighlightCell;
                             ((BiomeLine)(Line) lines[lastHighlight]).SetPopUpTracker(lastHighlightCell);
                         }
                     }
@@ -137,8 +141,9 @@ namespace DeadCellsArchipelago {
             {
                 List<string> allBiomesIds = GetBiomesId();
                 int index = 0;
+                Dictionary<string, HashSet<string>> data = StartCalculate();
                 for(int i = 0; i < allBiomesIds.Count; i+=3) {
-                    lines.Add((T)(Line) new BiomeLine(0, 0, allBiomesIds[i], allBiomesIds[i+1], allBiomesIds[i+2]));
+                    lines.Add((T)(Line) new BiomeLine(0, 0, allBiomesIds[i], allBiomesIds[i+1], allBiomesIds[i+2], data));
                     lines[index].AddParent(flow);
 
                     for(int u = 0; u < 3; u++) {
@@ -211,10 +216,20 @@ namespace DeadCellsArchipelago {
             mask?.visible = visible;
         }
 
+        public void RemoveAllContent()
+        {
+            if (flow == null) return;
+            foreach (Line line in lines)
+            {
+                line.bgBox.remove();
+            }
+            lines = new List<T>();
+        }
+
         public List<string> GetBiomesId()
         {
             return [
-                /*"Other",*/ "PrisonStart", "PrisonStart", "PrisonCourtyard", "SewerShort", "PurpleGarden", "Greenhouse",
+                "Other", "PrisonStart", "PrisonCourtyard", "SewerShort", "PurpleGarden", "Greenhouse",
                 "PrisonDepths", "PrisonCorrupt", "PrisonRoof", "Ossuary", "SewerDepths", "DookuCastle",
                 "Swamp", "Bridge", "BeholderPit", "DeathArena", "SwampHeart", "StiltVillage",
                 "AncientTemple", "Tumulus", "Cemetery", "ClockTower", "Crypt", "Cliff",

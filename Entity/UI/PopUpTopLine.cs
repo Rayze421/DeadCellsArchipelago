@@ -1,0 +1,76 @@
+using dc.h2d;
+using dc.ui;
+using Serilog;
+
+using static DeadCellsArchipelago.PauseMenuManager;
+
+namespace DeadCellsArchipelago {
+    public class PopUpTopLine
+    {
+        public Flow flow;
+
+        public PopUpTopLine(double x, double y, dc.h2d.Object parent, int biomeLineIndex, int biomeCellIndex)
+        {
+            flow = new Flow(parent)
+            {
+                x = x
+            };
+
+            if (scrollerBiome == null) return;
+            Dictionary<string, HashSet<string>> data = scrollerBiome.lines[biomeLineIndex].GetBiomeData(biomeCellIndex);
+            string biomeId = scrollerBiome.lines[biomeLineIndex].GetBiomeId(biomeCellIndex);
+
+            double totalCellsWidth = 0;
+            int nbCells = 0;
+            if (biomeId != "Other")
+            {
+                List<string> start = ["T", "R"];
+                for (int difficulty = 0; difficulty <= 5; difficulty++)
+                {
+                    int cellT = 0;
+                    HashSet<string> cellR = [];
+                    foreach (string kind in start)
+                    {
+                        string key = $"{kind}{biomeId}{difficulty}";
+                        if (data.ContainsKey(key))
+                        {
+                            if (kind == "T")
+                            {
+                                cellT = data[key].Count;
+                            }
+                            else
+                            {
+                                cellR = data[key];
+                            }
+                        }
+                    }
+                    PopUpTopCell cell = new PopUpTopCell(flow, $"BSC {difficulty}", cellR, cellT);
+                    totalCellsWidth += cell.interW;
+                    nbCells++;
+                }
+            }
+            else
+            {
+                PopUpTopCell cell1 = new PopUpTopCell(flow, "ASP", data["RAspect"], data["TAspect"].Count);
+                totalCellsWidth += cell1.interW;
+
+                PopUpTopCell cell2 = new PopUpTopCell(flow, "Rift", data["RChallengeT"], data["TChallengeT"].Count);
+                totalCellsWidth += cell2.interW;
+
+                PopUpTopCell cell3 = new PopUpTopCell(flow, "All", data["AllR"], data["AllT"].Count);
+                totalCellsWidth += cell3.interW;
+                nbCells = 3;
+            }
+
+            flow.set_horizontalSpacing((int)((700 -totalCellsWidth) / (nbCells-1)));
+
+            flow.y = y;
+            flow.posChanged = true;
+        }
+
+        public void SetVisible(bool visible)
+        {
+            flow.visible = visible;
+        }
+    }
+}

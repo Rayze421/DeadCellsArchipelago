@@ -16,23 +16,76 @@ namespace DeadCellsArchipelago {
         public Bitmap highlight;
         public Bitmap fade;
         public Bitmap bLock;
+        public string biomeId;
+        public Dictionary<string, HashSet<string>> data;
 
-        public BiomeCell(double x, double y, dc.h2d.Object? parent, string biomeId)
+        public BiomeCell(double x, double y, dc.h2d.Object? parent, string biomeId, Dictionary<string, HashSet<string>> data)
         {
-            Tile levelTile = Assets.Class.levelLogos.getLevelLogo(biomeId.AsHaxeString());
-            bitmap = new Bitmap(levelTile, parent)
+            this.biomeId = biomeId;
+            this.data = data;
+
+            if (biomeId == "Other")
             {
-                x = x,
-                y = y
-            };
+                Tile levelTile = Assets.Class.levelLogos.getLevelLogo("Lighthouse".AsHaxeString());
+                bitmap = new Bitmap(levelTile, parent)
+                {
+                    x = x,
+                    y = y
+                };
+                int f = 0;
+                double xy = 0;
+                Tile hideTile = Assets.Class.ui.getTile("walterWhite".AsHaxeString(), new Ref<int>(ref f), new Ref<double>(ref xy), new Ref<double>(ref xy), null);
+                new Bitmap(hideTile, bitmap)
+                {
+                    scaleX = 320,
+                    scaleY = 180,
+                    color = ColorVectorRGBA(10, 19, 33, 1)
+                };
+                
+                Tile logoTile = Assets.Class.ui.getTile("logoDeadCellsSmall".AsHaxeString(), new Ref<int>(ref f), new Ref<double>(ref xy), new Ref<double>(ref xy), null);
+                var bLogo = new Bitmap(logoTile, bitmap)
+                {
+                    color = ColorVectorRGBA(255, 255, 255, 5)
+                };
+                Bounds boundsB = bitmap.getSize(new Bounds());
+                Bounds boundsLogo = bLogo.getSize(new Bounds());
+                bLogo.x = boundsB.xMax - boundsLogo.xMax;
+                bLogo.y = boundsB.yMax - boundsLogo.yMax;
+            }
+            else
+            {
+                Tile levelTile = Assets.Class.levelLogos.getLevelLogo(biomeId.AsHaxeString());
+                bitmap = new Bitmap(levelTile, parent)
+                {
+                    x = x,
+                    y = y
+                };
+            }
+
+
             Bounds boundsLevel = bitmap.getSize(new Bounds());
 
             double scaleText = 1;
             text = new dc.ui.Text(bitmap, true, false, new Ref<double>(ref scaleText), null, null);
-            text.set_text($"72 ".AsHaxeString());
+
+            string keyT;
+            string keyR;
+
+            if (biomeId == "Other")
+            {
+                keyT = $"AllT";
+                keyR = $"AllR";
+            }
+            else
+            {
+                keyT = $"T{biomeId}T";
+                keyR = $"R{biomeId}T";
+            }
+
+            text.set_text($"{data[keyT].Count-data[keyR].Count}/{data[keyT].Count} ".AsHaxeString());
+            if(data[keyR].Count == 0) text.set_textColor(16776960);
             text.x = boundsLevel.xMax - text.get_textWidth() -10;
             text.y = 10;
-
             int frame = 0;
             double XY = 0;
             Tile fadeTile = Assets.Class.ui.getTile("walterWhite".AsHaxeString(), new Ref<int>(ref frame), new Ref<double>(ref XY), new Ref<double>(ref XY), null);
@@ -43,6 +96,7 @@ namespace DeadCellsArchipelago {
                 scaleY = 180,
                 color = ColorVectorRGBA(0, 0, 0, 0.75)
             };
+            
 
             Tile lockTile = Assets.Class.ui.getTile("locked".AsHaxeString(), new Ref<int>(ref frame), new Ref<double>(ref XY), new Ref<double>(ref XY), null);
             bLock = new Bitmap(lockTile, bitmap)
@@ -82,14 +136,21 @@ namespace DeadCellsArchipelago {
 
         public void Locked()
         {
-            fade.visible = true;
-            bLock.visible = true;
+            if (biomeId != "Other")
+            {
+                fade.visible = true;
+                bLock.visible = true;
+            }
         }
 
         public void SetPopUpTracker()
         {
             if(popUpTracker == null) return;
             showPopUp = true;
+            
+            UpdateTopPopUp();
+
+            popUpTracker.scrollerItems?.RemoveAllContent();
             popUpTracker.scrollerItems?.flow?.y = 0;
             popUpTracker.scrollerItems?.flow?.posChanged = true;
         }

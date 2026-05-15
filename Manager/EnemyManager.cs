@@ -23,7 +23,7 @@ namespace DeadCellsArchipelago {
                     mob.eliteAnger(new Ref<bool>(ref bump));
                 }
                 double reductionValue = 0;
-                mob.setAffectS(8, 1, new Ref<double>(ref reductionValue), true);
+                mob.setAffectS(8, 1, new Ref<double>(ref reductionValue), true); //8 is for a stun effect
             }
         }
 

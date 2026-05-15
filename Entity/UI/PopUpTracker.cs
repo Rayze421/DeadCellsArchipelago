@@ -10,6 +10,9 @@ namespace DeadCellsArchipelago {
         public UIBox bgBox;
         public UIBox outerBox;
         public SkillScroller<ItemLine>? scrollerItems;
+        public PopUpTopLine? topLine;
+        public int biomeLineIndex;
+        public int biomeCellIndex;
 
         public PopUpTracker(dc.h2d.Object parent)
         {
@@ -37,18 +40,31 @@ namespace DeadCellsArchipelago {
             bgBox.visible = visible;
             outerBox.visible = visible;
             scrollerItems?.SetVisible(visible);
+            topLine?.SetVisible(visible);
         }
 
-        public void AddFillerMenu() {
+        public void AddFillerMenu()
+        {
             scrollerItems = new SkillScroller<ItemLine>(bgBox.x+10, bgBox.y+100, parent, 500, false);
             scrollerItems.Refresh(10);
 
-            List<string> ids = new List<string>();
-            for (int i = 0; i < 20; i++) {
-                ids.Add($"Gardener{(i%4)+1}");
-            }
-            scrollerItems.SetContentItemLine(ids, 2237002);
+            topLine = new PopUpTopLine(bgBox.x+10, bgBox.y+5, parent, biomeLineIndex, biomeCellIndex);
             scrollerItems.SetVisible(true);
+        }
+
+        public void UpdateTopContent()
+        {
+            topLine?.flow.remove();
+            topLine = new PopUpTopLine(bgBox.x+10, bgBox.y+5, parent, biomeLineIndex, biomeCellIndex);
+        }
+
+        public void UpdateScrollContent(HashSet<string> itemIds)
+        {
+            if(scrollerItems == null) return;
+            scrollerItems.RemoveAllContent();
+            scrollerItems.SetContentItemLine(itemIds.ToList(), 2237002);
+            scrollerItems.flow?.y = 0;
+            scrollerItems.flow?.posChanged = true;
         }
     }
 }

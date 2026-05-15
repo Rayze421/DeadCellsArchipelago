@@ -112,11 +112,11 @@ namespace DeadCellsArchipelago {
             return orig(self, user, seed, ldat, resetCount).concat(levelMaps);
         }
 
-        public static void SendBiomeCheck(string locationId)
+        public static void SendBiomeCheck(string locationId, string locationSaveId)
         {
             if (ARCHIPELAGO != null)
             {
-                ARCHIPELAGO.SendCheck(locationId, locationId, "Biome:");
+                ARCHIPELAGO.SendCheck(locationId, locationSaveId, "Biome:");
             }
             else
             {
@@ -191,18 +191,19 @@ namespace DeadCellsArchipelago {
             orig(self);
         }
 
-        private static void PrepareBiomeCheck(string locationName, string kind, string destinationId)
+        private static void PrepareBiomeCheck(string locationId, string kind, string destinationId)
         {
             if(SAVED_DATA != null)
             {
-                if (IdToNameKeyExist(locationName))
+                string locationName = locationId;
+                if (IdToNameKeyExist(locationId))
                 {
-                    locationName = GetName(locationName);
+                    locationName = GetName(locationId);
                 }
 
-                if(!SAVED_DATA.IsCheckSent(locationName + kind))
+                if(!SAVED_DATA.IsCheckSent(locationId + kind))
                 {
-                    SendBiomeCheck(locationName + kind);
+                    SendBiomeCheck(locationName + kind, locationId + kind);
                 }
                 SAVED_DATA.currentLevelId = destinationId;
             }

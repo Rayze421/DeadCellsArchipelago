@@ -279,6 +279,19 @@ namespace DeadCellsArchipelago {
             popUpTracker.SetVisible(showPopUp && !showClassicMenu);
         }
 
+        public static void UpdateTopPopUp() {
+            if (popUpTracker != null)
+            {
+                popUpTracker.UpdateTopContent();
+            }
+        }
+        public static void UpdateScrollContent(HashSet<string> itemIds) {
+            if (popUpTracker != null)
+            {
+                popUpTracker.UpdateScrollContent(itemIds);
+            }
+        }
+
         public static void ResetUI()
         {
             logoBitmap = null;

@@ -27,6 +27,7 @@ namespace DeadCellsArchipelago {
         //Instantly unlock the blueprint
         public static void UnlockBlueprint(string blueprintId)
         {
+            //Log.Information($" {HERO == null}  {ITEM_META_MANAGER == null} ===");
             if (HERO != null && ITEM_META_MANAGER != null)
             {
                 try
@@ -44,10 +45,13 @@ namespace DeadCellsArchipelago {
         //hasRevealedItem allow or not the blueprint to spawn
         public static bool ReallyHasBlueprint(Hook_ItemMetaManager.orig_hasRevealedItem orig, ItemMetaManager self, dc.String k)
         {
+            //Log.Error($" {k} {ARCHIPELAGO != null} {(!InCosmeticList(k.ToString()) || ARCHIPELAGO.includeCosmetics)} {!InCosmeticList(k.ToString())} {ARCHIPELAGO.includeCosmetics}");
             if(ARCHIPELAGO != null && (!InCosmeticList(k.ToString()) || ARCHIPELAGO.includeCosmetics))
             {
+                //Log.Error($"true: {SAVED_DATA != null && SAVED_DATA.IsCheckSent(k.ToString())}");
                 return SAVED_DATA != null && SAVED_DATA.IsCheckSent(k.ToString()); //Drop the blueprint only when he is not in the saved checklist
             }
+            //Log.Error($"false: {orig(self, k)}");
             return orig(self, k);
         }
 
