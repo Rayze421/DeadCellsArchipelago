@@ -11,6 +11,7 @@ namespace DeadCellsArchipelago {
     public static class BlueprintManager
     {
         public static bool showBlueprintLog = false;
+        public static bool useOriginalHasRevealItem = false;
 
         //Called when the hero get a blueprint, picked in game or by UnlockBlueprint.
         public static bool OnBlueprintPicked(Hook_Hero.orig_pickBlueprint orig, Hero self, dc.String k)
@@ -32,8 +33,11 @@ namespace DeadCellsArchipelago {
             {
                 try
                 {
+                    useOriginalHasRevealItem = true;
                     ITEM_META_MANAGER.revealItem(blueprintId.AsHaxeString(), true);
+                    useOriginalHasRevealItem = false;
                     Log.Information($"=== Blueprint unlocked:  {blueprintId} ===");
+
                 }
                 catch (Exception ex)
                 {
@@ -45,13 +49,10 @@ namespace DeadCellsArchipelago {
         //hasRevealedItem allow or not the blueprint to spawn
         public static bool ReallyHasBlueprint(Hook_ItemMetaManager.orig_hasRevealedItem orig, ItemMetaManager self, dc.String k)
         {
-            //Log.Error($" {k} {ARCHIPELAGO != null} {(!InCosmeticList(k.ToString()) || ARCHIPELAGO.includeCosmetics)} {!InCosmeticList(k.ToString())} {ARCHIPELAGO.includeCosmetics}");
-            if(ARCHIPELAGO != null && (!InCosmeticList(k.ToString()) || ARCHIPELAGO.includeCosmetics))
+            if(ARCHIPELAGO != null && (!InCosmeticList(k.ToString()) || ARCHIPELAGO.includeCosmetics) && !useOriginalHasRevealItem)
             {
-                //Log.Error($"true: {SAVED_DATA != null && SAVED_DATA.IsCheckSent(k.ToString())}");
                 return SAVED_DATA != null && SAVED_DATA.IsCheckSent(k.ToString()); //Drop the blueprint only when he is not in the saved checklist
             }
-            //Log.Error($"false: {orig(self, k)}");
             return orig(self, k);
         }
 

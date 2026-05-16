@@ -35,11 +35,13 @@ namespace DeadCellsArchipelago {
         public static int aspectsToIter = 0;
         public static List<string> dropableList = [];
         public static List<string> cosmeticsList = [];
+        public static List<string> headList = [];
         public static int bossRuneGivenSinceLaunch = 0;
         public static Dictionary<string, int> ProgressionItemGivenSinceLaunch { get; set; } = [];
         public static Dictionary<string, int> fillerItemGivenSinceLaunch { get; set; } = [];
         public static List<string> History = [];
         public static bool disableTrapOnEndBoss = false;
+        public static bool dontGiveBobbyHead = false;
 
         public static void InitLists()
         {
@@ -59,7 +61,12 @@ namespace DeadCellsArchipelago {
                 {
                     cosmeticsList.Add(item.id.ToString());
                 }
+                if(group == 14)
+                {
+                    headList.Add(item.id.ToString());
+                }
             }
+            cosmeticsList.Remove("Cultist");
         }
 
         //Drop the item with the id @itemName to the player position
@@ -357,7 +364,14 @@ namespace DeadCellsArchipelago {
                                     {
                                         trapChallenge = true;
                                         levelMapNotChallenge = USER.game.curLevel.map;
-                                        LevelTransition.Class.gotoSub.Invoke(levelMapChallenge, null);
+                                        try
+                                        {
+                                            LevelTransition.Class.gotoSub.Invoke(levelMapChallenge, null);
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            Log.Error($"Trap_FlawlessChallenge error : {ex}");
+                                        }
                                     }
                                     break;
                                 default:
@@ -387,7 +401,7 @@ namespace DeadCellsArchipelago {
                     return true;
                 }
 
-                if(itemName.Length >= 3 && itemName[..3] == "ASP")
+                if(itemName.Length >= 3 && itemName[..3] == "ASP" || InHeadList(itemName))
                 {
                     var progress = new ItemProgress(itemName.AsHaxeString());
                     ITEM_META_MANAGER.itemProgress.push(progress);
@@ -567,6 +581,22 @@ namespace DeadCellsArchipelago {
             return false;
         }
 
+        public static bool InHeadList(string itemName)
+        {
+            if(!headList.Any())
+            {
+                InitLists();
+            }
+            foreach (var item in headList)
+            {
+                if(item == itemName)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public static void LogItem(string itemId)
         {
             if(USER != null && USER.game != null)
@@ -733,6 +763,7 @@ namespace DeadCellsArchipelago {
                 case "BlackHoleViolet":
                 case "VortexHelloDarkness":
                 case "BlowTorch":
+                case "BobbyFlame":
                     return true;
             }
             return false;
