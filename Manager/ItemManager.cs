@@ -39,6 +39,7 @@ namespace DeadCellsArchipelago {
         public static Dictionary<string, int> ProgressionItemGivenSinceLaunch { get; set; } = [];
         public static Dictionary<string, int> fillerItemGivenSinceLaunch { get; set; } = [];
         public static List<string> History = [];
+        public static bool disableTrapOnEndBoss = false;
 
         public static void InitLists()
         {
@@ -323,43 +324,46 @@ namespace DeadCellsArchipelago {
                 {
                     if(ShouldDropItem(itemName))
                     {
-                        switch (itemName)
+                        if (!disableTrapOnEndBoss)
                         {
-                            case "Trap_Curse":
-                                if(HERO != null)
-                                {
-                                    bool hidePopup = false;
-                                    bool useAltSound = false;
-                                    HERO.curse(50, "Archipelago Curse Trap".AsHaxeString(), new Ref<bool>(ref hidePopup), new Ref<bool>(ref useAltSound));
-                                }
-                                break;
-                            case "Trap_SpawnElite":
-                                EliteTrap();
-                                break;
-                            case "Trap_RemoveGold":
-                                if(USER != null && HERO != null)
-                                {
-                                    bool noStats = false;
-                                    HERO.substractMoney(USER.game.data.money, new Ref<bool>(ref noStats));
-                                }
-                                break;
-                            case "Trap_BreakWeapon":
-                                RemoveARandomWeapon();
-                                break;
-                            case "Trap_InvertControls":
-                                InitSwitchControls();
-                                break;
-                            case "Trap_FlawlessChallenge":
-                                if (levelMapChallenge != null && USER != null && HERO != null)
-                                {
-                                    trapChallenge = true;
-                                    levelMapNotChallenge = USER.game.curLevel.map;
-                                    LevelTransition.Class.gotoSub.Invoke(levelMapChallenge, null);
-                                }
-                                break;
-                            default:
-                                Log.Warning("=== Not implemented yet ===");
-                                break;
+                            switch (itemName)
+                            {
+                                case "Trap_Curse":
+                                    if(HERO != null)
+                                    {
+                                        bool hidePopup = false;
+                                        bool useAltSound = false;
+                                        HERO.curse(50, "Archipelago Curse Trap".AsHaxeString(), new Ref<bool>(ref hidePopup), new Ref<bool>(ref useAltSound));
+                                    }
+                                    break;
+                                case "Trap_SpawnElite":
+                                    EliteTrap();
+                                    break;
+                                case "Trap_RemoveGold":
+                                    if(USER != null && HERO != null)
+                                    {
+                                        bool noStats = false;
+                                        HERO.substractMoney(USER.game.data.money, new Ref<bool>(ref noStats));
+                                    }
+                                    break;
+                                case "Trap_BreakWeapon":
+                                    RemoveARandomWeapon();
+                                    break;
+                                case "Trap_InvertControls":
+                                    InitSwitchControls();
+                                    break;
+                                case "Trap_FlawlessChallenge":
+                                    if (levelMapChallenge != null && USER != null && HERO != null)
+                                    {
+                                        trapChallenge = true;
+                                        levelMapNotChallenge = USER.game.curLevel.map;
+                                        LevelTransition.Class.gotoSub.Invoke(levelMapChallenge, null);
+                                    }
+                                    break;
+                                default:
+                                    Log.Warning("=== Not implemented yet ===");
+                                    break;
+                            }
                         }
                         AddToHistory(LogName);
                     }

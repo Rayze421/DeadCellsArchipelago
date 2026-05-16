@@ -81,6 +81,7 @@ namespace DeadCellsArchipelago {
             if(ldat.id.ToString() == "PrisonStart")
             {
                 shouldGiveItemsNewRun = true;
+                disableTrapOnEndBoss = false;
                 if(SAVED_DATA != null && SAVED_DATA.currentLevelId != "PrisonStart" && !resetOnNextPrisonStart)
                 {
                     PrepareBiomeCheck(SAVED_DATA.currentLevelId, " Exit", ldat.id.ToString());
