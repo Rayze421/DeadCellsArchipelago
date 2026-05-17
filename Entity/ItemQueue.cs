@@ -21,6 +21,12 @@ namespace DeadCellsArchipelago
 
             string itemName = pendingItems[0];
 
+            if (itemName.Length >= 9 && itemName[^9..] == " Defeated")
+            {
+                pendingItems.RemoveAt(0);
+                return;
+            }
+
             string itemId = itemName;
             if (itemId.Length >= 7 && itemId[^7..] == " Unlock")
             {

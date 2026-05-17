@@ -278,23 +278,20 @@ class DeadCellsWorld(World):
                 location.place_locked_item(self.create_item(item_name))
                 locked_items.add(item_name)
             except KeyError:
-                pass
+                locked_items.add(item_name)
 
         # ─────────────────────────────────────
         # 1. Gather item groups
         # ─────────────────────────────────────
-        for item_name, data in get_items_for_dlcs(enabled_dlcs).items():
-            if item_name in locked_items:
-                continue
-        
         progression_items = get_progression_items(enabled_dlcs)   # dict[name, (offset, class, dlc)]
+        progression_items = {name: data for name, data in progression_items.items() if name not in locked_items}
         useful_items = get_items_for_dlcs(enabled_dlcs)           # dict[name, (offset, class, dlc)]
         filler_items = get_filler_items(enabled_dlcs)             # list[str]
         trap_items = get_trap_items()                             # list[str]
         
 
         # Remove progression items from useful pool
-        useful_items = [name for name in useful_items if name not in progression_items]
+        useful_items = [name for name in useful_items if (name not in progression_items) and (name not in locked_items)]
 
     # ─────────────────────────────────────
     # 2. Remove cosmetics if option disabled
@@ -376,53 +373,6 @@ class DeadCellsWorld(World):
             and self.options.boss_cells.value != 5
         ):
             itempool.remove("Observatory")
-
-    # Handle Boss Defeat items to not generate without the associated DLC
-        if (
-            "Mama Tick Defeated" in itempool
-            and DLC_BAD_SEED not in self.enabled_dlcs
-        ):
-            itempool.remove("Mama Tick Defeated")
-        if (
-            "Scarecrow Defeated" in itempool
-            and DLC_FATAL_FALLS not in self.enabled_dlcs
-        ):
-            itempool.remove("Scarecrow Defeated")
-        if (
-            "Giant Defeated" in itempool
-            and DLC_RISE_OF_GIANT not in self.enabled_dlcs
-        ):
-            itempool.remove("Giant Defeated")
-        if (
-            "Collector Defeated" in itempool
-            and DLC_RISE_OF_GIANT not in self.enabled_dlcs
-        ):
-            itempool.remove("Collector Defeated")
-        if (
-            "Queen Defeated" in itempool
-            and DLC_QUEEN_AND_SEA not in self.enabled_dlcs
-        ):
-            itempool.remove("Queen Defeated")
-        if (
-            "Death Defeated" in itempool
-            and DLC_PURPLE not in self.enabled_dlcs
-        ):
-            itempool.remove("Death Defeated")
-        if (
-            "Dracula Defeated" in itempool
-            and DLC_PURPLE not in self.enabled_dlcs
-        ):
-            itempool.remove("Dracula Defeated")
-
-
-    #Force "Boss Defeat" locations to hold their associated "Boss Defeated" items if theyre still in the pool
-    #My understanding of where this "Pseudo-Plando" SHOULD go but nothing ive tried worked
-   #    if (
-   #        "Concierge Defeated" in itempool
-   #        and "Concierge Defeat" in self.created_locations
-   #    ):
-   #        itempool.remove("Concierge Defeated"),
-   #        "Concierge Defeat" == self.create_item("Concierge Defeated")
 
     # Calculate remaining slots
         remaining_slots = total_locations - len(itempool)
@@ -581,19 +531,3 @@ class DeadCellsWorld(World):
         """
         fillers = list(get_filler_items(self.enabled_dlcs).keys())
         return self.random.choice(fillers)
-
-
-# ─────────────────────────────────────────────────────────────────────────────
-# Category cache — built once at import time from items.json
-# Used by _item_enabled() to filter cosmetics
-# ─────────────────────────────────────────────────────────────────────────────
-import json as _json
-import os as _os
-
-_ITEMS_JSON_PATH = _os.path.join(_os.path.dirname(__file__), "items.json")
-try:
-    with open(_ITEMS_JSON_PATH) as _f:
-        _raw = _json.load(_f)
-    _ITEM_CATEGORY: Dict[str, str] = {k: v["category"] for k, v in _raw.items()}
-except FileNotFoundError:
-    _ITEM_CATEGORY = {}
