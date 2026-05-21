@@ -3,9 +3,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
-using System.Net;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,12 +17,18 @@ namespace DeadCellsInstaller
         private const string CORE_API = "https://api.github.com/repos/dead-cells-core-modding/core/releases/latest";
         private const string MOD_API  = "https://api.github.com/repos/Maxlamenace572/DeadCellsArchipelago/releases/latest";
 
+        private const string DEFAULT_PATH =
+            @"C:\Program Files (x86)\Steam\steamapps\common\Dead Cells\deadcells.exe";
+
         // ─── Controls ───────────────────────────────────────────────────
         private Label       lblTitle;
         private Label       lblPath;
         private TextBox     txtPath;
         private Button      btnBrowse;
+        private Label       lblWarning;
+        private CheckBox    chkNonSteam;
         private Button      btnInstall;
+        private Button      btnLaunch;
         private ProgressBar progressBar;
         private Label       lblStatus;
         private RichTextBox rtbLog;
@@ -35,16 +39,25 @@ namespace DeadCellsInstaller
         private static readonly string ConfigPath = Path.Combine(
             AppDomain.CurrentDomain.BaseDirectory, "installer.cfg");
 
+        // ════════════════════════════════════════════════════════════════
+        //  CONSTRUCTEUR
+        // ════════════════════════════════════════════════════════════════
         public MainForm()
         {
             InitializeComponent();
-            using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("DeadCellsInstaller.logo.ico"))
+            using (var stream = System.Reflection.Assembly.GetExecutingAssembly()
+                .GetManifestResourceStream("DeadCellsInstaller.logo.ico"))
             {
-                this.Icon = new Icon(stream);
+                if (stream != null) this.Icon = new Icon(stream);
             }
             LoadSavedPath();
+            // Calcul du warning au lancement
+            _ = RefreshWarningAsync();
         }
 
+        // ════════════════════════════════════════════════════════════════
+        //  CONFIG PERSISTANTE
+        // ════════════════════════════════════════════════════════════════
         private void LoadSavedPath()
         {
             try
@@ -53,16 +66,20 @@ namespace DeadCellsInstaller
                 {
                     string saved = File.ReadAllText(ConfigPath).Trim();
                     if (!string.IsNullOrEmpty(saved))
+                    {
                         txtPath.Text = saved;
+                        return;
+                    }
                 }
             }
-            catch { /* silencieux */ }
+            catch { }
+            txtPath.Text = DEFAULT_PATH;
         }
 
         private void SavePath(string path)
         {
             try { File.WriteAllText(ConfigPath, path); }
-            catch { /* silencieux */ }
+            catch { }
         }
 
         // ════════════════════════════════════════════════════════════════
@@ -70,15 +87,15 @@ namespace DeadCellsInstaller
         // ════════════════════════════════════════════════════════════════
         private void InitializeComponent()
         {
-            this.Text            = "Dead Cells Archipelago Installer";
-            this.Size            = new Size(620, 480);
-            this.MinimumSize     = new Size(620, 480);
-            this.StartPosition   = FormStartPosition.CenterScreen;
-            this.BackColor       = Color.FromArgb(22, 22, 30);
-            this.ForeColor       = Color.White;
-            this.Font            = new Font("Segoe UI", 9.5f);
+            this.Text          = "Dead Cells Archipelago Installer";
+            this.Size          = new Size(620, 540);
+            this.MinimumSize   = new Size(620, 540);
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.BackColor     = Color.FromArgb(22, 22, 30);
+            this.ForeColor     = Color.White;
+            this.Font          = new Font("Segoe UI", 9.5f);
 
-            // Title
+            // ── Title ──
             lblTitle = new Label
             {
                 Text      = "Dead Cells · Archipelago Installer",
@@ -88,7 +105,7 @@ namespace DeadCellsInstaller
                 Location  = new Point(20, 18)
             };
 
-            // Path label
+            // ── Path label ──
             lblPath = new Label
             {
                 Text      = "Path to deadcells.exe :",
@@ -97,17 +114,18 @@ namespace DeadCellsInstaller
                 ForeColor = Color.FromArgb(180, 180, 190)
             };
 
-            // Path text box
+            // ── Path text box ──
             txtPath = new TextBox
             {
-                Location  = new Point(20, 85),
-                Width     = 480,
-                BackColor = Color.FromArgb(35, 35, 45),
-                ForeColor = Color.White,
+                Location    = new Point(20, 85),
+                Width       = 480,
+                BackColor   = Color.FromArgb(35, 35, 45),
+                ForeColor   = Color.White,
                 BorderStyle = BorderStyle.FixedSingle
             };
+            txtPath.TextChanged += async (s, e) => await RefreshWarningAsync();
 
-            // Browse button
+            // ── Browse ──
             btnBrowse = new Button
             {
                 Text      = "Browse…",
@@ -122,12 +140,34 @@ namespace DeadCellsInstaller
             btnBrowse.FlatAppearance.BorderColor = Color.FromArgb(80, 80, 100);
             btnBrowse.Click += BtnBrowse_Click;
 
-            // Install button
+            // ── Warning label ──
+            lblWarning = new Label
+            {
+                Text      = "",
+                AutoSize  = false,
+                Location  = new Point(20, 116),
+                Width     = 570,
+                Height    = 20,
+                ForeColor = Color.FromArgb(255, 200, 60),
+                Font      = new Font("Segoe UI", 9f)
+            };
+
+            // ── Non-Steam checkbox ──
+            chkNonSteam = new CheckBox
+            {
+                Text      = "Non-Steam version  (writes coremod/config/modcore.json)",
+                Location  = new Point(20, 142),
+                Width     = 570,
+                ForeColor = Color.FromArgb(180, 180, 190),
+                BackColor = Color.Transparent
+            };
+
+            // ── Install/Update button ──
             btnInstall = new Button
             {
-                Text      = "Install/Update and Launch",
-                Location  = new Point(20, 120),
-                Width     = 570,
+                Text      = "Install / Update",
+                Location  = new Point(20, 170),
+                Width     = 375,
                 Height    = 36,
                 BackColor = Color.FromArgb(180, 50, 40),
                 ForeColor = Color.White,
@@ -138,10 +178,26 @@ namespace DeadCellsInstaller
             btnInstall.FlatAppearance.BorderSize = 0;
             btnInstall.Click += BtnInstall_Click;
 
-            // Progress bar
+            // ── Launch button ──
+            btnLaunch = new Button
+            {
+                Text      = "▶  Launch",
+                Location  = new Point(405, 170),
+                Width     = 185,
+                Height    = 36,
+                BackColor = Color.FromArgb(40, 130, 80),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Font      = new Font("Segoe UI", 10f, FontStyle.Bold),
+                Cursor    = Cursors.Hand
+            };
+            btnLaunch.FlatAppearance.BorderSize = 0;
+            btnLaunch.Click += BtnLaunch_Click;
+
+            // ── Progress bar ──
             progressBar = new ProgressBar
             {
-                Location = new Point(20, 168),
+                Location = new Point(20, 218),
                 Width    = 570,
                 Height   = 16,
                 Minimum  = 0,
@@ -150,34 +206,81 @@ namespace DeadCellsInstaller
                 Style    = ProgressBarStyle.Continuous
             };
 
-            // Status label
+            // ── Status label ──
             lblStatus = new Label
             {
                 Text      = "Waiting…",
                 AutoSize  = false,
-                Location  = new Point(20, 190),
+                Location  = new Point(20, 240),
                 Width     = 570,
                 ForeColor = Color.FromArgb(150, 150, 160)
             };
 
-            // Log box
+            // ── Log box ──
             rtbLog = new RichTextBox
             {
-                Location   = new Point(20, 215),
-                Width      = 570,
-                Height     = 210,
-                BackColor  = Color.FromArgb(12, 12, 18),
-                ForeColor  = Color.FromArgb(180, 220, 180),
-                ReadOnly   = true,
-                Font       = new Font("Consolas", 8.5f),
+                Location    = new Point(20, 265),
+                Width       = 570,
+                Height      = 230,
+                BackColor   = Color.FromArgb(12, 12, 18),
+                ForeColor   = Color.FromArgb(180, 220, 180),
+                ReadOnly    = true,
+                Font        = new Font("Consolas", 8.5f),
                 BorderStyle = BorderStyle.FixedSingle,
-                ScrollBars = RichTextBoxScrollBars.Vertical
+                ScrollBars  = RichTextBoxScrollBars.Vertical
             };
 
             this.Controls.AddRange(new Control[] {
                 lblTitle, lblPath, txtPath, btnBrowse,
-                btnInstall, progressBar, lblStatus, rtbLog
+                lblWarning, chkNonSteam,
+                btnInstall, btnLaunch,
+                progressBar, lblStatus, rtbLog
             });
+        }
+
+        // ════════════════════════════════════════════════════════════════
+        //  WARNING – calcul asynchrone
+        // ════════════════════════════════════════════════════════════════
+        private async Task RefreshWarningAsync()
+        {
+            string raw = txtPath.Text.Trim();
+
+            // 1. Chemin invalide
+            if (string.IsNullOrEmpty(raw)
+                || !Path.GetFileName(raw).Equals("deadcells.exe", StringComparison.OrdinalIgnoreCase)
+                || !File.Exists(raw))
+            {
+                SetWarning("⚠  Path is invalid or deadcells.exe not found.");
+                return;
+            }
+
+            // 2. Chemin OK — vérifier si mise à jour disponible
+            SetWarning("⚠  Checking for mod update…");
+            try
+            {
+                string dir         = Path.GetDirectoryName(raw);
+                string modInfoPath = Path.Combine(dir, "coremod", "mods",
+                    "DeadCellsArchipelago", "modinfo.json");
+                string local  = ReadLocalModVersion(modInfoPath);
+                string remote = await GetRemoteModVersion();
+
+                if (local == null)
+                    SetWarning("⚠  Mod not installed yet — run Install / Update.");
+                else if (local != remote)
+                    SetWarning($"⚠  Update available : {local} → {remote}");
+                else
+                    SetWarning("");  // tout est OK
+            }
+            catch
+            {
+                SetWarning("");  // pas de réseau, pas de warning bloquant
+            }
+        }
+
+        private void SetWarning(string text)
+        {
+            if (InvokeRequired) { Invoke(new Action(() => SetWarning(text))); return; }
+            lblWarning.Text = text;
         }
 
         // ════════════════════════════════════════════════════════════════
@@ -209,12 +312,20 @@ namespace DeadCellsInstaller
             catch (Exception ex)
             {
                 LogError("Fatal error : " + ex.Message);
-                SetStatus("Failed the installation");
+                SetStatus("Installation failed.");
             }
             finally
             {
                 SetUiEnabled(true);
+                // Recalcul du warning après installation
+                await RefreshWarningAsync();
             }
+        }
+
+        private void BtnLaunch_Click(object sender, EventArgs e)
+        {
+            if (!ValidatePath()) return;
+            LaunchGame();
         }
 
         // ════════════════════════════════════════════════════════════════
@@ -230,8 +341,7 @@ namespace DeadCellsInstaller
                 return false;
             }
 
-            string fileName = Path.GetFileName(raw);
-            if (!fileName.Equals("deadcells.exe", StringComparison.OrdinalIgnoreCase))
+            if (!Path.GetFileName(raw).Equals("deadcells.exe", StringComparison.OrdinalIgnoreCase))
             {
                 Error("Path should point to deadcells.exe.");
                 return false;
@@ -239,7 +349,7 @@ namespace DeadCellsInstaller
 
             if (!File.Exists(raw))
             {
-                Error("deadcells.exe not found with this path.");
+                Error("deadcells.exe not found at this path.");
                 return false;
             }
 
@@ -249,13 +359,53 @@ namespace DeadCellsInstaller
         }
 
         // ════════════════════════════════════════════════════════════════
+        //  LAUNCH (partagé entre Install et bouton Launch)
+        // ════════════════════════════════════════════════════════════════
+        private void LaunchGame()
+        {
+            string coremodDir  = Path.Combine(deadCellsDir, "coremod");
+            // Launcher standard (méthode PS1)
+            string launcherExe = Path.Combine(coremodDir, "core", "host", "startup", "DeadCellsModding.exe");
+            // Launcher fallback (méthode sans PS1 — placé directement dans Dead Cells\)
+            string fallbackExe = Path.Combine(deadCellsDir, "DeadCellsModding.exe");
+
+            string exeToLaunch = File.Exists(launcherExe) ? launcherExe
+                               : File.Exists(fallbackExe) ? fallbackExe
+                               : null;
+
+            if (exeToLaunch == null)
+            {
+                Error("DeadCellsModding.exe not found.\nPlease run Install / Update first.");
+                return;
+            }
+
+            Log("→ Starting " + exeToLaunch + "…");
+            Process.Start(exeToLaunch);
+            SetStatus("Game launched!");
+        }
+
+        // ════════════════════════════════════════════════════════════════
         //  INSTALLATION PIPELINE
         // ════════════════════════════════════════════════════════════════
         private async Task RunInstallation()
         {
+            bool nonSteam  = chkNonSteam.Checked;
+            bool psEnabled = ArePowerShellScriptsEnabled();
+            string coremodDir = Path.Combine(deadCellsDir, "coremod");
+
+            // ── Incompatibilité non-Steam + PS désactivé ─────────────────
+            if (nonSteam && !psEnabled)
+            {
+                LogError("⚠  Incompatible options: the no-PowerShell fallback method");
+                LogError("   is not compatible with the Non-Steam version.");
+                LogError("   Please enable PowerShell script execution, or uncheck Non-Steam.");
+                SetStatus("Installation cancelled.");
+                return;
+            }
+
             // ── STEP 1 : Check .NET 10 ──────────────────────────────────
-            SetStatus("Check for .NET SDK 10…");
-            Log("→ Check for .NET 10 SDK…");
+            SetStatus("Checking for .NET SDK 10…");
+            Log("→ Checking for .NET 10 SDK…");
             bool hasDotnet10 = CheckDotnet10();
 
             if (!hasDotnet10)
@@ -266,7 +416,7 @@ namespace DeadCellsInstaller
 
                 if (!CheckDotnet10())
                 {
-                    LogError("  Install of .NET 10 SDK failed. Cancelling.");
+                    LogError("  .NET 10 SDK installation failed. Cancelling.");
                     return;
                 }
             }
@@ -276,57 +426,21 @@ namespace DeadCellsInstaller
             }
             SetProgress(10);
 
-            // ── STEP 2 : Télécharger core (win-x64.zip) ─────────────────
-            string coremodDir = Path.Combine(deadCellsDir, "coremod");
-            string coreDir    = Path.Combine(coremodDir, "core");
-            string corePs1    = Path.Combine(coreDir, "mdk", "install.ps1");
-
-            bool coreAlreadyPresent = File.Exists(corePs1);
-
-            if (coreAlreadyPresent)
+            // ── STEP 2 : Core ────────────────────────────────────────────
+            if (psEnabled)
             {
-                Log("→ core already installed, step skipped. ✓");
-                SetProgress(40);
+                await InstallCoreWithPs1(coremodDir);
             }
             else
             {
-                SetStatus("Downloading core (win-x64.zip)…");
-                Log("→ Recovering latest release of core on GitHub…");
-                string coreZipUrl = await GetAssetUrl(CORE_API, "win-x64.zip");
-                string coreZip    = Path.Combine(Path.GetTempPath(), "dc_core_win-x64.zip");
-
-                await DownloadFile(coreZipUrl, coreZip, 10, 30,
-                    "Downloading core…");
-
-                SetStatus("Extract core…");
-                Log("→ Extracted to " + coremodDir + "…");
-                Directory.CreateDirectory(coremodDir);
-                ExtractZip(coreZip, coremodDir);
-                File.Delete(coreZip);
-                Log("  Extraction ended. ✓");
-                SetProgress(40);
+                Log("→ PowerShell scripts disabled — using fallback method (direct exe).");
+                await InstallCoreWithoutPs1();
             }
 
-            // ── STEP 3 : Exécuter install.ps1 ───────────────────────────
-            if (!File.Exists(corePs1))
+            // ── STEP 3 : Non-Steam config ────────────────────────────────
+            if (nonSteam)
             {
-                LogError("  install.ps1 not found : " + corePs1);
-                return;
-            }
-
-            string coremodDataDir = Path.Combine(coremodDir, "data");
-            if (Directory.Exists(coremodDataDir))
-            {
-                Log("→ Folder coremod\\data already present, install.ps1 skipped. ✓");
-                SetProgress(55);
-            }
-            else
-            {
-                SetStatus("Execute install.ps1…");
-                Log("→ Run install.ps1…");
-                await RunPowerShell(corePs1);
-                Log("  install.ps1 ended. ✓");
-                SetProgress(55);
+                WriteNonSteamConfig(coremodDir);
             }
 
             // ── STEP 4 : Télécharger mods.zip si nécessaire ─────────────
@@ -335,8 +449,8 @@ namespace DeadCellsInstaller
 
             string localVersion  = ReadLocalModVersion(modInfoPath);
             string remoteVersion = await GetRemoteModVersion();
-            Log($"→ Local version of Archipelago mod  : {(localVersion ?? "missing")}");
-            Log($"  Latest version on GitHub : {remoteVersion}");
+            Log($"→ Local mod version  : {(localVersion ?? "missing")}");
+            Log($"  Latest on GitHub   : {remoteVersion}");
 
             if (localVersion == remoteVersion && localVersion != null)
             {
@@ -345,47 +459,160 @@ namespace DeadCellsInstaller
             }
             else
             {
-                SetStatus("Dowloading mods.zip…");
-                Log("→ Dowloading mods.zip…");
+                SetStatus("Downloading mods.zip…");
+                Log("→ Downloading mods.zip…");
                 string modZipUrl = await GetAssetUrl(MOD_API, "mods.zip");
                 string modZip    = Path.Combine(Path.GetTempPath(), "dc_mods.zip");
 
-                await DownloadFile(modZipUrl, modZip, 55, 85,
-                    "Dowloading Archipelago mod…");
+                await DownloadFile(modZipUrl, modZip, 55, 85, "Downloading Archipelago mod…");
 
-                SetStatus("Extraction of mods.zip…");
+                SetStatus("Extracting mods.zip…");
                 Log("→ Extracting to " + coremodDir + "…");
                 ExtractZip(modZip, coremodDir);
                 File.Delete(modZip);
-                Log("  Extraction ended. ✓");
+                Log("  Extraction done. ✓");
                 SetProgress(90);
             }
 
             // ── STEP 5 : Lancer le jeu ──────────────────────────────────
-            string launcherExe = Path.Combine(
-                coremodDir, "core", "host", "startup", "DeadCellsModding.exe");
+            SetProgress(100);
+            Log("  Installation complete! Launching…");
+            SetStatus("Done — launching game…");
+            LaunchGame();
+        }
 
-            if (!File.Exists(launcherExe))
+        // ════════════════════════════════════════════════════════════════
+        //  CORE – méthode normale (avec PS1)
+        // ════════════════════════════════════════════════════════════════
+        private async Task InstallCoreWithPs1(string coremodDir)
+        {
+            string coreDir = Path.Combine(coremodDir, "core");
+            string corePs1 = Path.Combine(coreDir, "mdk", "install.ps1");
+
+            if (File.Exists(corePs1))
             {
-                LogError("  Launcher not found : " + launcherExe);
+                Log("→ core already installed, download skipped. ✓");
+                SetProgress(40);
+            }
+            else
+            {
+                SetStatus("Downloading core (win-x64.zip)…");
+                Log("→ Fetching latest core release from GitHub…");
+                string coreZipUrl = await GetAssetUrl(CORE_API, "win-x64.zip");
+                string coreZip    = Path.Combine(Path.GetTempPath(), "dc_core_win-x64.zip");
+
+                await DownloadFile(coreZipUrl, coreZip, 10, 35, "Downloading core…");
+
+                SetStatus("Extracting core…");
+                Log("→ Extracting to " + coremodDir + "…");
+                Directory.CreateDirectory(coremodDir);
+                ExtractZip(coreZip, coremodDir);
+                File.Delete(coreZip);
+                Log("  Extraction done. ✓");
+                SetProgress(40);
+            }
+
+            if (!File.Exists(corePs1))
+                throw new Exception("install.ps1 not found after extraction: " + corePs1);
+
+            string coremodDataDir = Path.Combine(coremodDir, "data");
+            if (Directory.Exists(coremodDataDir))
+            {
+                Log("→ coremod\\data already present, install.ps1 skipped. ✓");
+                SetProgress(55);
+            }
+            else
+            {
+                SetStatus("Running install.ps1…");
+                Log("→ Running install.ps1…");
+                await RunPowerShell(corePs1);
+                Log("  install.ps1 done. ✓");
+                SetProgress(55);
+            }
+        }
+
+        // ════════════════════════════════════════════════════════════════
+        //  CORE – méthode fallback (sans PS1)
+        //  Télécharge deadcells.exe depuis le release core,
+        //  le renomme DeadCellsModding.exe et le place dans Dead Cells\
+        // ════════════════════════════════════════════════════════════════
+        private async Task InstallCoreWithoutPs1()
+        {
+            string destExe = Path.Combine(deadCellsDir, "DeadCellsModding.exe");
+
+            if (File.Exists(destExe))
+            {
+                Log("→ DeadCellsModding.exe already present (fallback), skipped. ✓");
+                SetProgress(55);
                 return;
             }
 
-            SetStatus("Launching game…");
-            Log("→ Starting DeadCellsModding.exe…");
-            Process.Start(launcherExe);
-            SetProgress(100);
-            Log("  Installation ended and game lauched!");
-            SetStatus("Installation ended!");
+            SetStatus("Downloading DeadCellsModding.exe (fallback)…");
+            Log("→ Fetching deadcells.exe from core release (no-PowerShell fallback)…");
+
+            string exeUrl  = await GetAssetUrl(CORE_API, "deadcells.exe");
+            string tempExe = Path.Combine(Path.GetTempPath(), "dc_modding_temp.exe");
+
+            await DownloadFile(exeUrl, tempExe, 10, 55, "Downloading DeadCellsModding.exe…");
+
+            Log($"→ Renaming and moving to Dead Cells\\DeadCellsModding.exe…");
+            if (File.Exists(destExe)) File.Delete(destExe);
+            File.Move(tempExe, destExe);
+            Log("  DeadCellsModding.exe placed in Dead Cells\\. ✓");
+            SetProgress(55);
+        }
+
+        // ════════════════════════════════════════════════════════════════
+        //  NON-STEAM CONFIG
+        // ════════════════════════════════════════════════════════════════
+        private void WriteNonSteamConfig(string coremodDir)
+        {
+            string configDir  = Path.Combine(coremodDir, "config");
+            string configFile = Path.Combine(configDir, "modcore.json");
+
+            Directory.CreateDirectory(configDir);
+
+            if (!File.Exists(configFile))
+            {
+                File.WriteAllText(configFile, "{\n  \"GeneratePseudocodeAssembly\": true,\n  \"AllowCloseConsole\": false,\n  \"AllowLockCursor\": true,\n  \"EnableGoldberg\": true,\n  \"SkipLogoSplash\": true\n}");
+                Log("→ modcore.json written (non-Steam mode). ✓");
+            }
+            else
+            {
+                Log("→ modcore.json already present, not overwritten. ✓");
+            }
+        }
+
+        // ════════════════════════════════════════════════════════════════
+        //  HELPERS – PowerShell scripts activés ?
+        // ════════════════════════════════════════════════════════════════
+        private bool ArePowerShellScriptsEnabled()
+        {
+            try
+            {
+                var psi = new ProcessStartInfo("powershell.exe",
+                    "-NonInteractive -Command \"Get-ExecutionPolicy\"")
+                {
+                    RedirectStandardOutput = true,
+                    UseShellExecute        = false,
+                    CreateNoWindow         = true
+                };
+                using (var p = Process.Start(psi))
+                {
+                    string output = p.StandardOutput.ReadToEnd().Trim().ToLowerInvariant();
+                    p.WaitForExit();
+                    return output != "restricted";
+                }
+            }
+            catch { return false; }
         }
 
         // ════════════════════════════════════════════════════════════════
         //  HELPERS – .NET 10
         // ════════════════════════════════════════════════════════════════
-        // Chemins possibles de dotnet : PATH système + installation locale du user
         private System.Collections.Generic.IEnumerable<string> DotnetCandidates()
         {
-            yield return "dotnet"; // via PATH
+            yield return "dotnet";
             string local = Path.Combine(
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "Microsoft", "dotnet", "dotnet.exe");
@@ -419,11 +646,10 @@ namespace DeadCellsInstaller
 
         private async Task InstallDotnet10()
         {
-            // Télécharge le script officiel d'installation Microsoft
             string scriptUrl  = "https://dot.net/v1/dotnet-install.ps1";
             string scriptPath = Path.Combine(Path.GetTempPath(), "dotnet-install.ps1");
 
-            Log("  Downloading installation script for .NET…");
+            Log("  Downloading .NET install script…");
             using (var client = NewHttpClient())
             {
                 byte[] data = await client.GetByteArrayAsync(scriptUrl);
@@ -434,8 +660,9 @@ namespace DeadCellsInstaller
                 Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 "Microsoft", "dotnet");
 
-            Log("  Installation Directory: " + installDir);
-            Log("  Execute installer .NET 10 SDK…");
+            Log("  Install directory : " + installDir);
+            Log("  Running .NET 10 SDK installer…");
+
             var psi = new ProcessStartInfo("powershell.exe",
                 $"-ExecutionPolicy Bypass -File \"{scriptPath}\" -Channel 10.0 -InstallDir \"{installDir}\"")
             {
@@ -474,7 +701,7 @@ namespace DeadCellsInstaller
                         return asset["browser_download_url"].ToString();
                 }
             }
-            throw new Exception($"Asset '{assetName}' not found in the GitHub release.");
+            throw new Exception($"Asset '{assetName}' not found in GitHub release.");
         }
 
         private async Task<string> GetRemoteModVersion()
@@ -483,7 +710,6 @@ namespace DeadCellsInstaller
             {
                 string json = await client.GetStringAsync(MOD_API);
                 var obj = JObject.Parse(json);
-                // tag_name est typiquement "v0.0.9" – on retire le "v" si présent
                 string tag = obj["tag_name"]?.ToString() ?? "";
                 return tag.TrimStart('v');
             }
@@ -504,8 +730,8 @@ namespace DeadCellsInstaller
                 using (var src  = await response.Content.ReadAsStreamAsync())
                 using (var file = File.Create(dest))
                 {
-                    byte[] buf     = new byte[81920];
-                    long   read    = 0;
+                    byte[] buf = new byte[81920];
+                    long   read = 0;
                     int    bytesRead;
 
                     while ((bytesRead = await src.ReadAsync(buf, 0, buf.Length)) > 0)
@@ -518,14 +744,14 @@ namespace DeadCellsInstaller
                             double pct = (double)read / total.Value;
                             int prog = progressFrom + (int)(pct * (progressTo - progressFrom));
                             SetProgress(prog);
-                            string mb = (read / 1048576.0).ToString("0.0");
+                            string mb  = (read / 1048576.0).ToString("0.0");
                             string mb2 = (total.Value / 1048576.0).ToString("0.0");
-                            SetStatus($"{statusLabel} ({mb} / {mb2} Mo)");
+                            SetStatus($"{statusLabel} ({mb} / {mb2} MB)");
                         }
                     }
                 }
             }
-            Log($"  File downloaded → {dest}");
+            Log($"  Downloaded → {dest}");
         }
 
         // ════════════════════════════════════════════════════════════════
@@ -537,18 +763,14 @@ namespace DeadCellsInstaller
             {
                 foreach (var entry in archive.Entries)
                 {
-                    string fullDest = Path.GetFullPath(
-                        Path.Combine(destDir, entry.FullName));
+                    string fullDest = Path.GetFullPath(Path.Combine(destDir, entry.FullName));
 
-                    // Sécurité : pas de path traversal
                     if (!fullDest.StartsWith(Path.GetFullPath(destDir),
                         StringComparison.OrdinalIgnoreCase))
                         continue;
 
-                    if (string.IsNullOrEmpty(entry.Name)) // répertoire
-                    {
+                    if (string.IsNullOrEmpty(entry.Name))
                         Directory.CreateDirectory(fullDest);
-                    }
                     else
                     {
                         Directory.CreateDirectory(Path.GetDirectoryName(fullDest));
@@ -585,7 +807,7 @@ namespace DeadCellsInstaller
                             Log("  [ps1] " + line.Trim());
 
                 if (p.ExitCode != 0)
-                    throw new Exception("install.ps1 returned an error : "
+                    throw new Exception("install.ps1 returned an error: "
                         + p.ExitCode + "\n" + stderr);
             }
         }
@@ -598,8 +820,7 @@ namespace DeadCellsInstaller
             if (!File.Exists(modInfoPath)) return null;
             try
             {
-                string json = File.ReadAllText(modInfoPath);
-                var obj = JObject.Parse(json);
+                var obj = JObject.Parse(File.ReadAllText(modInfoPath));
                 return obj["version"]?.ToString();
             }
             catch { return null; }
@@ -633,9 +854,11 @@ namespace DeadCellsInstaller
         private void SetUiEnabled(bool enabled)
         {
             if (InvokeRequired) { Invoke(new Action(() => SetUiEnabled(enabled))); return; }
-            btnInstall.Enabled = enabled;
-            btnBrowse.Enabled  = enabled;
-            txtPath.Enabled    = enabled;
+            btnInstall.Enabled  = enabled;
+            btnLaunch.Enabled   = enabled;
+            btnBrowse.Enabled   = enabled;
+            txtPath.Enabled     = enabled;
+            chkNonSteam.Enabled = enabled;
         }
 
         private void Log(string msg)
@@ -657,6 +880,6 @@ namespace DeadCellsInstaller
         }
 
         private void Error(string msg)
-            => MessageBox.Show(msg, "Erreur", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            => MessageBox.Show(msg, "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
     }
 }
