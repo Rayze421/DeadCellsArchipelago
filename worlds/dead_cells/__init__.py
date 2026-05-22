@@ -5,7 +5,8 @@ __init__.py
 Main world class. Orchestrates item pool construction, location creation,
 region wiring, win condition, and slot data generation.
 """
-
+import json
+import os
 from typing import Dict, List, Set, Any
 from BaseClasses import Tutorial, ItemClassification
 from worlds.AutoWorld import World, WebWorld
@@ -271,11 +272,13 @@ class DeadCellsWorld(World):
         # ─────────────────────────────────────
         # 0. Fill items locked to a location
         # ─────────────────────────────────────
+        nb_removed_location = 0
         locked_items: set[str] = set()
         for item_name, location_name in BOSS_DEFEAT_PAIRS.items():
             try:
                 location = multiworld.get_location(location_name, player)
                 location.place_locked_item(self.create_item(item_name))
+                nb_removed_location += 1
                 locked_items.add(item_name)
             except KeyError:
                 locked_items.add(item_name)
@@ -320,7 +323,7 @@ class DeadCellsWorld(World):
     # ─────────────────────────────────────
     # 3. Count locations
     # ─────────────────────────────────────
-        total_locations = len(self.created_locations)
+        total_locations = len(self.created_locations) - nb_removed_location
 
     # ─────────────────────────────────────
     # 4. Build progression pool
@@ -508,6 +511,14 @@ class DeadCellsWorld(World):
         for item, loc in zip(progression_items, early_locations):
             if not loc.item:
                 loc.place_locked_item(item)
+        
+        data = {}  
+        archipelagoPath = os.path.join(os.path.dirname(__file__), "..", "archipelago.json")
+        try:
+            with open(archipelagoPath) as file:
+                data = json.load(file)
+        except FileNotFoundError:
+            data["world_version"] = "0.0.0"
 
         return {
             "boss_cells":                self.options.boss_cells.value,
@@ -522,6 +533,7 @@ class DeadCellsWorld(World):
             "include_cosmetics":         bool(self.options.include_cosmetics.value),
             "include_base_weapons":      bool(self.options.include_base_weapons.value),
             "trap_percentage":           self.options.trap_percentage.value,
+            "apworld_version":           data["world_version"]
         }
 
     def get_filler_item_name(self) -> str:
