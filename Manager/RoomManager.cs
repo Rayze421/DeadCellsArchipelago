@@ -79,7 +79,8 @@ namespace DeadCellsArchipelago {
         //when the level is generating, we do the checks biomes and add a void challenge for the trap
         public static ArrayObj OnGenerate(Hook_LevelGen.orig_generate orig, LevelGen self, User user, int seed, virtual_baseLootLevel_biome_bonusTripleScrollAfterBC_cellBonus_dlc_doubleUps_eliteRoomChance_eliteWanderChance_flagsProps_group_icon_id_index_loreDescriptions_mapDepth_minGold_mobDensity_mobs_name_nextLevels_parallax_props_quarterUpsBC3_quarterUpsBC4_specificLoots_specificSubBiome_transitionTo_tripleUps_worldDepth_ ldat, Ref<bool> resetCount)
         {
-            
+            changeNextCallDmgTier = false;
+            changeNextCallLifeTier = false;
             if(ldat.id.ToString() == "PrisonStart")
             {
                 disableTrapOnEndBoss = false;

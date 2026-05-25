@@ -78,21 +78,13 @@ namespace DeadCellsArchipelago {
 
         public static int OnGetLifeTier(Hook_MobsGen.orig_getLifeTier orig, MobsGen self, LevelMap map, Room room, int levelMaxDist)
         {
-            if (changeNextCallLifeTier)
-            {
-                changeNextCallLifeTier = false;
-                return orig(self, map, room, levelMaxDist) + GetDailyLife();
-            } 
+            if (changeNextCallLifeTier) return orig(self, map, room, levelMaxDist) + GetDailyLife();
             return orig(self, map, room, levelMaxDist);
         }
 
         public static int OnGetDmgTier(Hook_MobsGen.orig_getDmgTier orig, MobsGen self, LevelMap map, Room room, int levelMaxDist)
         {
-            if (changeNextCallDmgTier)
-            {
-                changeNextCallDmgTier = false;
-                return orig(self, map, room, levelMaxDist) + GetDailyDmg();
-            } 
+            if (changeNextCallDmgTier) return orig(self, map, room, levelMaxDist) + GetDailyDmg();
             return orig(self, map, room, levelMaxDist);
         }
     }

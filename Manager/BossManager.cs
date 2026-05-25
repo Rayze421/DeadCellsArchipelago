@@ -56,6 +56,16 @@ namespace DeadCellsArchipelago {
                         ARCHIPELAGO.SendVictory();
                     }
                     break;
+
+                case "Behemoth":
+                    if(USER != null && USER.game.isScoring())
+                    {
+                        if(SAVED_DATA != null && SAVED_DATA.IsCheckSent("SpeedBlade") && SAVED_DATA.IsCheckSent("DamageAura") && SAVED_DATA.IsCheckSent("DashSword"))
+                        {
+                            SAVED_DATA.AddFillerItem("Pokebomb");
+                        }
+                    }
+                    break;
             }
         }
 
