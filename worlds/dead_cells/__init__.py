@@ -28,6 +28,9 @@ from .rules import set_rules as apply_location_rules
 from .base_classes import DeadCellsItem
 from BaseClasses import LocationProgressType
 
+# version
+version = "0.1.2"
+
 # ─────────────────────────────────────────────────────────────────────────────
 # Items that are always base-game weapons (no blueprint required)
 # Excluded when include_base_weapons is off
@@ -511,14 +514,6 @@ class DeadCellsWorld(World):
         for item, loc in zip(progression_items, early_locations):
             if not loc.item:
                 loc.place_locked_item(item)
-        
-        data = {}  
-        archipelagoPath = os.path.join(os.path.dirname(__file__), "..", "archipelago.json")
-        try:
-            with open(archipelagoPath) as file:
-                data = json.load(file)
-        except FileNotFoundError:
-            data["world_version"] = "0.0.0"
 
         return {
             "boss_cells":                self.options.boss_cells.value,
@@ -533,7 +528,7 @@ class DeadCellsWorld(World):
             "include_cosmetics":         bool(self.options.include_cosmetics.value),
             "include_base_weapons":      bool(self.options.include_base_weapons.value),
             "trap_percentage":           self.options.trap_percentage.value,
-            "apworld_version":           data["world_version"]
+            "apworld_version":           version
         }
 
     def get_filler_item_name(self) -> str:
