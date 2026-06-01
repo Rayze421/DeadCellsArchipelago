@@ -175,6 +175,8 @@ namespace DeadCellsArchipelago{
             Hook_MobsGen.getLifeTier += OnGetLifeTier;
             UnlockItemHooks();
             Hook__RewardPopup.__constructor__ += OnRewardPopup;
+            Hook__Achievements.hasAchievement += OnHasAchievement;
+            Hook__Achievements.setAchievement += OnSetAchievement;
             Log.Information("=== Archipelago hooks loaded ! ===");
             //BrBlueprint
             //BossRushData
