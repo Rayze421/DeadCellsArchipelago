@@ -532,6 +532,11 @@ LOCATION_RULES = [
         lambda state: state.can_reach("SewerShort", "Region", world.player)
     )),
 
+    # Cursed Biome drops
+    ("Anathema", _has_all_any(
+        any_of=["Vine Rune", "Spider Rune", "Castle Outskirts Unlock", ["Teleport Rune", "Dilapidated Arboretum Unlock"]]
+    ))
+
 
     # ── PrisonCourtyard mid-biome gate (Vine Rune) ────────────────────────────
     ("Phaser", _has("Vine Rune")),

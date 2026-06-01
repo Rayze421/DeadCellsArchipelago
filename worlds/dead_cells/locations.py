@@ -299,7 +299,7 @@ LOCATION_TABLE: Dict[str, dict] = {
     },
     "Adrenaline": {
         "id": 0x0086, "region": "Checks", "type": "blueprint_enemy",
-        "dlc": "", "min_bc": 3, "item": "P_DodgeHeal",
+        "dlc": "", "min_bc": 3, "item": "P_DodgeHeal", "rarity": "Rare",
         "sources": [{'biome': 'PrisonStart', 'min_bc': 3, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Rampager'}, {'biome': 'SewerShort', 'min_bc': 3, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Rampager'}, {'biome': 'PrisonDepths', 'min_bc': 3, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Rampager'}, {'biome': 'PrisonRoof', 'min_bc': 3, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Rampager'}, {'biome': 'StiltVillage', 'min_bc': 3, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Rampager'}, {'biome': 'AncientTemple', 'min_bc': 3, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Rampager'}, {'biome': 'Castle', 'min_bc': 3, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Rampager'}, {'biome': 'Greenhouse', 'min_bc': 3, 'max_bc': 255, 'dlc': 'TheBadSeed', 'type': 'blueprint_enemy', 'mob': 'Rampager'}, {'biome': 'Swamp', 'min_bc': 3, 'max_bc': 255, 'dlc': 'TheBadSeed', 'type': 'blueprint_enemy', 'mob': 'Rampager'}, {'biome': 'Cliff', 'min_bc': 3, 'max_bc': 255, 'dlc': 'FatalFalls', 'type': 'blueprint_enemy', 'mob': 'Rampager'}, {'biome': 'Shipwreck', 'min_bc': 3, 'max_bc': 255, 'dlc': 'TheQueenAndTheSea', 'type': 'blueprint_enemy', 'mob': 'Rampager'}],
     },
     "Double Crossb-o-matic": {
@@ -947,7 +947,7 @@ LOCATION_TABLE: Dict[str, dict] = {
         "dlc": "", "min_bc": 4, "item": "Assassin4",
         "sources": [{'biome': 'TopClockTower', 'min_bc': 4, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy'}],
     },
-    "Throwing Spear": {
+    "War Javelin": {
         "id": 0x0108, "region": "Checks", "type": "blueprint_floor",
         "dlc": "RiseOfTheGiant", "min_bc": 0, "item": "ThrowingSpear",
         "sources": [{'biome': 'Cavern', 'min_bc': 0, 'max_bc': 255, 'dlc': 'RiseOfTheGiant', 'type': 'blueprint_floor'}],
