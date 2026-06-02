@@ -6,6 +6,7 @@ using dc.hl.types;
 using dc.libs.heaps.slib;
 using dc.tool;
 using dc.ui;
+using Hashlink.Virtuals;
 using HaxeProxy.Runtime;
 using ModCore.Utilities;
 using Serilog;
@@ -178,6 +179,17 @@ namespace DeadCellsArchipelago {
             }
             SendRuneCheck(k.ToString());
             return false;
+        }
+
+        public static void OnRewardPopup(Hook__RewardPopup.orig___constructor__ orig, RewardPopup arg1, virtual_ambiantDesc_castCD_cellCost_commonProps_dlc_droppable_gameplayDesc_group_icon_id_legendAffixes_moneyCost_name_props_synergy_tags_tier1_tier2_ item, HlAction onValidate, Ref<bool> isMetaItem)
+        {
+            if (item.name.ToString() == "BossRushUnlock")
+            {
+                SendRuneCheck("BossRushUnlock");
+            } else
+            {
+                orig(arg1, item, onValidate, isMetaItem);
+            }
         }
     }
 }

@@ -44,6 +44,7 @@ using dc.pow;
 using dc.ui.pause;
 using dc.en.hero;
 using dc.tool.bossRush;
+using dc.hxd.snd;
 
 
 namespace DeadCellsArchipelago{
@@ -177,20 +178,11 @@ namespace DeadCellsArchipelago{
             Hook__RewardPopup.__constructor__ += OnRewardPopup;
             Hook__Achievements.hasAchievement += OnHasAchievement;
             Hook__Achievements.setAchievement += OnSetAchievement;
+            Hook__ItemTools.getBlueprintLocalizedName += OnGetBlueprintLocalizedName;
             Log.Information("=== Archipelago hooks loaded ! ===");
+            //LogManager
             //BrBlueprint
             //BossRushData
-        }
-
-        private void OnRewardPopup(Hook__RewardPopup.orig___constructor__ orig, RewardPopup arg1, virtual_ambiantDesc_castCD_cellCost_commonProps_dlc_droppable_gameplayDesc_group_icon_id_legendAffixes_moneyCost_name_props_synergy_tags_tier1_tier2_ item, HlAction onValidate, Ref<bool> isMetaItem)
-        {
-            if (item.name.ToString() == "BossRushUnlock")
-            {
-                SendRuneCheck("BossRushUnlock");
-            } else
-            {
-                orig(arg1, item, onValidate, isMetaItem);
-            }
         }
 
         public void OnHeroUpdate(double dt)

@@ -19,6 +19,7 @@ using static dc.tool.InventItemKind;
 using static DeadCellsArchipelago.EnemyManager;
 using static DeadCellsArchipelago.HeroManager;
 using static DeadCellsArchipelago.RoomManager;
+using static DeadCellsArchipelago.BlueprintManager;
 
 namespace DeadCellsArchipelago {
     public static class ItemManager
@@ -292,7 +293,7 @@ namespace DeadCellsArchipelago {
                     string? unlockedName = HandleProgressive(itemName);
                     if (unlockedName != null)
                     {
-                        BlueprintManager.UnlockBlueprint(unlockedName);
+                        UnlockBlueprint(unlockedName);
                         LogItem(unlockedName);
                         AddToHistory(LogName);
                     }
@@ -404,6 +405,8 @@ namespace DeadCellsArchipelago {
 
                 if(IsLevelKey(itemName))
                 {
+                    changeLogDesc = true;
+                    logDesc = LogName;
                     LogItem("GenericKey");
                     AddToHistory(LogName);
                     return true;
@@ -422,7 +425,7 @@ namespace DeadCellsArchipelago {
                 }
                 else
                 {
-                    BlueprintManager.UnlockBlueprint(itemName);
+                    UnlockBlueprint(itemName);
                 }
                 
                 try {
@@ -609,9 +612,9 @@ namespace DeadCellsArchipelago {
         {
             if(USER != null && USER.game != null)
             {
-                BlueprintManager.showBlueprintLog = true;
+                showBlueprintLog = true;
                 USER.game.log?.blueprint(itemId.AsHaxeString(), "Always".AsHaxeString(), false, false);
-                BlueprintManager.showBlueprintLog = false;
+                showBlueprintLog = false;
             }
         }
 

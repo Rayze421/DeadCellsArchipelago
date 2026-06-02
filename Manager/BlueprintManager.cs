@@ -5,6 +5,7 @@ using dc.level;
 using dc.tool;
 using dc.ui;
 using Hashlink.Marshaling;
+using Hashlink.Virtuals;
 using ModCore.Utilities;
 using Serilog;
 
@@ -15,6 +16,8 @@ namespace DeadCellsArchipelago {
     {
         public static bool showBlueprintLog = false;
         public static bool useOriginalHasRevealItem = false;
+        public static bool changeLogDesc = false;
+        public static string logDesc = "";
 
         //Called when the hero get a blueprint, picked in game or by UnlockBlueprint.
         public static bool OnBlueprintPicked(Hook_Hero.orig_pickBlueprint orig, Hero self, dc.String k)
@@ -110,6 +113,17 @@ namespace DeadCellsArchipelago {
             else if (!SAVED_DATA.IsCheckSent("DamageAura")) res.push("DamageAura".AsHaxeString());
             else if (!SAVED_DATA.IsCheckSent("DashSword")) res.push("DashSword".AsHaxeString());
             return res;
+        }
+        
+        public static dc.String OnGetBlueprintLocalizedName(Hook__ItemTools.orig_getBlueprintLocalizedName orig, virtual_ambiantDesc_castCD_cellCost_commonProps_dlc_droppable_gameplayDesc_group_icon_id_legendAffixes_moneyCost_name_props_synergy_tags_tier1_tier2_ item)
+        {
+            //Change log description
+            if (changeLogDesc)
+            {
+                changeLogDesc = false;
+                return logDesc.AsHaxeString();
+            }
+            return orig(item);
         }
     }
 }
