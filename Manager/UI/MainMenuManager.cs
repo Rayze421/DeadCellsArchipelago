@@ -6,6 +6,7 @@ using ModCore.Utilities;
 using static DeadCellsArchipelago.ItemManager;
 using static DeadCellsArchipelago.ImageManager;
 using static DeadCellsArchipelago.HeroManager;
+using static DeadCellsArchipelago.ModAssetManager;
 using Newtonsoft.Json;
 
 namespace DeadCellsArchipelago {
@@ -43,7 +44,7 @@ namespace DeadCellsArchipelago {
                 double XY = 0;
                 dc.h2d.Tile bgTileApMenu = Assets.Class.ui.getTile("walterWhite".AsHaxeString(), new Ref<int>(ref frame), new Ref<double>(ref XY), new Ref<double>(ref XY), null);
                 dc.h2d.Tile frameTileApMenu = Assets.Class.ui.getTile("boxLegendary".AsHaxeString(), new Ref<int>(ref frame), new Ref<double>(ref XY), new Ref<double>(ref XY), null);
-                dc.h2d.Tile logoTile = LoadTileFromPng(GetResPath("logo.png"));
+                dc.h2d.Tile logoTile = archipelagoLogoTile.clone();
 
 
                 var bgApMenu = new dc.h2d.Bitmap(bgTileApMenu, apMenuContainer)

@@ -11,7 +11,7 @@ using ModCore.Utilities;
 using Serilog;
 
 using static DeadCellsArchipelago.ItemManager;
-using static DeadCellsArchipelago.ImageManager;
+using static DeadCellsArchipelago.ModAssetManager;
 using dc.h2d;
 using HaxeProxy.Runtime;
 
@@ -136,7 +136,7 @@ namespace DeadCellsArchipelago {
             if (changeLogIcon)
             {
                 changeLogIcon = false;
-                Tile logoTile = LoadTileFromPng(GetResPath("logo.png"));
+                Tile logoTile = archipelagoLogoTile.clone();
                 Icon res = new Icon(logoTile, parent);
                 res.scaleToSize(40, 40);
                 double center = 0.5;

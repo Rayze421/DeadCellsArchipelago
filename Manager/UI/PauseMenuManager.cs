@@ -14,6 +14,7 @@ using Serilog;
 
 using static DeadCellsArchipelago.ImageManager;
 using static DeadCellsArchipelago.ItemManager;
+using static DeadCellsArchipelago.ModAssetManager;
 
 namespace DeadCellsArchipelago {
     public static class PauseMenuManager
@@ -125,7 +126,7 @@ namespace DeadCellsArchipelago {
 
             if (logoBitmap == null)
             {
-                var logoTile = LoadTileFromPng(GetResPath("logo.png"));
+                var logoTile = archipelagoLogoTile.clone();
 
                 logoBitmap = new Bitmap(logoTile, self.bg)
                 {
