@@ -272,7 +272,7 @@ namespace DeadCellsArchipelago
         private void OnDeathLinkReceived(DeathLink deathLink)
         {
             userWithSkillIssue = deathLink.Source;
-            deathLinkReceived = true;
+            if (userWithSkillIssue != slotName) deathLinkReceived = true;
         }
 
         public void SendDeathLink(string message = "")
