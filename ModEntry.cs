@@ -342,6 +342,12 @@ namespace DeadCellsArchipelago{
                 var itemProps = itemPropsDyn.ToVirtual<virtual_ang_aoeDuration_bonus_buff_bump_castTime_chance_color_color2_cooldown_count_debuff_distance_dotDps_dps_dps2_duration_duration2_duration3_effectCD_effectCharge_frict_height_item2_life_limit_lock_max_maxNumberOfMarks_min_mob_offsetX_offsetY_power_power2_power3_prct_prct2_prct3_range_size_speed_speed2_tick_triggerOnHit_uses_width_>();
                 itemProps.count = head.Value;
             }
+
+            List<string> priceAt1 = UnlockedByDefault();
+            foreach (string itemName in priceAt1)
+            {
+                cdb.item.byId.get(itemName.AsHaxeString()).cellCost = 1;
+            }
             Log.Information("=== Archipelago Mod loaded ! ===");
         }
 

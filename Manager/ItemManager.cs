@@ -613,7 +613,7 @@ namespace DeadCellsArchipelago {
             if(USER != null && USER.game != null)
             {
                 if(USER.game.log == null) Log.Error($"game's log at null");
-                
+
                 showBlueprintLog = true;
                 USER.game.log?.blueprint(itemId.AsHaxeString(), "Always".AsHaxeString(), false, false);
                 showBlueprintLog = false;
@@ -663,6 +663,7 @@ namespace DeadCellsArchipelago {
         {
             removeCollectorBaseFilterAndLock = true;
             currentFilterFor = data.itemId.ToString();
+            Log.Information($"|{data.itemId}|");
             bool res = orig(self, data);
             removeCollectorBaseFilterAndLock = false;
             currentFilterFor = "";
@@ -717,7 +718,7 @@ namespace DeadCellsArchipelago {
 
                 if(removeCollectorBaseFilterAndLock && currentFilterFor != "")
                 {
-                    if(new[] {"Money1", "Recycling1", "MirrorUnlock", "ForgeRefine1"}.Any(currentFilterFor.Contains))
+                    if(new[] {"Money1", "Recycling1", "MirrorUnlock", "ForgeRefine1", "KingWhite"}.Any(currentFilterFor.Contains))
                     {
                         return true;
                     }
@@ -742,49 +743,52 @@ namespace DeadCellsArchipelago {
 
         public static bool IsUnlockedByDefault(string id)
         {
-            switch (id)
-            {
-                case "DualDaggers":
-                case "StunMace":
-                case "DualBow":
-                case "ThrowingKnife":
-                case "LightningWhip":
-                case "ThrowingTorch":
-                case "Freeze":
-                case "Shield":
-                case "GreedShield":
-                case "StandardTurret":
-                case "RootTrap":
-                case "FastGrenade":
-                case "IceBomb":
-                case "ExtraHeal":
-                case "QuickSword":
-                case "P_CDR_Kill":
-                case "P_DmgKill":
-                case "P_DmgRevenge":
-                case "P_DeployedDmg":
-                case "P_NoMobAround":
-                case "P_CDR_Distance":
-                case "P_CDR_Parry":
-                case "P_DmgParry":
-                case "P_HealOnKill":
-                case "P_Yolo":
-                case "P_CDR_Crit":
-                case "ASP_Firestarter":
-                case "ASP_ToxinLover":
-                case "ASP_Shatter":
-                case "PrisonerGOG":
-                case "PrisonerFrench":
-                case "PrisonerRetro":
-                case "Snowman":
-                case "SantaKLOS":
-                case "BlackHoleViolet":
-                case "VortexHelloDarkness":
-                case "BlowTorch":
-                case "BobbyFlame":
-                    return true;
-            }
-            return false;
+            return UnlockedByDefault().Contains(id);
+        }
+
+        public static List<string> UnlockedByDefault(){
+            return [
+                "DualDaggers",
+                "StunMace",
+                "DualBow",
+                "ThrowingKnife",
+                "LightningWhip",
+                "ThrowingTorch",
+                "Freeze",
+                "Shield",
+                "GreedShield",
+                "StandardTurret",
+                "RootTrap",
+                "FastGrenade",
+                "IceBomb",
+                "ExtraHeal",
+                "QuickSword",
+                "P_CDR_Kill",
+                "P_DmgKill",
+                "P_DmgRevenge",
+                "P_DeployedDmg",
+                "P_NoMobAround",
+                "P_CDR_Distance",
+                "P_CDR_Parry",
+                "P_DmgParry",
+                "P_HealOnKill",
+                "P_Yolo",
+                "P_CDR_Crit",
+                "ASP_Firestarter",
+                "ASP_ToxinLover",
+                "ASP_Shatter",
+                "PrisonerGOG",
+                "PrisonerFrench",
+                "PrisonerRetro",
+                "Snowman",
+                "SantaKLOS",
+                "BlackHoleViolet",
+                "VortexHelloDarkness",
+                "BlowTorch",
+                "BobbyFlame",
+                "KingDefault",
+                "KingWhite"
+            ];
         }
 
         public static bool IsItemProgressive(string itemName)
