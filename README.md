@@ -39,7 +39,11 @@ Except for Promenade of the Condemned, Ramparts, Toxic Sewers, Black Bridge and 
 
 A rework of the Hunter's Grenade makes it reusable and stacks 1 charge per biome completed.
 
-An integrated menu allows you to see the history of items received, buy colorless affixes, gives you filler items and allows you to use a progression tracker.
+An integrated menu allows you to see the history of items received, buy colorless affixes, gives you filler items and allows you to use a progression tracker. The menu button is in the equipment menu.
+
+The number of kills you need for boss heads is reduced.
+
+Blueprints in the daily challenge are given at each completion. The difficulty increases four times, and when you have every blueprint, you gain a Hunter's Grenade upon completion.
 
 There is a x4 multiplier on cells, and completing a biome grants you 40 cells.
 
@@ -52,6 +56,7 @@ You can use Death Link with this mod, including a variant that curses you instea
 ## Contributors
 
 Thanks to OnlyLeafeon and Rayze, who helped me with the apworld.
+
 Thanks to Libellule57, who drew the Dead Cells Archipelago logo.
 
 ## Contact
