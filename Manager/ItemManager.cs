@@ -67,6 +67,7 @@ namespace DeadCellsArchipelago {
                     headList.Add(item.id.ToString());
                 }
             }
+            dropableList.Add("APGold");
             cosmeticsList.Remove("Cultist");
         }
 
@@ -98,9 +99,9 @@ namespace DeadCellsArchipelago {
 
                         if (itemName == "DeathMoney")
                         {
-                            itemDrop.item._itemData.name = "Archipelago Money Bag".AsHaxeString();
-                            itemDrop.item._itemData.gameplayDesc = "No cost too great.".AsHaxeString();
-                            
+                            //itemDrop.item._itemData.name = "Archipelago Money Bag".AsHaxeString();
+                            //itemDrop.item._itemData.gameplayDesc = "No cost too great.".AsHaxeString();
+                            itemName = "APGold";
                         }
                         else if (itemName == "DeathCells")
                         {
