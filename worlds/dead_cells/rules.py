@@ -536,6 +536,9 @@ LOCATION_RULES = [
         lambda state: state.can_reach("SewerShort", "Region", world.player)
     )),
 
+    
+    ("Abyssal Trident", _has("Ram Rune")),
+
     # Cursed Biome drops
     (
         "Anathema", 
