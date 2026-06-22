@@ -40,13 +40,13 @@ namespace DeadCellsArchipelago {
         public static dc.ui.Text? biomeTitle = null;
         public static dc.ui.Text? fillerTitle = null;
         public static dc.ui.Text? menuTitle = null;
-        public static int screenScale;
+        public static double screenScale;
 
         
 
         public static void OnUpdateDefaultPause(Hook_DefaultPause.orig_update orig, DefaultPause self)
         {
-            screenScale = dc.libs.Process.Class.CUSTOM_STAGE_WIDTH / 1920;
+            screenScale = dc.libs.Process.Class.CUSTOM_STAGE_WIDTH / 1920.0;
             defaultPause = self;
             orig(self);
 

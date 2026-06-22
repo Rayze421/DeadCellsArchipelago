@@ -25,11 +25,11 @@ namespace DeadCellsArchipelago {
         public static bool isOnMenu = false;
         public static Text? apVersion = null;
         public static string lastCompatibleApworld = "0.1.4";
-        public static int screenScale;
+        public static double screenScale;
 
         public static void OnMainMenu(Hook_TitleScreen.orig_mainMenu orig, TitleScreen self)
         {
-            screenScale = dc.libs.Process.Class.CUSTOM_STAGE_WIDTH / 1920;
+            screenScale = dc.libs.Process.Class.CUSTOM_STAGE_WIDTH / 1920.0;
 
             self.news.hidden = true;
             self.news.updateVisible();
