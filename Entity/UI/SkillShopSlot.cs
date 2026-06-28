@@ -20,17 +20,24 @@ namespace DeadCellsArchipelago {
         public dc.ui.Text? label;
         public Bitmap? cellBitmap;
         public Interactive? inter;
+        public InventItem? internII;
+        public dc.h2d.Object? parent;
+        public NewItemDesc? desc;
 
-        public void InitButton(DefaultPause self, double x, double y, Func<InventItem?> getItem, NewItemDesc desc)
+        public void InitButton(dc.h2d.Object parent, double x, double y, Func<InventItem?> getItem, NewItemDesc desc)
         {
-            int price = shopPrice;
             if (skill != null) return;
+            this.parent = parent;
+            this.desc = desc;
 
             bool ctrlShow = false;
-            skill = new Skill(0, self.bg, new Ref<bool>(ref ctrlShow), new Ref<bool>(ref ctrlShow))
+            double scaleSkill = 1.0/screenScale;
+            skill = new Skill(0, parent, new Ref<bool>(ref ctrlShow), new Ref<bool>(ref ctrlShow))
             {
                 x = x,
-                y = y
+                y = y,
+                scaleX = scaleSkill,
+                scaleY = scaleSkill
             };
 
             InventItem? ii = getItem();
@@ -45,62 +52,35 @@ namespace DeadCellsArchipelago {
 
                 if (!HasAffix(ii, "Colorless"))
                 {
-                    SetPrice(self, price);
+                    SetPrice(parent, shopPrice);
 
                     Skill capturedSkill = skill;
+                    internII = ii;
                     Bounds boundsSkill = skill.getSize(new Bounds());
-                    inter = new Interactive(boundsSkill.xMax, boundsSkill.yMax, skill, null)
+                    inter = new Interactive(boundsSkill.xMax*screenScale, boundsSkill.yMax*screenScale, skill, null)
                     {
                         onClick = (e) =>
                         {
-                            if (HERO == null) return;
-                            if (HasAffix(ii, "Colorless")) return;
-
-                            if (HERO.cells >= price)
-                            {
-                                bool noStats = false;
-                                HERO.substractCells(price, new Ref<bool>(ref noStats));
-                                if (cellsNumber != null)
-                                    cellsNumber.set_text($" {HERO.cells}".AsHaxeString());
-
-                                ii.affixes.pushDyn("Colorless".AsHaxeString());
-                                bool updateHUD = true;
-                                bool durings = false;
-                                HERO.onEquipedItemsChange(new Ref<bool>(ref updateHUD), new Ref<bool>(ref durings), new Ref<bool>(ref durings));
-                                desc.setItem(ii);
-
-                                capturedSkill.useItem(ii);
-                                capturedSkill.btn.visible = false;
-                                foreach (Bitmap ammoIcon in capturedSkill.ammoIcons)
-                                    ammoIcon.visible = false;
-
-                                SetNoPrice(self);
-                                skill.removeChild(inter);
-                            }
-                            else
-                            {
-                                label?.set_textColor(16711680);
-                            }
+                            BuyColorless();
                         },
                         onMove = (e) =>
                         {
-                            if (label != null && label.textColor != 16711680)
-                                label.set_textColor(47103);
+                            Highlight();
                         },
                         onOut = (e) =>
                         {
-                            label?.set_textColor(dc.ui.Text.Class.COLORS.get("CE".AsHaxeString()));
+                            StopHighlight();
                         }
                     };
                 }
                 else
                 {
-                    SetNoPrice(self);
+                    SetNoPrice(parent);
                 }
             }
             else
             {
-                SetNoPrice(self);
+                SetNoPrice(parent);
             }
         }
 
@@ -130,7 +110,7 @@ namespace DeadCellsArchipelago {
             cellBitmap = null;
         }
 
-        internal void SetNoPrice(DefaultPause self)
+        internal void SetNoPrice(dc.h2d.Object parent)
         {
             if(skill == null) return;
             cellBitmap?.remove();
@@ -138,22 +118,28 @@ namespace DeadCellsArchipelago {
 
             Bounds boundsSkill = skill.getSize(new Bounds());
             double scale = 1;
-            label = new dc.ui.Text(self.bg, false, false, new Ref<double>(ref scale), null, null)
+            label = new dc.ui.Text(parent, false, false, new Ref<double>(ref scale), null, null)
             {
-                y = boundsSkill.yMax + skill.y
+                y = boundsSkill.yMax + skill.y,
+                    scaleX = 1,
+                    scaleY = 1
             };
             label.set_text("-".AsHaxeString());
             label.x = ((boundsSkill.xMax - label.get_textWidth()) /2) + skill.x;
             label.set_textColor(16777215);
         }
 
-        internal void SetPrice(DefaultPause self, int number)
+        internal void SetPrice(dc.h2d.Object parent, int number)
         {
             if(skill == null) return;
 
             Bounds boundsSkill = skill.getSize(new Bounds());
             double scale = 1;
-            label = new dc.ui.Text(self.bg, false, false, new Ref<double>(ref scale), null, null);
+            label = new dc.ui.Text(parent, false, false, new Ref<double>(ref scale), null, null)
+            {
+                scaleX = 1,
+                scaleY = 1
+            };
             label.set_text($" {number}".AsHaxeString());
             label.set_textColor(dc.ui.Text.Class.COLORS.get("CE".AsHaxeString()));
 
@@ -162,7 +148,7 @@ namespace DeadCellsArchipelago {
             double XY = 0;
             var cellTile = Assets.Class.gameElements.getTile("cell".AsHaxeString(), new Ref<int>(ref frame), new Ref<double>(ref XY), new Ref<double>(ref XY), null);
 
-            cellBitmap = new Bitmap(cellTile, self.bg)
+            cellBitmap = new Bitmap(cellTile, parent)
             {
                 y = boundsSkill.yMax + skill.y + 10,
                 x = (boundsSkill.xMax -(22 + label.get_textWidth())) /2 + skill.x
@@ -172,6 +158,52 @@ namespace DeadCellsArchipelago {
 
             label.y = (boundsCell.yMax - label.get_textHeight()) /2 + cellBitmap.y;
             label.x = boundsCell.xMax + cellBitmap.x;
+        }
+
+        public void Highlight()
+        {
+            if (label == null) return;
+            if (label.text.ToString() == "-") label.set_textColor(16776960);
+            else if (label.textColor != 16711680) label.set_textColor(47103);
+        }
+
+        public void StopHighlight()
+        {
+            if (label == null) return;
+            if (label.text.ToString() == "-") label.set_textColor(16777215);
+            else label?.set_textColor(dc.ui.Text.Class.COLORS.get("CE".AsHaxeString()));
+        }
+
+        public void BuyColorless()
+        {
+            if (HERO == null || skill == null || internII == null || parent == null || desc == null) return;
+            if (HasAffix(internII, "Colorless")) return;
+
+            if (HERO.cells >= shopPrice)
+            {
+                bool noStats = false;
+                HERO.substractCells(shopPrice, new Ref<bool>(ref noStats));
+                if (cellsNumber != null)
+                    cellsNumber.set_text($" {HERO.cells}".AsHaxeString());
+
+                internII.affixes.pushDyn("Colorless".AsHaxeString());
+                bool updateHUD = true;
+                bool durings = false;
+                HERO.onEquipedItemsChange(new Ref<bool>(ref updateHUD), new Ref<bool>(ref durings), new Ref<bool>(ref durings));
+                desc.setItem(internII);
+
+                skill.useItem(internII);
+                skill.btn.visible = false;
+                foreach (Bitmap ammoIcon in skill.ammoIcons)
+                    ammoIcon.visible = false;
+
+                SetNoPrice(parent);
+                skill.removeChild(inter);
+            }
+            else
+            {
+                label?.set_textColor(16711680);
+            }
         }
     }
 }

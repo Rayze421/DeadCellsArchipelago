@@ -1,16 +1,9 @@
-using dc;
-using dc.h2d;
-using dc.h2d.col;
-using dc.ui;
-using dc.ui.hud;
-using dc.ui.icon;
 using HaxeProxy.Runtime;
 using ModCore.Utilities;
 using Serilog;
 
-using static DeadCellsArchipelago.ImageManager;
-using static DeadCellsArchipelago.Translator;
-using static DeadCellsArchipelago.ItemManager;
+
+using static DeadCellsArchipelago.PauseMenuManager;
 
 namespace DeadCellsArchipelago {
     public class LogLine : Line
@@ -23,7 +16,7 @@ namespace DeadCellsArchipelago {
         {
             this.logName = logName;
 
-            double scaleText = 1.0/3;
+            double scaleText = 1.0/(3*screenScale);
             text = new dc.ui.Text(null, false, false, new Ref<double>(ref scaleText), null, null);
 
             text.set_text($" {logName}".AsHaxeString());
@@ -35,6 +28,16 @@ namespace DeadCellsArchipelago {
             bgBox.addChildAt(text, bgBox.layerCount);
 
             text.y = (bgBox.sg.height - (text.get_textHeight()*text.scaleX))/2;
+        }
+
+        public void Highlight()
+        {
+            text.set_textColor(16776960);
+        }
+
+        public void StopHighlight()
+        {
+            text.set_textColor(16777215);
         }
     }
 }

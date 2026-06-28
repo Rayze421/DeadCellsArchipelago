@@ -57,15 +57,16 @@ namespace DeadCellsArchipelago {
                     };
                 }
 
-                double scaleT = 1.0/3;
+                double screenScale = dc.libs.Process.Class.CUSTOM_STAGE_WIDTH / 1920.0;
+                double scaleT = 1.0/(3*screenScale);
                 if (nb == null)
                 {
                     nb = new Text(heroActiveSkillsManager.hudGetSkillPower(id).icon, true, false, new Ref<double>(ref scaleT), null, null);
                     nb.set_textColor(16777215);
                 }
                 nb.set_text(SAVED_DATA.numberOfPokebombUse.ToString().AsHaxeString());
-                nb.x = -(nb.get_textWidth()*scaleT)/2;
-                nb.y = -(nb.get_textHeight()*scaleT)/2;
+                nb.x = -(nb.get_textWidth()*(1.0/3))/2;
+                nb.y = -(nb.get_textHeight()*(1.0/3))/2;
             }
         }
 
