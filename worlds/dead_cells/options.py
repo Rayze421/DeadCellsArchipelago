@@ -155,7 +155,7 @@ class DeadCellsDeathLink(Range):
     When enabled, dying in Dead Cells sends a death signal to all other
     players with Death Link enabled in the multiworld session.
     Receiving a death signal will kill your current run when set to 0.
-    With a positve value, give you that amount in curses instead of killing your run
+    With a positive value, give you that amount in curses instead of killing your run
     Negative values disable this option.
     """
     display_name = "Death/Curses Link"
