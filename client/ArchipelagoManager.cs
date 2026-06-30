@@ -11,6 +11,8 @@ using static DeadCellsArchipelago.HeroManager;
 using static DeadCellsArchipelago.Translator;
 using System.Collections.ObjectModel;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
+using Newtonsoft.Json.Linq;
+using Archipelago.MultiClient.Net.Models;
 
 namespace DeadCellsArchipelago
 {
@@ -37,6 +39,7 @@ namespace DeadCellsArchipelago
         public bool theQueenAndTheSea;
         public bool returnToCastlevania;
         public string? version;
+        const long energyPerCell = 1000000;
         
         public void Connect(string serverUrl, string slotName, string? password = null)
         {
@@ -319,6 +322,80 @@ namespace DeadCellsArchipelago
                     AddLogToQueue($"{itemMessage.Item.ItemName} to {itemMessage.Receiver}");
                 }
             }
+        }
+
+        void DepositCells(ArchipelagoSession session, int cellCount)
+        {
+            long energyToAdd = cellCount * energyPerCell;
+
+            var packet = new SetPacket
+            {
+                Key = "EnergyLink",
+                DefaultValue = 0,
+                WantReply = false,
+                Operations = new[]
+                {
+                    new OperationSpecification
+                    {
+                        OperationType = OperationType.Add,
+                        Value = energyToAdd
+                    },
+                    new OperationSpecification
+                    {
+                        OperationType = OperationType.Max,
+                        Value = 0
+                    }
+                }
+            };
+
+            session.Socket.SendPacket(packet);
+        }
+
+        void WithdrawCells(ArchipelagoSession session, int cellsRequested)
+        {
+            long energyRequested = cellsRequested * energyPerCell;
+
+            var packet = new SetPacket
+            {
+                Key = "EnergyLink",
+                DefaultValue = 0,
+                WantReply = true,
+                Operations = new[]
+                {
+                    new OperationSpecification
+                    {
+                        OperationType = OperationType.Add,
+                        Value = -energyRequested
+                    },
+                    new OperationSpecification
+                    {
+                        OperationType = OperationType.Max,
+                        Value = 0
+                    }
+                }
+            };
+
+            session.Socket.SendPacket(packet);
+        }
+
+        void OnPacketReceived(ArchipelagoPacketBase packet)
+        {
+            if (packet is SetReplyPacket reply && reply.Key == "EnergyLink")
+            {
+                long energyBefore = reply.OriginalValue.ToObject<long>();
+                long energyAfter  = reply.Value.ToObject<long>();
+                long energyConsumed = energyBefore - energyAfter;
+
+                long energyActuallyGot = Math.Min(energyConsumed, energyPerCell);
+                int cellsReceived = (int)(energyActuallyGot / energyPerCell);
+
+                GiveCellsToPlayer(cellsReceived);
+            }
+        }
+
+        private void GiveCellsToPlayer(int cellsReceived)
+        {
+            throw new NotImplementedException();
         }
     }
 }
