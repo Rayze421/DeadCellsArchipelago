@@ -789,7 +789,7 @@ namespace DeadCellsArchipelago {
 
         private static void MoveCursor(DefaultPause self)
         {
-            if (keyToRepeat != -1 && self.controller.isAnyActionDown())
+            if (keyToRepeat != -1 && self.controller != null && self.controller.isAnyActionDown())
             {
                 FrameWithkeyPressed++;
                 if (FrameWithkeyPressed == 10)
