@@ -1,5 +1,7 @@
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Enums;
+using Archipelago.MultiClient.Net.Packets;
+using dc.haxe;
 using Newtonsoft.Json.Linq;
 
 using static DeadCellsArchipelago.LinkQueue;
@@ -20,9 +22,10 @@ namespace DeadCellsArchipelago
             
             JObject values = new()
             {
-                ["currentHealth"] = 100,
-                ["maxHealth"] = 100,
-                ["player"] = ""
+                ["currentHealth"] = JToken.FromObject(100),
+                ["maxHealth"] = JToken.FromObject(100),
+                ["dead"] = JToken.FromObject(false),
+                ["player"] = JToken.FromObject("")
             };
             session.DataStorage[Scope.Game, HealthKey].Initialize(values);
 
@@ -39,13 +42,35 @@ namespace DeadCellsArchipelago
 
         public void UpdateHealthStorage(int currentHealth, int maxHealth)
         {
-            JObject values = new()
+            if (currentHealth > 0)
             {
-                ["currentHealth"] = JToken.FromObject(currentHealth),
-                ["maxHealth"] = JToken.FromObject(maxHealth),
-                ["player"] = JToken.FromObject(session.Players.ActivePlayer.Name),
-            };
-            session.DataStorage[Scope.Game, HealthKey] = values;
+                JObject values = new()
+                {
+                    ["currentHealth"] = JToken.FromObject(currentHealth),
+                    ["maxHealth"] = JToken.FromObject(maxHealth),
+                    ["dead"] = JToken.FromObject(false),
+                    ["player"] = JToken.FromObject(session.Players.ActivePlayer.Name),
+                };
+                session.DataStorage[Scope.Game, HealthKey] = values;
+            }
+            else
+            {
+                JObject values = new()
+                {
+                    ["currentHealth"] = JToken.FromObject(100),
+                    ["maxHealth"] = JToken.FromObject(100),
+                    ["dead"] = JToken.FromObject(true),
+                    ["player"] = JToken.FromObject(session.Players.ActivePlayer.Name),
+                };
+                session.DataStorage[Scope.Game, HealthKey] = values;
+
+                values = new()
+                {
+                    ["currentCurses"] = JToken.FromObject(0),
+                    ["player"] = JToken.FromObject(session.Players.ActivePlayer.Name),
+                };
+                session.DataStorage[Scope.Game, HealthKey + "Curses"] = values;
+            }
         }
 
         public void UpdateCurseStorage(int currentCurse)
@@ -63,6 +88,7 @@ namespace DeadCellsArchipelago
         private void OnHealthValueChanged(JToken originalValue, JToken newValue, Dictionary<string, JToken> additionalArguments)
         {
             if (newValue["player"]!.Value<string>() == session.Players.ActivePlayer.Name) return;
+            healthLinkDeath = newValue["dead"]!.Value<bool>();
             AddHealthLinkToQueue([newValue["currentHealth"]!.Value<int>(), newValue["maxHealth"]!.Value<int>()]);
         }
 

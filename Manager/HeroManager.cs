@@ -263,9 +263,7 @@ namespace DeadCellsArchipelago {
         {
             if (HERO == null) return;
             originalCurse = false;
-            Log.Warning("av" + HERO.curseCounter);
-            HERO.reduceCurse(HERO.curseCounter - curseValue);
-            Log.Warning("ap" + HERO.curseCounter);
+            if (!(curseValue == 0 && HERO.curseCounter == 0)) HERO.reduceCurse(HERO.curseCounter - curseValue);
             originalCurse = true;
         }
     }

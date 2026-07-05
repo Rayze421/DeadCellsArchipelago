@@ -9,16 +9,17 @@ namespace DeadCellsArchipelago
     {
         private static List<List<int>> pendingHealthLink = [];
         private static List<int> pendingHealthCurseLink = [];
+        public static bool healthLinkDeath = false;
 
         public static void AddHealthLinkToQueue(List<int> healthLinkValues)
         {
-            Log.Information($"=== Health Link received from Archipelago: {healthLinkValues[0]} {healthLinkValues[1]} ===");
+            //Log.Information($"=== Health Link received from Archipelago: {healthLinkValues[0]} {healthLinkValues[1]} ===");
             pendingHealthLink.Add(healthLinkValues);
         }
 
         public static void AddHealthCurseLinkToQueue(int curseValue)
         {
-            Log.Information($"=== Curse Health Link received from Archipelago: {curseValue} ===");
+            //Log.Information($"=== Curse Health Link received from Archipelago: {curseValue} ===");
             pendingHealthCurseLink.Add(curseValue);
         }
 
@@ -40,6 +41,17 @@ namespace DeadCellsArchipelago
             pendingHealthCurseLink.RemoveAt(0);
         }
 
+        public static void DoDeathHealthLink()
+        {
+            if(HERO == null) return;
+
+            if (healthLinkDeath)
+            {
+                HERO.kill();
+                healthLinkDeath = false;
+            }
+        }
+
         public static bool IsHealthLinkQueueEmpty()
         {
             return pendingHealthLink.Count == 0;
@@ -52,6 +64,7 @@ namespace DeadCellsArchipelago
 
         public static void DoEveryLinks()
         {
+            DoDeathHealthLink();
             DoHealthLinkInQueue();
             DoHealthCurseLinkInQueue();
         }
@@ -67,7 +80,7 @@ namespace DeadCellsArchipelago
                 if (ARCHIPELAGO.healthLinkManager.shareCurses) 
                 {
                     int curses = ARCHIPELAGO.healthLinkManager.GetHealthCurseStorage();
-                    if (!(curses == 0 && HERO.curseCounter == 0)) UpdateHeroHealthCurseLink(curses);
+                    UpdateHeroHealthCurseLink(curses);
                 }
             }
         }
