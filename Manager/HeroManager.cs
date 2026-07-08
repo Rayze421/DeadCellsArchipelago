@@ -26,6 +26,7 @@ namespace DeadCellsArchipelago {
         public static bool shouldGiveItemsNewRun = false;
         public static bool isInTraining = false;
         public static bool originalCurse = true;
+        public static bool controlsInverted = false;
 
         public static void OnHeroDie(Hook_Hero.orig_onDie orig, Hero self)
         {
@@ -82,10 +83,12 @@ namespace DeadCellsArchipelago {
 
         public static void InitSwitchControls()
         {
-            SwitchControls();
+            if (!controlsInverted) SwitchControls();
+            controlsInverted = true;
             cooldown = new Cooldown(60, (dc.String str, int nb) =>
             {
                 SwitchControls();
+                controlsInverted = false;
             });
             
             int key = Cooldown.Class.INDEXES.indexOf("InvertCooldown", null);
