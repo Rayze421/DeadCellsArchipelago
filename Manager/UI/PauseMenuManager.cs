@@ -31,6 +31,7 @@ namespace DeadCellsArchipelago {
         public static dc.ui.Text? cellsNumber = null;
         public static int colorlessShopPrice = 100;
         public static int pokebombShopPrice = 50;
+        public static int legendaryShopPrice = 600;
         public static SkillScroller<ItemLine>? scrollerFiller;
         public static SkillScroller<BiomeLine>? scrollerBiome;
         public static PopUpTracker? popUpTracker;

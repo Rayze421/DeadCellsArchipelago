@@ -6,6 +6,7 @@ using dc.tool;
 using dc.ui;
 using dc.ui.hud;
 using dc.ui.pause;
+using Hashlink.Virtuals;
 using HaxeProxy.Runtime;
 using ModCore.Utilities;
 using Serilog;
@@ -99,15 +100,37 @@ namespace DeadCellsArchipelago {
                         }
                     };
                 }
+                else if (!HasAffix(ii, "Legendary"))
+                {
+                    Buy = BuyLegendary;
+                    SetPrice(parent, legendaryShopPrice);
+
+                    Skill capturedSkill = skill;
+                    internII = ii;
+                    Bounds boundsSkill = skill.getSize(new Bounds());
+                    inter = new Interactive(boundsSkill.xMax*screenScale, boundsSkill.yMax*screenScale, skill, null)
+                    {
+                        onClick = (e) =>
+                        {
+                            BuyLegendary();
+                        },
+                        onMove = (e) =>
+                        {
+                            Highlight();
+                        },
+                        onOut = (e) =>
+                        {
+                            StopHighlight();
+                        }
+                    };
+                }
                 else
                 {
-                    Buy = ()=>{};
                     SetNoPrice(parent);
                 }
             }
             else
             {
-                Buy = ()=>{};
                 SetNoPrice(parent);
             }
         }
@@ -145,7 +168,9 @@ namespace DeadCellsArchipelago {
 
         internal void SetNoPrice(dc.h2d.Object parent)
         {
+            Buy = ()=>{};
             if(skill == null) return;
+
             cellBitmap?.remove();
             label?.remove();
 
@@ -165,6 +190,9 @@ namespace DeadCellsArchipelago {
         internal void SetPrice(dc.h2d.Object parent, int number)
         {
             if(skill == null) return;
+            
+            cellBitmap?.remove();
+            label?.remove();
 
             Bounds boundsSkill = skill.getSize(new Bounds());
             double scale = 1;
@@ -230,8 +258,10 @@ namespace DeadCellsArchipelago {
                 foreach (Bitmap ammoIcon in skill.ammoIcons)
                     ammoIcon.visible = false;
 
-                SetNoPrice(parent);
-                skill.removeChild(inter);
+                SetPrice(parent, legendaryShopPrice);
+                Highlight();
+                Buy = BuyLegendary;
+                inter!.onClick = (e) => {BuyLegendary();};
             }
             else
             {
@@ -251,6 +281,45 @@ namespace DeadCellsArchipelago {
                     cellsNumber.set_text($" {HERO.cells}".AsHaxeString());
 
                 SAVED_DATA?.numberOfPokebombUse += USER.bossRuneActivated+1;
+            }
+            else
+            {
+                label?.set_textColor(16711680);
+            }
+        }
+
+        public void BuyLegendary()
+        {
+            if (HERO == null || skill == null || internII == null || parent == null || desc == null) return;
+            if (HasAffix(internII, "Legendary")) return;
+
+            if (HERO.cells >= legendaryShopPrice)
+            {
+                bool noStats = false;
+                HERO.substractCells(legendaryShopPrice, new Ref<bool>(ref noStats));
+                if (cellsNumber != null)
+                    cellsNumber.set_text($" {HERO.cells}".AsHaxeString());
+
+                internII.affixes.pushDyn("Legendary".AsHaxeString());
+                foreach (HaxeDynObj lAffix in internII._itemData.legendAffixes)
+                {
+
+                    dc.String affix = lAffix.ToVirtual<virtual_affix_>().affix;
+                    internII.affixes.pushDyn(affix);
+                }
+
+                bool updateHUD = true;
+                bool durings = false;
+                HERO.onEquipedItemsChange(new Ref<bool>(ref updateHUD), new Ref<bool>(ref durings), new Ref<bool>(ref durings));
+                desc.setItem(internII);
+
+                skill.useItem(internII);
+                skill.btn.visible = false;
+                foreach (Bitmap ammoIcon in skill.ammoIcons)
+                    ammoIcon.visible = false;
+
+                SetNoPrice(parent);
+                skill.removeChild(inter);
             }
             else
             {
