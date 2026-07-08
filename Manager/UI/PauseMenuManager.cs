@@ -29,7 +29,8 @@ namespace DeadCellsArchipelago {
         public static SkillShop skillShopMenu = new SkillShop(50, 150);
         public static Bitmap? cellBitmap = null;
         public static dc.ui.Text? cellsNumber = null;
-        public static int shopPrice = 100;
+        public static int colorlessShopPrice = 100;
+        public static int pokebombShopPrice = 50;
         public static SkillScroller<ItemLine>? scrollerFiller;
         public static SkillScroller<BiomeLine>? scrollerBiome;
         public static PopUpTracker? popUpTracker;
@@ -485,7 +486,7 @@ namespace DeadCellsArchipelago {
                                 }
                                 else if (i == 0)
                                 {
-                                    skillShopMenu.BuyColorless(shopX, shopY);
+                                    skillShopMenu.Buy(shopX, shopY);
                                 }
                                 break;
                             

@@ -23,6 +23,7 @@ namespace DeadCellsArchipelago {
         public InventItem? internII;
         public dc.h2d.Object? parent;
         public NewItemDesc? desc;
+        public Action Buy = ()=>{};
 
         public void InitButton(dc.h2d.Object parent, double x, double y, Func<InventItem?> getItem, NewItemDesc desc)
         {
@@ -50,9 +51,34 @@ namespace DeadCellsArchipelago {
                 foreach (Bitmap ammoIcon in skill.ammoIcons)
                     ammoIcon.visible = false;
 
-                if (!HasAffix(ii, "Colorless"))
+                if (IsItem(ii, "Pokebomb"))
                 {
-                    SetPrice(parent, shopPrice);
+                    Buy = BuyPokebombCharges;
+                    SetPrice(parent, pokebombShopPrice);
+
+                    Skill capturedSkill = skill;
+                    internII = ii;
+                    Bounds boundsSkill = skill.getSize(new Bounds());
+                    inter = new Interactive(boundsSkill.xMax*screenScale, boundsSkill.yMax*screenScale, skill, null)
+                    {
+                        onClick = (e) =>
+                        {
+                            BuyPokebombCharges();
+                        },
+                        onMove = (e) =>
+                        {
+                            Highlight();
+                        },
+                        onOut = (e) =>
+                        {
+                            StopHighlight();
+                        }
+                    };
+                }
+                else if (!HasAffix(ii, "Colorless"))
+                {
+                    Buy = BuyColorless;
+                    SetPrice(parent, colorlessShopPrice);
 
                     Skill capturedSkill = skill;
                     internII = ii;
@@ -75,11 +101,13 @@ namespace DeadCellsArchipelago {
                 }
                 else
                 {
+                    Buy = ()=>{};
                     SetNoPrice(parent);
                 }
             }
             else
             {
+                Buy = ()=>{};
                 SetNoPrice(parent);
             }
         }
@@ -94,6 +122,11 @@ namespace DeadCellsArchipelago {
                 }
             }
             return false;
+        }
+
+        public static bool IsItem(InventItem ii, string nameToCheck)
+        {
+            return ii._itemData.id.ToString() == nameToCheck;
         }
 
         public void SetVisible(bool visible)
@@ -179,10 +212,10 @@ namespace DeadCellsArchipelago {
             if (HERO == null || skill == null || internII == null || parent == null || desc == null) return;
             if (HasAffix(internII, "Colorless")) return;
 
-            if (HERO.cells >= shopPrice)
+            if (HERO.cells >= colorlessShopPrice)
             {
                 bool noStats = false;
-                HERO.substractCells(shopPrice, new Ref<bool>(ref noStats));
+                HERO.substractCells(colorlessShopPrice, new Ref<bool>(ref noStats));
                 if (cellsNumber != null)
                     cellsNumber.set_text($" {HERO.cells}".AsHaxeString());
 
@@ -199,6 +232,25 @@ namespace DeadCellsArchipelago {
 
                 SetNoPrice(parent);
                 skill.removeChild(inter);
+            }
+            else
+            {
+                label?.set_textColor(16711680);
+            }
+        }
+
+        public void BuyPokebombCharges()
+        {
+            if (HERO == null || SAVED_DATA == null || USER == null) return;
+
+            if (HERO.cells >= pokebombShopPrice)
+            {
+                bool noStats = false;
+                HERO.substractCells(pokebombShopPrice, new Ref<bool>(ref noStats));
+                if (cellsNumber != null)
+                    cellsNumber.set_text($" {HERO.cells}".AsHaxeString());
+
+                SAVED_DATA?.numberOfPokebombUse += USER.bossRuneActivated+1;
             }
             else
             {

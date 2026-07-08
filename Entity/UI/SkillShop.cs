@@ -120,17 +120,17 @@ namespace DeadCellsArchipelago {
             }
         }
 
-        public void BuyColorless(int indexX, int indexY)
+        public void Buy(int indexX, int indexY)
         {
             switch (indexX)
             {
                 case 0:
-                    if(indexY == 0) buttonWeapon1.BuyColorless();
-                    if(indexY == 1) buttonSkill2.BuyColorless();
+                    if(indexY == 0) buttonWeapon1.Buy();
+                    if(indexY == 1) buttonSkill2.Buy();
                     break;
                 case 1:
-                    if(indexY == 0) buttonWeapon2.BuyColorless();
-                    if(indexY == 1) buttonSkill1.BuyColorless();
+                    if(indexY == 0) buttonWeapon2.Buy();
+                    if(indexY == 1) buttonSkill1.Buy();
                     break;
             }
         }
