@@ -9,6 +9,7 @@ namespace DeadCellsArchipelago
         private static List<int> pendingHealthCurseLink = [];
         public static bool healthLinkDeath = false;
         private static List<TrapData> pendingTrapCurseLink = [];
+        private static List<int> pendingDamageLink = [];
 
         public static void AddHealthLinkToQueue(List<int> healthLinkValues)
         {
@@ -23,6 +24,11 @@ namespace DeadCellsArchipelago
         public static void AddTrapLinkToQueue(string itemName, bool canSendTrapLinkFromCall)
         {
             pendingTrapCurseLink.Add(new TrapData(itemName, canSendTrapLinkFromCall));
+        }
+
+        public static void AddDamageLinkToQueue(int percentage)
+        {
+            pendingDamageLink.Add(percentage);
         }
 
         public static void DoHealthLinkInQueue()
@@ -53,7 +59,7 @@ namespace DeadCellsArchipelago
                 healthLinkDeath = false;
             }
         }
-        
+
         public static void DoTrapLinkInQueue()
         {
             if(IsTrapLinkQueueEmpty()) return;
@@ -61,6 +67,15 @@ namespace DeadCellsArchipelago
             TrapData trap = pendingTrapCurseLink[0];
             GiveTrapItem(trap.itemName, trap.canSendTrapLinkFromCall);
             pendingTrapCurseLink.RemoveAt(0);
+        }
+
+        public static void DoDamageLinkInQueue()
+        {
+            if(IsDamageLinkQueueEmpty()) return;
+
+            int percentage = pendingDamageLink[0];
+            RemovePercentHealth(percentage);
+            pendingDamageLink.RemoveAt(0);
         }
 
         public static bool IsHealthLinkQueueEmpty()
@@ -78,12 +93,18 @@ namespace DeadCellsArchipelago
             return pendingTrapCurseLink.Count == 0;
         }
 
+        public static bool IsDamageLinkQueueEmpty()
+        {
+            return pendingDamageLink.Count == 0;
+        }
+
         public static void DoEveryLinks()
         {
             DoDeathHealthLink();
             DoHealthLinkInQueue();
             DoHealthCurseLinkInQueue();
             DoTrapLinkInQueue();
+            DoDamageLinkInQueue();
         }
 
         public static void LoadLinks()

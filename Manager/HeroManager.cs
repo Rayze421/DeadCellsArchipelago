@@ -220,6 +220,11 @@ namespace DeadCellsArchipelago {
         {
             orig(self, a);
             if (ARCHIPELAGO != null && ARCHIPELAGO.healthLinkManager != null) ARCHIPELAGO.healthLinkManager.UpdateHealthStorage(HERO!.life, HERO.maxLife);
+            if (ARCHIPELAGO != null && ARCHIPELAGO.damageLinkManager != null)
+            {
+                float percentHpLost = a.finalDmg / (float) HERO!.maxLife * 100f;
+                ARCHIPELAGO.damageLinkManager.OnPlayerDamaged(percentHpLost);
+            }
         }
 
         public static void OnHeroHeal(Hook_Hero.orig_heal orig, Hero self, int v)
@@ -238,7 +243,8 @@ namespace DeadCellsArchipelago {
         public static void RemovePercentHealth(int percentage)
         {
             if (HERO == null) return;
-            HERO.life -= (int)(HERO.maxLife * (percentage / 100.0));
+            if (HERO.life - (int)(HERO.maxLife * (percentage / 100.0)) <= 0) HERO.kill();
+            else HERO.life -= (int)(HERO.maxLife * (percentage / 100.0));
         }
 
         public static void OnHeroReduceCurse(Hook_Hero.orig_reduceCurse orig, Hero self, int n)

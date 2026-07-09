@@ -1,7 +1,7 @@
 using Archipelago.MultiClient.Net;
 using Archipelago.MultiClient.Net.Packets;
 using Newtonsoft.Json.Linq;
-using static DeadCellsArchipelago.HeroManager;
+using static DeadCellsArchipelago.LinkQueue;
 
 namespace DeadCellsArchipelago
 {
@@ -45,7 +45,7 @@ namespace DeadCellsArchipelago
 
         private void OnPacketReceived(ArchipelagoPacketBase packet)
         {
-            if (packet is not BouncedPacket bounced || !bounced.Tags.Contains(DamageKey) || !bounced.Data.TryGetValue("damage_points", out var dmgValue)) return;
+            if (packet is not BouncedPacket bounced || !bounced.Tags.Contains(DamageKey) || !bounced.Data.TryGetValue("source", out var source) || Convert.ToString(source) == session.Players.ActivePlayer.Name || !bounced.Data.TryGetValue("damage_points", out var dmgValue)) return;
 
             int receivedPoints = Convert.ToInt32(dmgValue);
             lock (damageLock)
@@ -56,7 +56,7 @@ namespace DeadCellsArchipelago
                 {
                     int percentageLost = (int)(accumulatedDamagePoint / DamagePointsPerHp);
                     accumulatedDamagePoint %= DamagePointsPerHp;
-                    RemovePercentHealth(percentageLost);
+                    AddDamageLinkToQueue(percentageLost);
                 }
             }
         }
