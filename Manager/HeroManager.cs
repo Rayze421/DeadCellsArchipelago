@@ -1,5 +1,6 @@
 using static DeadCellsArchipelago.ItemManager;
 using static DeadCellsArchipelago.PokeManager;
+using static DeadCellsArchipelago.ArchipelagoManager;
 using dc.en;
 using Serilog;
 using ModCore.Utilities;
@@ -9,7 +10,7 @@ using dc.ui.pause;
 using dc.hxd.res;
 using dc.tool;
 using dc.tool._Cooldown;
-using dc.ui.hud;
+using dc.tool.atk;
 
 namespace DeadCellsArchipelago {
     public static class HeroManager
@@ -24,6 +25,8 @@ namespace DeadCellsArchipelago {
         public static bool trapChallengeCurseReceived = false;
         public static bool shouldGiveItemsNewRun = false;
         public static bool isInTraining = false;
+        public static bool originalCurse = true;
+        public static bool controlsInverted = false;
 
         public static void OnHeroDie(Hook_Hero.orig_onDie orig, Hero self)
         {
@@ -32,9 +35,9 @@ namespace DeadCellsArchipelago {
             orig(self);
             heroJustDead = false;
             aspectsToIter = 0;
-            if(ARCHIPELAGO != null)
+            if(ARCHIPELAGO != null && ARCHIPELAGO.deathLinkManager != null && !deathLinkReceived)
             {
-                ARCHIPELAGO.SendDeathLink();
+                ARCHIPELAGO.deathLinkManager.SendDeathLink();
             }
             ResetDataNewRun();
         }
@@ -80,10 +83,12 @@ namespace DeadCellsArchipelago {
 
         public static void InitSwitchControls()
         {
-            SwitchControls();
+            if (!controlsInverted) SwitchControls();
+            controlsInverted = true;
             cooldown = new Cooldown(60, (dc.String str, int nb) =>
             {
                 SwitchControls();
+                controlsInverted = false;
             });
             
             int key = Cooldown.Class.INDEXES.indexOf("InvertCooldown", null);
@@ -163,7 +168,7 @@ namespace DeadCellsArchipelago {
                 {
                     bool hidePopup = false;
                     bool useAltSound = false;
-                    HERO.curse(ARCHIPELAGO.deathLinkEnabled, $"{userWithSkillIssue} died !".AsHaxeString(), new HaxeProxy.Runtime.Ref<bool>(ref hidePopup), new HaxeProxy.Runtime.Ref<bool>(ref useAltSound));
+                    HERO.curse(ARCHIPELAGO.deathLinkEnabled, $"{userWithSkillIssue} died !".AsHaxeString(), new Ref<bool>(ref hidePopup), new Ref<bool>(ref useAltSound));
                 }
                 userWithSkillIssue = "";
             }
@@ -209,6 +214,73 @@ namespace DeadCellsArchipelago {
         {
             orig(self);
             ResetFrontPokebomb();
+        }
+
+        public static void OnHeroOnDamage(Hook_Hero.orig_onDamage orig, Hero self, AttackData a)
+        {
+            orig(self, a);
+            if (ARCHIPELAGO != null && ARCHIPELAGO.healthLinkManager != null) ARCHIPELAGO.healthLinkManager.UpdateHealthStorage(HERO!.life, HERO.maxLife);
+            if (ARCHIPELAGO != null && ARCHIPELAGO.damageLinkManager != null)
+            {
+                float percentHpLost = a.finalDmg / (float) HERO!.maxLife * 100f;
+                ARCHIPELAGO.damageLinkManager.OnPlayerDamaged(percentHpLost);
+            }
+        }
+
+        public static void OnHeroHeal(Hook_Hero.orig_heal orig, Hero self, int v)
+        {
+            orig(self, v);
+            if (ARCHIPELAGO != null && ARCHIPELAGO.healthLinkManager != null) ARCHIPELAGO.healthLinkManager.UpdateHealthStorage(HERO!.life, HERO.maxLife);
+        }
+
+        public static void UpdateHeroHealthLink(int otherCurrentHealth, int otherMaxHealth)
+        {
+            if (HERO == null) return;
+            double percentage = (double) otherCurrentHealth / otherMaxHealth;
+            HERO.life = Math.Max((int)(percentage * HERO.maxLife), 1);
+        }
+
+        public static void RemovePercentHealth(int percentage)
+        {
+            if (HERO == null) return;
+            if (HERO.life - (int)(HERO.maxLife * (percentage / 100.0)) <= 0) HERO.kill();
+            else HERO.life -= (int)(HERO.maxLife * (percentage / 100.0));
+        }
+
+        public static void OnHeroReduceCurse(Hook_Hero.orig_reduceCurse orig, Hero self, int n)
+        {
+            bool oneMore = false;
+            if (!originalCurse && HERO!.curseCounter == 0)
+            {
+                bool popUp = true;
+                bool sound = false;
+                HERO.curse(1, null, new Ref<bool>(ref popUp), new Ref<bool>(ref sound));
+                oneMore = true;
+            }
+            orig(self, n);
+            if (ARCHIPELAGO != null && ARCHIPELAGO.healthLinkManager != null && ARCHIPELAGO.healthLinkManager.shareCurses && originalCurse) ARCHIPELAGO.healthLinkManager.UpdateCurseStorage(HERO!.curseCounter);
+            if (oneMore) HERO!.reduceCurse(1);
+        }
+
+        public static void OnHeroCurse(Hook_Hero.orig_curse orig, Hero self, int count, dc.String reason, Ref<bool> hidePopup, Ref<bool> useAltSound)
+        {
+            orig(self, count, reason, hidePopup, useAltSound);
+            if (ARCHIPELAGO != null && ARCHIPELAGO.healthLinkManager != null && ARCHIPELAGO.healthLinkManager.shareCurses && originalCurse) ARCHIPELAGO.healthLinkManager.UpdateCurseStorage(HERO!.curseCounter);
+        }
+
+        public static void UpdateHeroHealthCurseLink(int curseValue)
+        {
+            if (HERO == null) return;
+            originalCurse = false;
+            if (!(curseValue == 0 && HERO.curseCounter == 0)) HERO.reduceCurse(HERO.curseCounter - curseValue);
+            originalCurse = true;
+        }
+
+        public static void AddCells(int cellsValue)
+        {
+            if (HERO == null) return;
+            bool noStats = false;
+            HERO.substractCells(-cellsValue, new Ref<bool>(ref noStats));
         }
     }
 }

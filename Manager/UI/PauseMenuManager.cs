@@ -29,7 +29,9 @@ namespace DeadCellsArchipelago {
         public static SkillShop skillShopMenu = new SkillShop(50, 150);
         public static Bitmap? cellBitmap = null;
         public static dc.ui.Text? cellsNumber = null;
-        public static int shopPrice = 100;
+        public static int colorlessShopPrice = 100;
+        public static int pokebombShopPrice = 50;
+        public static int legendaryShopPrice = 600;
         public static SkillScroller<ItemLine>? scrollerFiller;
         public static SkillScroller<BiomeLine>? scrollerBiome;
         public static PopUpTracker? popUpTracker;
@@ -49,7 +51,13 @@ namespace DeadCellsArchipelago {
         public static int keyToRepeat = -1;
         public static int FrameWithkeyPressed = 0;
         public static HlAction<int, bool>? modifiedOnActPressed;
-        
+        public static int menuIndex = 0;
+        public static dc.ui.Text? apMenuRight = null;
+        public static dc.ui.Text? apMenuLeft = null;
+        public static dc.ui.Text? energyTitle = null;
+        public static EnergyLink? energyLink = null;
+        public static int topIndex = -1;
+        public static int energyLinkIndex = -1;
 
         public static void OnUpdateDefaultPause(Hook_DefaultPause.orig_update orig, DefaultPause self)
         {
@@ -70,6 +78,7 @@ namespace DeadCellsArchipelago {
             AddTitles(self);
 
             AddPopUpMenu();
+            AddEnergyLinkMenu();
             MoveCursor(self);
         }
 
@@ -139,7 +148,7 @@ namespace DeadCellsArchipelago {
                     
                     //continue input up/left/down/right when down
                     FrameWithkeyPressed = 0;
-                    if (i == 10 || i == 11 || i == 12 || i == 13) keyToRepeat = i;
+                    if (i == 10 || i == 11 || i == 12 || i == 13 || i == 0) keyToRepeat = i;
                     else keyToRepeat = -1;
 
                     //on classic menu, up go to 
@@ -159,336 +168,460 @@ namespace DeadCellsArchipelago {
                     {
                         showClassicMenu = !showClassicMenu;
                     }
-                    //on modded menu and menu button, down goes to modded menu
-                    else if (!showClassicMenu && onMenuButton && i == 12)
+                    //on right arrow, validate change modded menu
+                    else if (!showClassicMenu && topIndex == 1 && i == 0)
                     {
-                        onMenuButton = false;
-                        apMenuButton?.set_textColor(16777215);
-                        scrollerBiome?.lastHighlight = 0;
-                        scrollerBiome?.lastHighlightCell = 0;
-                        scrollerBiome?.lines[0].Highlight(0);
-                        scrollerIndex = 2;
-                    }
-                    //on pop up, return close pop up
-                    else if(showPopUp && (i == 8 || i == 1))
-                    {
-                        showPopUp = false;
-                        scrollerIndex = 2;
-                        popUpTopIndex = -1;
-                        popUpTracker?.scrollerItems?.lastHighlight = -1;
-                        if (scrollerBiome?.lastHighlight == -1 || scrollerBiome?.lastHighlightCell == -1)
+                        menuIndex++;
+                        if(menuIndex == 1)
                         {
+                            topIndex = -1;
+                            apMenuRight?.set_textColor(16777215);
+                            apMenuButton?.set_textColor(16776960);
+                            onMenuButton = true;
+                        }
+                    }
+                    //on left arrow, validate change modded menu
+                    else if (!showClassicMenu && topIndex == 0 && i == 0)
+                    {
+                        menuIndex--;
+                        if(menuIndex == 0)
+                        {
+                            topIndex = -1;
+                            apMenuLeft?.set_textColor(16777215);
+                            apMenuButton?.set_textColor(16776960);
+                            onMenuButton = true;
+                        }
+                    }
+                    //menu 1
+                    else if(menuIndex == 0)
+                    {
+                        //on modded menu and menu button, down goes to modded menu
+                        if (!showClassicMenu && onMenuButton && i == 12)
+                        {
+                            onMenuButton = false;
+                            apMenuButton?.set_textColor(16777215);
                             scrollerBiome?.lastHighlight = 0;
                             scrollerBiome?.lastHighlightCell = 0;
-                            scrollerBiome?.SetScrollAtStart();
+                            scrollerBiome?.lines[0].Highlight(0);
+                            scrollerIndex = 2;
                         }
-                        scrollerBiome?.lines[scrollerBiome.lastHighlight].Highlight(scrollerBiome.lastHighlightCell);
-                    }
-                    //on modded menu, return goes to classic menu
-                    else if(!showClassicMenu && (i == 8 || i == 1))
-                    {
-                        showClassicMenu = true;
-                        scrollerHistory?.SetScrollAtEnd();
-                        scrollerFiller?.SetScrollAtStart();
-                        scrollerBiome?.SetScrollAtStart();
-                        if (scrollerIndex == 0 && scrollerHistory?.lastHighlight != -1) scrollerHistory?.lines[scrollerHistory.lastHighlight].StopHighlight();
-                        else if (scrollerIndex == 1 && scrollerFiller?.lastHighlight != -1) scrollerFiller?.lines[scrollerFiller.lastHighlight].StopHighlight();
-                        else if (scrollerIndex == 2 && scrollerBiome?.lastHighlight != -1 && scrollerBiome?.lastHighlightCell != -1) scrollerBiome?.lines[scrollerBiome.lastHighlight].StopHighlight(scrollerBiome.lastHighlightCell);
-                        else if (scrollerIndex == 4 && shopX != -1 && shopY != -1) skillShopMenu.StopHighlight(shopX, shopY);
-                        scrollerIndex = -1;
-                    }
-                    //on modded menu and in a scroller
-                    else if (scrollerIndex != -1)
-                    {
-                        switch (scrollerIndex)
+                        //on modded menu and menu button, right goes to top right arrow
+                        else if (!showClassicMenu && onMenuButton && i == 13)
                         {
-                            case 0:
-                                if(scrollerHistory == null || scrollerHistory.lastHighlight == -1) return;
-                                if (i == 13)
-                                {
-                                    scrollerHistory.lines[scrollerHistory.lastHighlight].StopHighlight();
-                                    scrollerHistory.lastHighlight = -1;
-                                    scrollerBiome?.lastHighlight = 0;
-                                    scrollerBiome?.lastHighlightCell = 0;
-                                    scrollerBiome?.lines[0].Highlight(0);
-                                    scrollerIndex = 2;
-                                    scrollerBiome?.SetScrollAtStart();
-                                }
-                                else if (i == 10 && scrollerHistory.lastHighlight > 0)
-                                {
-                                    scrollerHistory.lines[scrollerHistory.lastHighlight].StopHighlight();
-                                    scrollerHistory.lastHighlight--;
-                                    scrollerHistory.lines[scrollerHistory.lastHighlight].Highlight();
-                                    scrollerHistory.SetScrollUpAtIndex();
-                                }
-                                else if (i == 12 && scrollerHistory.lastHighlight == scrollerHistory.lines.Count - 1 && scrollerFiller?.lines.Count != 0)
-                                {
-                                    scrollerHistory.lines[scrollerHistory.lastHighlight].StopHighlight();
-                                    scrollerIndex = 1;
-                                    scrollerHistory.lastHighlight = -1;
-                                    scrollerFiller?.lastHighlight = 0;
-                                    scrollerFiller?.lines[scrollerFiller.lastHighlight].Highlight();
-                                    scrollerFiller?.SetScrollAtStart();
-                                }
-                                else if (i == 12 && scrollerHistory.lastHighlight != scrollerHistory.lines.Count - 1 )
-                                {
-                                    scrollerHistory.lines[scrollerHistory.lastHighlight].StopHighlight();
-                                    scrollerHistory.lastHighlight++;
-                                    scrollerHistory.lines[scrollerHistory.lastHighlight].Highlight();
-                                    scrollerHistory.SetScrollDownAtIndex();
-                                }
-                                else if (i == 11)
-                                {
-                                    scrollerHistory.lines[scrollerHistory.lastHighlight].StopHighlight();
-                                    scrollerHistory.lastHighlight = -1;
-                                    scrollerIndex = 4;
-                                    shopX = 1;
-                                    shopY = 1;
-                                    skillShopMenu.Highlight(shopX, shopY);
-                                }
-                                break;
-
-                            case 1:
-                                if(scrollerFiller == null || scrollerFiller.lastHighlight == -1) return;
-                                if (i == 10 && scrollerFiller.lastHighlight == 0)
-                                {
-                                    scrollerFiller.lines[scrollerFiller.lastHighlight].StopHighlight();
-                                    scrollerFiller.lastHighlight = -1;
-                                    if (scrollerHistory?.lines.Count != 0)
+                            onMenuButton = false;
+                            apMenuButton?.set_textColor(16777215);
+                            apMenuRight?.set_textColor(16776960);
+                            topIndex = 1;
+                        }
+                        //on modded menu and top right arrow, left goes to menu button
+                        else if (!showClassicMenu && topIndex == 1 && i == 11)
+                        {
+                            topIndex = -1;
+                            apMenuRight?.set_textColor(16777215);
+                            apMenuButton?.set_textColor(16776960);
+                            onMenuButton = true;
+                        }
+                        //on modded menu and top right arrow, down goes to modded menu
+                        else if (!showClassicMenu && topIndex == 1 && i == 12)
+                        {
+                            topIndex = -1;
+                            apMenuRight?.set_textColor(16777215);
+                            scrollerBiome?.lastHighlight = 0;
+                            scrollerBiome?.lastHighlightCell = 0;
+                            scrollerBiome?.lines[0].Highlight(0);
+                            scrollerIndex = 2;
+                        }
+                        //on pop up, return close pop up
+                        else if(showPopUp && (i == 8 || i == 1))
+                        {
+                            showPopUp = false;
+                            scrollerIndex = 2;
+                            popUpTopIndex = -1;
+                            popUpTracker?.scrollerItems?.lastHighlight = -1;
+                            if (scrollerBiome?.lastHighlight == -1 || scrollerBiome?.lastHighlightCell == -1)
+                            {
+                                scrollerBiome?.lastHighlight = 0;
+                                scrollerBiome?.lastHighlightCell = 0;
+                                scrollerBiome?.SetScrollAtStart();
+                            }
+                            scrollerBiome?.lines[scrollerBiome.lastHighlight].Highlight(scrollerBiome.lastHighlightCell);
+                        }
+                        //on modded menu, return goes to classic menu
+                        else if(!showClassicMenu && (i == 8 || i == 1))
+                        {
+                            ReturnMenuController();
+                        }
+                        //on modded menu and in a scroller
+                        else if (scrollerIndex != -1)
+                        {
+                            switch (scrollerIndex)
+                            {
+                                case 0:
+                                    if(scrollerHistory == null || scrollerHistory.lastHighlight == -1) return;
+                                    if (i == 13)
                                     {
-                                        scrollerIndex = 0;
-                                        scrollerHistory?.lastHighlight = scrollerHistory.lines.Count - 1;;
-                                        scrollerHistory?.lines[scrollerHistory.lastHighlight].Highlight();
-                                        scrollerHistory?.SetScrollAtEnd();
-                                    }
-                                    else
-                                    {
-                                        scrollerIndex = 4;
-                                        shopX = 1;
-                                        shopY = 1;
-                                        skillShopMenu.Highlight(shopX, shopY);
-                                    }
-                                }
-                                else if (i == 10)
-                                {
-                                    scrollerFiller.lines[scrollerFiller.lastHighlight].StopHighlight();
-                                    scrollerFiller.lastHighlight--;
-                                    scrollerFiller.lines[scrollerFiller.lastHighlight].Highlight();
-                                    scrollerFiller.SetScrollUpAtIndex();
-                                }
-                                else if (i == 12 && scrollerFiller.lastHighlight < scrollerFiller.lines.Count - 1)
-                                {
-                                    scrollerFiller.lines[scrollerFiller.lastHighlight].StopHighlight();
-                                    scrollerFiller.lastHighlight++;
-                                    scrollerFiller.lines[scrollerFiller.lastHighlight].Highlight();
-                                    scrollerFiller.SetScrollDownAtIndex();
-                                }
-                                else if (i == 13)
-                                {
-                                    scrollerFiller.lines[scrollerFiller.lastHighlight].StopHighlight();
-                                    scrollerFiller.lastHighlight = -1;
-                                    scrollerBiome?.lastHighlight = 0;
-                                    scrollerBiome?.lastHighlightCell = 0;
-                                    scrollerBiome?.lines[0].Highlight(0);
-                                    scrollerIndex = 2;
-                                    scrollerBiome?.SetScrollAtStart();
-                                }
-                                else if (i == 0)
-                                {
-                                    scrollerFiller.lines[scrollerFiller.lastHighlight].GiveItem();
-                                }
-                                break;
-
-                            case 2:
-                                if(scrollerBiome == null || scrollerBiome.lastHighlight == -1 || scrollerBiome.lastHighlightCell == -1) return;
-                                if (scrollerBiome.lastHighlight == 0 && i == 10)
-                                {
-                                    onMenuButton = true;
-                                    apMenuButton?.set_textColor(16776960);
-                                    scrollerBiome.lines[0].StopHighlight(scrollerBiome.lastHighlightCell);
-                                    scrollerBiome.lastHighlight = -1;
-                                    scrollerBiome.lastHighlightCell = -1;
-                                    scrollerIndex = -1;
-                                }
-                                else if (i == 10)
-                                {
-                                    scrollerBiome.lines[scrollerBiome.lastHighlight].StopHighlight(scrollerBiome.lastHighlightCell);
-                                    scrollerBiome.lastHighlight--;
-                                    scrollerBiome.lines[scrollerBiome.lastHighlight].Highlight(scrollerBiome.lastHighlightCell);
-                                    scrollerBiome.SetScrollUpAtIndex();
-                                }
-                                else if (i == 13 && scrollerBiome.lastHighlightCell+1 < 3)
-                                {
-                                    scrollerBiome.lines[scrollerBiome.lastHighlight].StopHighlight(scrollerBiome.lastHighlightCell);
-                                    scrollerBiome.lastHighlightCell++;
-                                    scrollerBiome.lines[scrollerBiome.lastHighlight].Highlight(scrollerBiome.lastHighlightCell);
-                                }
-                                else if (i == 11 && scrollerBiome.lastHighlightCell == 0)
-                                {
-                                    scrollerBiome.lines[scrollerBiome.lastHighlight].StopHighlight(0);
-                                    scrollerBiome.lastHighlight = -1;
-                                    scrollerBiome.lastHighlightCell = -1;
-                                    
-                                    if (scrollerHistory != null && scrollerHistory.lines.Count != 0)
-                                    {
-                                        scrollerIndex = 0;
-                                        scrollerHistory.lastHighlight = scrollerHistory.lines.Count - 1;
-                                        scrollerHistory.SetScrollAtEnd();
-                                        scrollerHistory.lines[scrollerHistory.lastHighlight].Highlight();
-                                    }
-                                    else if (scrollerFiller != null && scrollerFiller.lines.Count != 0)
-                                    {
-                                        scrollerIndex = 1;
-                                        scrollerFiller.lastHighlight = 0;
-                                        scrollerFiller.SetScrollAtStart();
-                                        scrollerFiller.lines[scrollerFiller.lastHighlight].Highlight();
-                                    }
-                                    else
-                                    {
-                                        scrollerIndex = 4;
-                                        shopX = 1;
-                                        shopY = 1;
-                                        skillShopMenu.Highlight(shopX, shopY);
-                                    }
-                                }
-                                else if (i == 11)
-                                {
-                                    scrollerBiome.lines[scrollerBiome.lastHighlight].StopHighlight(scrollerBiome.lastHighlightCell);
-                                    scrollerBiome.lastHighlightCell--;
-                                    scrollerBiome.lines[scrollerBiome.lastHighlight].Highlight(scrollerBiome.lastHighlightCell);
-                                }
-                                else if (i == 12 && scrollerBiome.lastHighlight+1 < scrollerBiome.lines.Count)
-                                {
-                                    scrollerBiome.lines[scrollerBiome.lastHighlight].StopHighlight(scrollerBiome.lastHighlightCell);
-                                    scrollerBiome.lastHighlight++;
-                                    scrollerBiome.lines[scrollerBiome.lastHighlight].Highlight(scrollerBiome.lastHighlightCell);
-                                    scrollerBiome.SetScrollDownAtIndex();
-                                }
-                                else if (i == 0)
-                                {
-                                    popUpTracker?.biomeLineIndex = scrollerBiome.lastHighlight;
-                                    popUpTracker?.biomeCellIndex = scrollerBiome.lastHighlightCell;
-                                    scrollerBiome.lines[scrollerBiome.lastHighlight].SetPopUpTracker(scrollerBiome.lastHighlightCell);
-                                    scrollerIndex = 3;
-                                    popUpTopIndex = 0;
-                                    popUpTracker?.topLine?.Highlight(popUpTopIndex);
-                                }
-                                break;
-
-                            case 3:
-                                if(popUpTracker == null || popUpTracker.topLine == null || popUpTracker.scrollerItems == null) return;
-                                if (i == 13 && popUpTopIndex + 1 < popUpTracker.topLine.cells.Count && popUpTopIndex != -1)
-                                {
-                                    popUpTracker.topLine.StopHighlight(popUpTopIndex);
-                                    popUpTopIndex++;
-                                    popUpTracker.topLine.Highlight(popUpTopIndex);
-                                }
-                                else if (i == 11 && popUpTopIndex > 0 && popUpTopIndex != -1)
-                                {
-                                    popUpTracker.topLine.StopHighlight(popUpTopIndex);
-                                    popUpTopIndex--;
-                                    popUpTracker.topLine.Highlight(popUpTopIndex);
-                                }
-                                else if (i == 0 && popUpTopIndex != -1)
-                                {
-                                    UpdateScrollContent(popUpTracker.topLine.cells[popUpTopIndex].toChecks);
-                                }
-                                else if (i == 12 && popUpTopIndex != -1 && popUpTracker.scrollerItems.lines.Count != 0)
-                                {
-                                    popUpTracker.topLine.StopHighlight(popUpTopIndex);
-                                    popUpTopIndex = -1;
-                                    popUpTracker.scrollerItems.lastHighlight = 0;
-                                    popUpTracker.scrollerItems.lines[popUpTracker.scrollerItems.lastHighlight].Highlight();
-                                }
-                                else if (i == 12 && popUpTracker.scrollerItems.lastHighlight+1 < popUpTracker.scrollerItems.lines.Count)
-                                {
-                                    popUpTracker.scrollerItems.lines[popUpTracker.scrollerItems.lastHighlight].StopHighlight();
-                                    popUpTracker.scrollerItems.lastHighlight++;
-                                    popUpTracker.scrollerItems.lines[popUpTracker.scrollerItems.lastHighlight].Highlight();
-                                    popUpTracker.scrollerItems.SetScrollDownAtIndex();
-                                }
-                                else if (i == 10 && popUpTracker.scrollerItems.lastHighlight == 0)
-                                {
-                                    popUpTracker.scrollerItems.lines[popUpTracker.scrollerItems.lastHighlight].StopHighlight();
-                                    popUpTopIndex = 0;
-                                    popUpTracker.scrollerItems.lastHighlight = -1;
-                                    popUpTracker.topLine.Highlight(popUpTopIndex);
-                                }
-                                else if (i == 10 && popUpTopIndex == -1)
-                                {
-                                    popUpTracker.scrollerItems.lines[popUpTracker.scrollerItems.lastHighlight].StopHighlight();
-                                    popUpTracker.scrollerItems.lastHighlight--;
-                                    popUpTracker.scrollerItems.lines[popUpTracker.scrollerItems.lastHighlight].Highlight();
-                                    popUpTracker.scrollerItems.SetScrollUpAtIndex();
-                                }
-                                break;
-
-                            case 4:
-                                if(shopX == -1 || shopY == -1) return;
-                                if (i == 10 && shopY != 0)
-                                {
-                                    skillShopMenu.StopHighlight(shopX, shopY);
-                                    shopY--;
-                                    skillShopMenu.Highlight(shopX, shopY);
-                                }
-                                else if (i == 12 && shopY != 1)
-                                {
-                                    skillShopMenu.StopHighlight(shopX, shopY);
-                                    shopY++;
-                                    skillShopMenu.Highlight(shopX, shopY);
-                                }
-                                else if (i == 12 && scrollerFiller?.lines.Count != 0)
-                                {
-                                    skillShopMenu.StopHighlight(shopX, shopY);
-                                    shopX = -1;
-                                    shopY = -1;
-                                    scrollerIndex = 1;
-                                    scrollerFiller?.lastHighlight = 0;
-                                    scrollerFiller?.lines[scrollerFiller.lastHighlight].Highlight();
-                                    scrollerFiller?.SetScrollAtStart();
-                                }
-                                if (i == 11 && shopX != 0)
-                                {
-                                    skillShopMenu.StopHighlight(shopX, shopY);
-                                    shopX--;
-                                    skillShopMenu.Highlight(shopX, shopY);
-                                }
-                                else if (i == 13 && shopX != 1)
-                                {
-                                    skillShopMenu.StopHighlight(shopX, shopY);
-                                    shopX++;
-                                    skillShopMenu.Highlight(shopX, shopY);
-                                }
-                                else if (i == 13)
-                                {
-                                    if(scrollerHistory?.lines.Count != 0)
-                                    {
-                                        skillShopMenu.StopHighlight(shopX, shopY);
-                                        shopX = -1;
-                                        shopY = -1;
-                                        scrollerIndex = 0;
-                                        scrollerHistory?.lastHighlight = scrollerHistory.lines.Count - 1;
-                                        scrollerHistory?.lines[scrollerHistory.lastHighlight].Highlight();
-                                        scrollerHistory?.SetScrollAtEnd();
-                                    }
-                                    else
-                                    {
-                                        skillShopMenu.StopHighlight(shopX, shopY);
-                                        shopX = -1;
-                                        shopY = -1;
-                                        scrollerIndex = 2;
+                                        scrollerHistory.lines[scrollerHistory.lastHighlight].StopHighlight();
+                                        scrollerHistory.lastHighlight = -1;
                                         scrollerBiome?.lastHighlight = 0;
                                         scrollerBiome?.lastHighlightCell = 0;
-                                        scrollerBiome?.lines[scrollerBiome.lastHighlight].Highlight(scrollerBiome.lastHighlightCell);
+                                        scrollerBiome?.lines[0].Highlight(0);
+                                        scrollerIndex = 2;
                                         scrollerBiome?.SetScrollAtStart();
                                     }
-                                }
-                                else if (i == 0)
-                                {
-                                    skillShopMenu.BuyColorless(shopX, shopY);
-                                }
-                                break;
-                            
+                                    else if (i == 10 && scrollerHistory.lastHighlight > 0)
+                                    {
+                                        scrollerHistory.lines[scrollerHistory.lastHighlight].StopHighlight();
+                                        scrollerHistory.lastHighlight--;
+                                        scrollerHistory.lines[scrollerHistory.lastHighlight].Highlight();
+                                        scrollerHistory.SetScrollUpAtIndex();
+                                    }
+                                    else if (i == 12 && scrollerHistory.lastHighlight == scrollerHistory.lines.Count - 1 && scrollerFiller?.lines.Count != 0)
+                                    {
+                                        scrollerHistory.lines[scrollerHistory.lastHighlight].StopHighlight();
+                                        scrollerIndex = 1;
+                                        scrollerHistory.lastHighlight = -1;
+                                        scrollerFiller?.lastHighlight = 0;
+                                        scrollerFiller?.lines[scrollerFiller.lastHighlight].Highlight();
+                                        scrollerFiller?.SetScrollAtStart();
+                                    }
+                                    else if (i == 12 && scrollerHistory.lastHighlight != scrollerHistory.lines.Count - 1 )
+                                    {
+                                        scrollerHistory.lines[scrollerHistory.lastHighlight].StopHighlight();
+                                        scrollerHistory.lastHighlight++;
+                                        scrollerHistory.lines[scrollerHistory.lastHighlight].Highlight();
+                                        scrollerHistory.SetScrollDownAtIndex();
+                                    }
+                                    else if (i == 11)
+                                    {
+                                        scrollerHistory.lines[scrollerHistory.lastHighlight].StopHighlight();
+                                        scrollerHistory.lastHighlight = -1;
+                                        scrollerIndex = 4;
+                                        shopX = 1;
+                                        shopY = 1;
+                                        skillShopMenu.Highlight(shopX, shopY);
+                                    }
+                                    break;
+
+                                case 1:
+                                    if(scrollerFiller == null || scrollerFiller.lastHighlight == -1) return;
+                                    if (i == 10 && scrollerFiller.lastHighlight == 0)
+                                    {
+                                        scrollerFiller.lines[scrollerFiller.lastHighlight].StopHighlight();
+                                        scrollerFiller.lastHighlight = -1;
+                                        if (scrollerHistory?.lines.Count != 0)
+                                        {
+                                            scrollerIndex = 0;
+                                            scrollerHistory?.lastHighlight = scrollerHistory.lines.Count - 1;;
+                                            scrollerHistory?.lines[scrollerHistory.lastHighlight].Highlight();
+                                            scrollerHistory?.SetScrollAtEnd();
+                                        }
+                                        else
+                                        {
+                                            scrollerIndex = 4;
+                                            shopX = 1;
+                                            shopY = 1;
+                                            skillShopMenu.Highlight(shopX, shopY);
+                                        }
+                                    }
+                                    else if (i == 10)
+                                    {
+                                        scrollerFiller.lines[scrollerFiller.lastHighlight].StopHighlight();
+                                        scrollerFiller.lastHighlight--;
+                                        scrollerFiller.lines[scrollerFiller.lastHighlight].Highlight();
+                                        scrollerFiller.SetScrollUpAtIndex();
+                                    }
+                                    else if (i == 12 && scrollerFiller.lastHighlight < scrollerFiller.lines.Count - 1)
+                                    {
+                                        scrollerFiller.lines[scrollerFiller.lastHighlight].StopHighlight();
+                                        scrollerFiller.lastHighlight++;
+                                        scrollerFiller.lines[scrollerFiller.lastHighlight].Highlight();
+                                        scrollerFiller.SetScrollDownAtIndex();
+                                    }
+                                    else if (i == 13)
+                                    {
+                                        scrollerFiller.lines[scrollerFiller.lastHighlight].StopHighlight();
+                                        scrollerFiller.lastHighlight = -1;
+                                        scrollerBiome?.lastHighlight = 0;
+                                        scrollerBiome?.lastHighlightCell = 0;
+                                        scrollerBiome?.lines[0].Highlight(0);
+                                        scrollerIndex = 2;
+                                        scrollerBiome?.SetScrollAtStart();
+                                    }
+                                    else if (i == 0)
+                                    {
+                                        scrollerFiller.lines[scrollerFiller.lastHighlight].GiveItem();
+                                    }
+                                    break;
+
+                                case 2:
+                                    if(scrollerBiome == null || scrollerBiome.lastHighlight == -1 || scrollerBiome.lastHighlightCell == -1) return;
+                                    if (scrollerBiome.lastHighlight == 0 && i == 10)
+                                    {
+                                        onMenuButton = true;
+                                        apMenuButton?.set_textColor(16776960);
+                                        scrollerBiome.lines[0].StopHighlight(scrollerBiome.lastHighlightCell);
+                                        scrollerBiome.lastHighlight = -1;
+                                        scrollerBiome.lastHighlightCell = -1;
+                                        scrollerIndex = -1;
+                                    }
+                                    else if (i == 10)
+                                    {
+                                        scrollerBiome.lines[scrollerBiome.lastHighlight].StopHighlight(scrollerBiome.lastHighlightCell);
+                                        scrollerBiome.lastHighlight--;
+                                        scrollerBiome.lines[scrollerBiome.lastHighlight].Highlight(scrollerBiome.lastHighlightCell);
+                                        scrollerBiome.SetScrollUpAtIndex();
+                                    }
+                                    else if (i == 13 && scrollerBiome.lastHighlightCell+1 < 3)
+                                    {
+                                        scrollerBiome.lines[scrollerBiome.lastHighlight].StopHighlight(scrollerBiome.lastHighlightCell);
+                                        scrollerBiome.lastHighlightCell++;
+                                        scrollerBiome.lines[scrollerBiome.lastHighlight].Highlight(scrollerBiome.lastHighlightCell);
+                                    }
+                                    else if (i == 11 && scrollerBiome.lastHighlightCell == 0)
+                                    {
+                                        scrollerBiome.lines[scrollerBiome.lastHighlight].StopHighlight(0);
+                                        scrollerBiome.lastHighlight = -1;
+                                        scrollerBiome.lastHighlightCell = -1;
+                                        
+                                        if (scrollerHistory != null && scrollerHistory.lines.Count != 0)
+                                        {
+                                            scrollerIndex = 0;
+                                            scrollerHistory.lastHighlight = scrollerHistory.lines.Count - 1;
+                                            scrollerHistory.SetScrollAtEnd();
+                                            scrollerHistory.lines[scrollerHistory.lastHighlight].Highlight();
+                                        }
+                                        else if (scrollerFiller != null && scrollerFiller.lines.Count != 0)
+                                        {
+                                            scrollerIndex = 1;
+                                            scrollerFiller.lastHighlight = 0;
+                                            scrollerFiller.SetScrollAtStart();
+                                            scrollerFiller.lines[scrollerFiller.lastHighlight].Highlight();
+                                        }
+                                        else
+                                        {
+                                            scrollerIndex = 4;
+                                            shopX = 1;
+                                            shopY = 1;
+                                            skillShopMenu.Highlight(shopX, shopY);
+                                        }
+                                    }
+                                    else if (i == 11)
+                                    {
+                                        scrollerBiome.lines[scrollerBiome.lastHighlight].StopHighlight(scrollerBiome.lastHighlightCell);
+                                        scrollerBiome.lastHighlightCell--;
+                                        scrollerBiome.lines[scrollerBiome.lastHighlight].Highlight(scrollerBiome.lastHighlightCell);
+                                    }
+                                    else if (i == 12 && scrollerBiome.lastHighlight+1 < scrollerBiome.lines.Count)
+                                    {
+                                        scrollerBiome.lines[scrollerBiome.lastHighlight].StopHighlight(scrollerBiome.lastHighlightCell);
+                                        scrollerBiome.lastHighlight++;
+                                        scrollerBiome.lines[scrollerBiome.lastHighlight].Highlight(scrollerBiome.lastHighlightCell);
+                                        scrollerBiome.SetScrollDownAtIndex();
+                                    }
+                                    else if (i == 0)
+                                    {
+                                        popUpTracker?.biomeLineIndex = scrollerBiome.lastHighlight;
+                                        popUpTracker?.biomeCellIndex = scrollerBiome.lastHighlightCell;
+                                        scrollerBiome.lines[scrollerBiome.lastHighlight].SetPopUpTracker(scrollerBiome.lastHighlightCell);
+                                        scrollerIndex = 3;
+                                        popUpTopIndex = 0;
+                                        popUpTracker?.topLine?.Highlight(popUpTopIndex);
+                                    }
+                                    break;
+
+                                case 3:
+                                    if(popUpTracker == null || popUpTracker.topLine == null || popUpTracker.scrollerItems == null) return;
+                                    if (i == 13 && popUpTopIndex + 1 < popUpTracker.topLine.cells.Count && popUpTopIndex != -1)
+                                    {
+                                        popUpTracker.topLine.StopHighlight(popUpTopIndex);
+                                        popUpTopIndex++;
+                                        popUpTracker.topLine.Highlight(popUpTopIndex);
+                                    }
+                                    else if (i == 11 && popUpTopIndex > 0 && popUpTopIndex != -1)
+                                    {
+                                        popUpTracker.topLine.StopHighlight(popUpTopIndex);
+                                        popUpTopIndex--;
+                                        popUpTracker.topLine.Highlight(popUpTopIndex);
+                                    }
+                                    else if (i == 0 && popUpTopIndex != -1)
+                                    {
+                                        UpdateScrollContent(popUpTracker.topLine.cells[popUpTopIndex].toChecks);
+                                    }
+                                    else if (i == 12 && popUpTopIndex != -1 && popUpTracker.scrollerItems.lines.Count != 0)
+                                    {
+                                        popUpTracker.topLine.StopHighlight(popUpTopIndex);
+                                        popUpTopIndex = -1;
+                                        popUpTracker.scrollerItems.lastHighlight = 0;
+                                        popUpTracker.scrollerItems.lines[popUpTracker.scrollerItems.lastHighlight].Highlight();
+                                    }
+                                    else if (i == 12 && popUpTracker.scrollerItems.lastHighlight+1 < popUpTracker.scrollerItems.lines.Count)
+                                    {
+                                        popUpTracker.scrollerItems.lines[popUpTracker.scrollerItems.lastHighlight].StopHighlight();
+                                        popUpTracker.scrollerItems.lastHighlight++;
+                                        popUpTracker.scrollerItems.lines[popUpTracker.scrollerItems.lastHighlight].Highlight();
+                                        popUpTracker.scrollerItems.SetScrollDownAtIndex();
+                                    }
+                                    else if (i == 10 && popUpTracker.scrollerItems.lastHighlight == 0)
+                                    {
+                                        popUpTracker.scrollerItems.lines[popUpTracker.scrollerItems.lastHighlight].StopHighlight();
+                                        popUpTopIndex = 0;
+                                        popUpTracker.scrollerItems.lastHighlight = -1;
+                                        popUpTracker.topLine.Highlight(popUpTopIndex);
+                                    }
+                                    else if (i == 10 && popUpTopIndex == -1)
+                                    {
+                                        popUpTracker.scrollerItems.lines[popUpTracker.scrollerItems.lastHighlight].StopHighlight();
+                                        popUpTracker.scrollerItems.lastHighlight--;
+                                        popUpTracker.scrollerItems.lines[popUpTracker.scrollerItems.lastHighlight].Highlight();
+                                        popUpTracker.scrollerItems.SetScrollUpAtIndex();
+                                    }
+                                    break;
+
+                                case 4:
+                                    if(shopX == -1 || shopY == -1) return;
+                                    if (i == 10 && shopY != 0)
+                                    {
+                                        skillShopMenu.StopHighlight(shopX, shopY);
+                                        shopY--;
+                                        skillShopMenu.Highlight(shopX, shopY);
+                                    }
+                                    else if (i == 12 && shopY != 1)
+                                    {
+                                        skillShopMenu.StopHighlight(shopX, shopY);
+                                        shopY++;
+                                        skillShopMenu.Highlight(shopX, shopY);
+                                    }
+                                    else if (i == 12 && scrollerFiller?.lines.Count != 0)
+                                    {
+                                        skillShopMenu.StopHighlight(shopX, shopY);
+                                        shopX = -1;
+                                        shopY = -1;
+                                        scrollerIndex = 1;
+                                        scrollerFiller?.lastHighlight = 0;
+                                        scrollerFiller?.lines[scrollerFiller.lastHighlight].Highlight();
+                                        scrollerFiller?.SetScrollAtStart();
+                                    }
+                                    if (i == 11 && shopX != 0)
+                                    {
+                                        skillShopMenu.StopHighlight(shopX, shopY);
+                                        shopX--;
+                                        skillShopMenu.Highlight(shopX, shopY);
+                                    }
+                                    else if (i == 13 && shopX != 1)
+                                    {
+                                        skillShopMenu.StopHighlight(shopX, shopY);
+                                        shopX++;
+                                        skillShopMenu.Highlight(shopX, shopY);
+                                    }
+                                    else if (i == 13)
+                                    {
+                                        if(scrollerHistory?.lines.Count != 0)
+                                        {
+                                            skillShopMenu.StopHighlight(shopX, shopY);
+                                            shopX = -1;
+                                            shopY = -1;
+                                            scrollerIndex = 0;
+                                            scrollerHistory?.lastHighlight = scrollerHistory.lines.Count - 1;
+                                            scrollerHistory?.lines[scrollerHistory.lastHighlight].Highlight();
+                                            scrollerHistory?.SetScrollAtEnd();
+                                        }
+                                        else
+                                        {
+                                            skillShopMenu.StopHighlight(shopX, shopY);
+                                            shopX = -1;
+                                            shopY = -1;
+                                            scrollerIndex = 2;
+                                            scrollerBiome?.lastHighlight = 0;
+                                            scrollerBiome?.lastHighlightCell = 0;
+                                            scrollerBiome?.lines[scrollerBiome.lastHighlight].Highlight(scrollerBiome.lastHighlightCell);
+                                            scrollerBiome?.SetScrollAtStart();
+                                        }
+                                    }
+                                    else if (i == 0)
+                                    {
+                                        skillShopMenu.Buy(shopX, shopY);
+                                    }
+                                    break;
+                                
+                            }
+                        }
+                        else
+                        {
+                            previousAct.Invoke(i, b);
+                        }
+                    }
+                    //menu 2
+                    else if(menuIndex == 1)
+                    {
+                        //on modded menu and menu button, down goes to modded menu
+                        if (!showClassicMenu && onMenuButton && i == 12)
+                        {
+                            onMenuButton = false;
+                            apMenuButton?.set_textColor(16777215);
+                            energyLinkIndex = 0;
+                            energyLink?.Highlight(energyLinkIndex);
+                        }
+                        //on modded menu and menu button, left goes to top left arrow
+                        else if (!showClassicMenu && onMenuButton && i == 11)
+                        {
+                            onMenuButton = false;
+                            apMenuButton?.set_textColor(16777215);
+                            apMenuLeft?.set_textColor(16776960);
+                            topIndex = 0;
+                        }
+                        //on modded menu and top left arrow, right goes to menu button
+                        else if (!showClassicMenu && topIndex == 0 && i == 13)
+                        {
+                            topIndex = -1;
+                            apMenuLeft?.set_textColor(16777215);
+                            apMenuButton?.set_textColor(16776960);
+                            onMenuButton = true;
+                        }
+                        //on modded menu and top left arrow, down goes to modded menu
+                        else if (!showClassicMenu && topIndex == 0 && i == 12)
+                        {
+                            topIndex = -1;
+                            apMenuLeft?.set_textColor(16777215);
+                            energyLinkIndex = 0;
+                            energyLink?.Highlight(energyLinkIndex);
+                        }
+                        //on top buttons energy link, up goes to menu button
+                        else if ((energyLinkIndex == 0 || energyLinkIndex == 1) && i == 10)
+                        {
+                            energyLinkIndex = -1;
+                            energyLink?.StopHighlight();
+                            apMenuButton?.set_textColor(16776960);
+                            onMenuButton = true;
+                        }
+                        //on energy link, navigate
+                        else if ((energyLinkIndex == 0 || energyLinkIndex == 2) && i == 13)
+                        {
+                            energyLinkIndex++;
+                            energyLink?.Highlight(energyLinkIndex);
+                        }
+                        else if ((energyLinkIndex == 1 || energyLinkIndex == 3) && i == 11)
+                        {
+                            energyLinkIndex--;
+                            energyLink?.Highlight(energyLinkIndex);
+                        }
+                        else if ((energyLinkIndex == 0 || energyLinkIndex == 1) && i == 12)
+                        {
+                            energyLinkIndex += 2;
+                            energyLink?.Highlight(energyLinkIndex);
+                        }
+                        else if ((energyLinkIndex == 2 || energyLinkIndex == 3) && i == 10)
+                        {
+                            energyLinkIndex -= 2;
+                            energyLink?.Highlight(energyLinkIndex);
+                        }
+                        else if ((energyLinkIndex == 0 || energyLinkIndex == 1 || energyLinkIndex == 2 || energyLinkIndex == 3) && i == 0)
+                        {
+                            energyLink?.Act(energyLinkIndex);
+                        }
+                        //on modded menu, return goes to classic menu
+                        else if(!showClassicMenu && (i == 8 || i == 1))
+                        {
+                            ReturnMenuController();
                         }
                     }
                     else
@@ -551,6 +684,99 @@ namespace DeadCellsArchipelago {
                     }
                 };
             }
+
+            if (apMenuLeft == null)
+            {
+                Bounds boundsLogo = logoBitmap.getSize(new Bounds());
+                double scale = 1;
+                apMenuLeft = new dc.ui.Text(screenBitmap, true, false, new Ref<double>(ref scale), null, null)
+                {
+                    y = apMenuButton.y,
+                    scaleX = 1,
+                    scaleY = 1
+                };
+                apMenuLeft.set_text(" < ".AsHaxeString());
+                apMenuLeft.x = logoBitmap.x - apMenuLeft.textWidth;
+                apMenuLeft.set_textColor(16777215);
+                var inter = new Interactive(
+                    apMenuLeft.get_textWidth(),
+                    boundsLogo.yMax,
+                    apMenuLeft,
+                    null
+                )
+                {
+                    y = -(boundsLogo.yMax - apMenuButton.textHeight) /2,
+
+                    onClick = (e) =>
+                    {
+                        menuIndex--;
+                    },
+                    onMove = (e) =>
+                    {
+                        apMenuLeft.set_textColor(16776960);
+                    },
+                    onOut = (e) =>
+                    {
+                        apMenuLeft.set_textColor(16777215);
+                    }
+                };
+            }
+            apMenuLeft.set_visible(!showClassicMenu && menuIndex == 1);
+
+            if (apMenuRight == null)
+            {
+                Bounds boundsMenuButton = apMenuButton.getSize(new Bounds());
+                Bounds boundsLogo = logoBitmap.getSize(new Bounds());
+                double scale = 1;
+                apMenuRight = new dc.ui.Text(screenBitmap, true, false, new Ref<double>(ref scale), null, null)
+                {
+                    x = apMenuButton.x + boundsMenuButton.xMax,
+                    y = apMenuButton.y,
+                    scaleX = 1,
+                    scaleY = 1
+                };
+                apMenuRight.set_text(" > ".AsHaxeString());
+                apMenuRight.set_textColor(16777215);
+                var inter = new Interactive(
+                    apMenuRight.get_textWidth(),
+                    boundsLogo.yMax,
+                    apMenuRight,
+                    null
+                )
+                {
+                    y = -(boundsLogo.yMax - apMenuButton.textHeight) /2,
+
+                    onClick = (e) =>
+                    {
+                        menuIndex++;
+                    },
+                    onMove = (e) =>
+                    {
+                        apMenuRight.set_textColor(16776960);
+                    },
+                    onOut = (e) =>
+                    {
+                        apMenuRight.set_textColor(16777215);
+                    }
+                };
+            }
+            apMenuRight.set_visible(!showClassicMenu && menuIndex == 0);
+        }
+
+        private static void ReturnMenuController()
+        {
+            showClassicMenu = true;
+            scrollerHistory?.SetScrollAtEnd();
+            scrollerFiller?.SetScrollAtStart();
+            scrollerBiome?.SetScrollAtStart();
+            if (scrollerIndex == 0 && scrollerHistory?.lastHighlight != -1) scrollerHistory?.lines[scrollerHistory.lastHighlight].StopHighlight();
+            else if (scrollerIndex == 1 && scrollerFiller?.lastHighlight != -1) scrollerFiller?.lines[scrollerFiller.lastHighlight].StopHighlight();
+            else if (scrollerIndex == 2 && scrollerBiome?.lastHighlight != -1 && scrollerBiome?.lastHighlightCell != -1) scrollerBiome?.lines[scrollerBiome.lastHighlight].StopHighlight(scrollerBiome.lastHighlightCell);
+            else if (scrollerIndex == 4 && shopX != -1 && shopY != -1) skillShopMenu.StopHighlight(shopX, shopY);
+            scrollerIndex = -1;
+            topIndex = -1;
+            energyLinkIndex = -1;
+            energyLink?.StopHighlight();
         }
 
         private static void AddCellsCount()
@@ -596,7 +822,7 @@ namespace DeadCellsArchipelago {
             skillShopMenu.AddIncolorWeapons(screenBitmap, self, false);
             skillShopMenu.AddIncolorSkills(screenBitmap, self, false);
 
-            skillShopMenu.SetVisible(!showClassicMenu);
+            skillShopMenu.SetVisible(!showClassicMenu && menuIndex == 0);
             
         }
 
@@ -611,7 +837,7 @@ namespace DeadCellsArchipelago {
 
                 scrollerFiller.SetContentItemLine(ids, 660257);
             }
-            scrollerFiller.SetVisible(!showClassicMenu);
+            scrollerFiller.SetVisible(!showClassicMenu && menuIndex == 0);
         }
 
         private static void AddBiomeMenu() {
@@ -622,7 +848,7 @@ namespace DeadCellsArchipelago {
                 scrollerBiome.Refresh(25);
                 scrollerBiome.SetContentBiomeLine();
             }
-            scrollerBiome.SetVisible(!showClassicMenu);
+            scrollerBiome.SetVisible(!showClassicMenu && menuIndex == 0);
         }
 
         private static void AddPopUpMenu() {
@@ -633,7 +859,7 @@ namespace DeadCellsArchipelago {
                 showPopUp = false;
                 popUpTracker.AddFillerMenu();
             }
-            popUpTracker.SetVisible(showPopUp && !showClassicMenu);
+            popUpTracker.SetVisible(showPopUp && !showClassicMenu && menuIndex == 0);
         }
 
         private static void AddHistoryMenu() {
@@ -646,7 +872,7 @@ namespace DeadCellsArchipelago {
                 scrollerHistory.SetContentLogLine(History, 660257);
                 scrollerHistory.SetScrollAtEnd();
             }
-            scrollerHistory.SetVisible(!showClassicMenu);
+            scrollerHistory.SetVisible(!showClassicMenu && menuIndex == 0);
         }
 
         private static void AddTitles(DefaultPause self) {
@@ -659,10 +885,20 @@ namespace DeadCellsArchipelago {
                     scaleX = 1,
                     scaleY = 1
                 };
-                shopTitle.set_text("Colorless Shop".AsHaxeString());
+                shopTitle.set_text("Special Shop".AsHaxeString());
                 CenterX(250, shopTitle);
                 shopTitle.x += 50;
                 shopTitle.y = 80;
+
+                energyTitle = new dc.ui.Text(screenBitmap, false, true, new Ref<double>(ref scale), null, null)
+                {
+                    scaleX = 1,
+                    scaleY = 1
+                };
+                energyTitle.set_text("Energy Link".AsHaxeString());
+                CenterX(250, energyTitle);
+                energyTitle.x += 50;
+                energyTitle.y = 80;
 
                 historyTitle = new dc.ui.Text(screenBitmap, false, true, new Ref<double>(ref scale), null, null)
                 {
@@ -712,11 +948,12 @@ namespace DeadCellsArchipelago {
                 CenterX(1920, menuTitle);
                 menuTitle.y = self.title.y / screenScale;
             }
-            shopTitle?.visible = !showClassicMenu;
-            historyTitle?.visible = !showClassicMenu;
-            biomeTitle?.visible = !showClassicMenu;
-            fillerTitle?.visible = !showClassicMenu;
+            shopTitle?.visible = !showClassicMenu && menuIndex == 0;
+            historyTitle?.visible = !showClassicMenu && menuIndex == 0;
+            biomeTitle?.visible = !showClassicMenu && menuIndex == 0;
+            fillerTitle?.visible = !showClassicMenu && menuIndex == 0;
             menuTitle?.visible = !showClassicMenu;
+            energyTitle?.visible = !showClassicMenu && menuIndex == 1;
         }
 
         public static void UpdateTopPopUp() {
@@ -752,6 +989,11 @@ namespace DeadCellsArchipelago {
             fillerTitle = null;
             menuTitle = null;
             onMenuButton = false;
+            menuIndex = 0;
+            apMenuRight = null;
+            apMenuLeft = null;
+            energyTitle = null;
+            energyLink = null;
         }
 
         public static void OnSwapWeaponsApMenu(Hook_Inventory.orig_swapWeapons orig, Inventory self)
@@ -789,16 +1031,31 @@ namespace DeadCellsArchipelago {
 
         private static void MoveCursor(DefaultPause self)
         {
-            if (keyToRepeat != -1 && self.controller.isAnyActionDown())
+            if (keyToRepeat != -1 && self.controller != null && self.controller.isAnyActionDown())
             {
-                FrameWithkeyPressed++;
-                if (FrameWithkeyPressed == 10)
+                if (keyToRepeat != 0)
                 {
-                    FrameWithkeyPressed = 0;
+                    FrameWithkeyPressed++;
+                    if (FrameWithkeyPressed == 10)
+                    {
+                        FrameWithkeyPressed = 0;
+                        modifiedOnActPressed?.Invoke(keyToRepeat, true);
+                    }
+                }
+                else if (energyLinkIndex == 0 || energyLinkIndex == 1)
+                {
                     modifiedOnActPressed?.Invoke(keyToRepeat, true);
                 }
-                
             }
+        }
+
+        private static void AddEnergyLinkMenu() {
+            if(screenBitmap == null) return;
+            if (energyLink == null)
+            {
+                energyLink = new EnergyLink(screenBitmap);
+            }
+            energyLink.SetVisible(!showClassicMenu && menuIndex == 1);
         }
     }
 }

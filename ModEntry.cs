@@ -20,6 +20,7 @@ using static DeadCellsArchipelago.PokeManager;
 using static DeadCellsArchipelago.EnemyManager;
 using static DeadCellsArchipelago.PauseMenuManager;
 using static DeadCellsArchipelago.UnlockItemManager;
+using static DeadCellsArchipelago.LinkQueue;
 using dc.pr;
 using dc.level;
 using dc.tool;
@@ -48,6 +49,7 @@ using dc.hxd.snd;
 using dc.ui.icon;
 using dc.en.mob;
 using dc.level.lore;
+using dc.tool.atk;
 
 
 namespace DeadCellsArchipelago{
@@ -79,6 +81,7 @@ namespace DeadCellsArchipelago{
             Hook_Hero.init += OnHeroInit;
             Hook_Hero.pickBlueprint += OnBlueprintPicked;
             Hook_Hero.applyItemPickEffect += OnApplyItemPickEffect; //used for runes
+            Hook_Hero.pickItem += OnPickItem;
             Hook_Hero.onDie += OnHeroDie;
             Hook_Hero.addCells += OnAddCells;
 
@@ -184,6 +187,11 @@ namespace DeadCellsArchipelago{
             Hook__ItemTools.getBlueprintLocalizedName += OnGetBlueprintLocalizedName;
             Hook__Icon.createItemIcon += OnCreateItemIcon;
             dc.en.Hook_Mob.removeFromLoot += TempFixRemoveFromLoot;
+            Hook_Hero.heal += OnHeroHeal;
+            Hook_Hero.onDamage += OnHeroOnDamage;
+            Hook_Hero.curse += OnHeroCurse;
+            Hook_Hero.reduceCurse += OnHeroReduceCurse;
+            Hook_Entity.popError += OnPopError;
             Log.Information("=== Archipelago hooks loaded ! ===");
             //LogManager
             //BrBlueprint
@@ -197,6 +205,8 @@ namespace DeadCellsArchipelago{
                 GiveItemInQueue();
                 ShowLogInQueue();
                 CheckDeathLink();
+                DoEveryLinks();
+                if (logError) ShowLogError();
 
                 if (shouldGiveItemsNewRun && SAVED_DATA != null)
                 {
@@ -204,7 +214,7 @@ namespace DeadCellsArchipelago{
                     if (SAVED_DATA.IsItemReceived("ShipwreckKey"))
                     {
                         GiveItemToPlayer("ShipwreckKey");
-                        HERO?.hudInitItems();
+                        HERO.hudInitItems();
                     }
 
                     if (ARCHIPELAGO != null && ARCHIPELAGO.respawnUpScroll)
@@ -214,6 +224,13 @@ namespace DeadCellsArchipelago{
                             SAVED_DATA.GivenFillerItem[itemName] = 0;
                         }
                     }
+                    LoadLinks();
+                }
+
+                if (newConnection)
+                {
+                    LoadLinks();
+                    newConnection = false;
                 }
             }
 

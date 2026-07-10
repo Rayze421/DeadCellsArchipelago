@@ -15,12 +15,17 @@ namespace DeadCellsArchipelago {
     {
         public static dc.h2d.Bitmap? fgDisabled = null;
         public static Text? nb = null;
+        private static bool enemyDiedWhileExtracting = false;
 
         public static void OnRemoveItemPokecharge(Hook_Pokecharge.orig_removeItem orig, Pokecharge self)
         {
             orig(self);
-            DropItemToPlayer("Pokebomb");
-            if(SAVED_DATA != null) SAVED_DATA.numberOfPokebombUse --;
+            if (!enemyDiedWhileExtracting)
+            {
+                DropItemToPlayer("Pokebomb");
+                if(SAVED_DATA != null) SAVED_DATA.numberOfPokebombUse --;
+            }
+            else enemyDiedWhileExtracting = false;
         }
         
         public static void OnUpdateSkills(Hook_HeroActiveSkillsManager.orig_updateSkills orig, HeroActiveSkillsManager self)
@@ -122,6 +127,18 @@ namespace DeadCellsArchipelago {
                 return SAVED_DATA.IsCheckSent(k.ToString());
             }
             return orig(self, k);
+        }
+
+        public static bool OnPopError(Hook_Entity.orig_popError orig, Entity self, dc.String str, int? col)
+        {
+            if (((dc.String) Lang.Class.t.texts.get("Échec".AsHaxeString())).ToString() == str.ToString()) enemyDiedWhileExtracting = true;
+            return orig(self, str, col);
+        }
+
+        public static bool IsAnySkillPokebomb()
+        {
+            HeroActiveSkillsManager asm = HERO!.activeSkillsManager;
+            return (asm.hudGetSkillPower(0).ii != null && asm.hudGetSkillPower(0).ii._itemData.id.ToString() == "Pokebomb") || (asm.hudGetSkillPower(1).ii != null && asm.hudGetSkillPower(1).ii._itemData.id.ToString() == "Pokebomb");
         }
     }
 }

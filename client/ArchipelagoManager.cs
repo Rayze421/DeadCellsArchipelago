@@ -1,5 +1,4 @@
 using Archipelago.MultiClient.Net;
-using Archipelago.MultiClient.Net.BounceFeatures.DeathLink;
 using Archipelago.MultiClient.Net.Enums;
 using Archipelago.MultiClient.Net.Helpers;
 using Archipelago.MultiClient.Net.Packets;
@@ -7,17 +6,22 @@ using Serilog;
 
 using static DeadCellsArchipelago.ItemManager;
 using static DeadCellsArchipelago.ItemQueue;
-using static DeadCellsArchipelago.HeroManager;
 using static DeadCellsArchipelago.Translator;
+using static DeadCellsArchipelago.BlueprintManager;
 using System.Collections.ObjectModel;
 using Archipelago.MultiClient.Net.MessageLog.Messages;
+using System.Net.WebSockets;
 
 namespace DeadCellsArchipelago
 {
     public class ArchipelagoManager
     {
         private ArchipelagoSession? session;
-        private DeathLinkService? deathLinkService;
+        public DeathLinkManager? deathLinkManager;
+        public DamageLinkManager? damageLinkManager;
+        public HealthLinkManager? healthLinkManager;
+        public TrapLinkManager? trapLinkManager;
+        public EnergyLinkManager? energyLinkManager;
         public bool isConnected;
         
         // Configurate connection
@@ -37,6 +41,16 @@ namespace DeadCellsArchipelago
         public bool theQueenAndTheSea;
         public bool returnToCastlevania;
         public string? version;
+        public string deathLinkGroup = "";
+        public bool deathTrap;
+        public bool deathTrapLink;
+        public bool damageLink;
+        public string damageLinkGroup = "";
+        public bool healthLink;
+        public string healthLinkGroup = "";
+        public bool healthCurseLink;
+        public bool trapLink;
+        public string trapLinkGroup = "";
         
         public void Connect(string serverUrl, string slotName, string? password = null)
         {
@@ -64,7 +78,7 @@ namespace DeadCellsArchipelago
                     "Dead Cells",
                     slotName,
                     ItemsHandlingFlags.AllItems,
-                    new Version(6, 7, 0),
+                    new Version(6, 7, 1),
                     password: password
                 );
                 
@@ -86,15 +100,24 @@ namespace DeadCellsArchipelago
                     if (slotData.ContainsKey("dlc_the_queen_and_the_sea")) theQueenAndTheSea = Convert.ToBoolean(slotData["dlc_the_queen_and_the_sea"]);
                     if (slotData.ContainsKey("dlc_return_to_castlevania")) returnToCastlevania = Convert.ToBoolean(slotData["dlc_return_to_castlevania"]);
 
-                    if (slotData.ContainsKey("apworld_version")) version = Convert.ToString(slotData["apworld_version"]);
-                    if (version == null) version = "-0.1.1";
+                    if (slotData.ContainsKey("apworld_version")) version = Convert.ToString(slotData["apworld_version"]) ?? "-0.1.1";
 
-                    if (deathLinkEnabled >= 0)
-                    {
-                        deathLinkService = session.CreateDeathLinkService();
-                        deathLinkService.EnableDeathLink();
-                        deathLinkService.OnDeathLinkReceived += OnDeathLinkReceived;
-                    }
+                    if (slotData.ContainsKey("death_link_group")) deathLinkGroup = Convert.ToString(slotData["death_link_group"]) ?? "";
+                    if (slotData.ContainsKey("death_trap")) deathTrap = Convert.ToBoolean(slotData["death_trap"]);
+                    if (slotData.ContainsKey("death_trap_link")) deathTrapLink = Convert.ToBoolean(slotData["death_trap_link"]);
+                    if (slotData.ContainsKey("damage_link")) damageLink = Convert.ToBoolean(slotData["damage_link"]);
+                    if (slotData.ContainsKey("damage_link_group")) damageLinkGroup = Convert.ToString(slotData["damage_link_group"]) ?? "";
+                    if (slotData.ContainsKey("health_link")) healthLink = Convert.ToBoolean(slotData["health_link"]);
+                    if (slotData.ContainsKey("health_link_group")) healthLinkGroup = Convert.ToString(slotData["health_link_group"]) ?? "";
+                    if (slotData.ContainsKey("health_curse_link")) healthCurseLink = Convert.ToBoolean(slotData["health_curse_link"]);
+                    if (slotData.ContainsKey("trap_link")) trapLink = Convert.ToBoolean(slotData["trap_link"]);
+                    if (slotData.ContainsKey("trap_link_group")) trapLinkGroup = Convert.ToString(slotData["trap_link_group"]) ?? "";
+
+                    energyLinkManager = new EnergyLinkManager(session);
+                    if (deathLinkEnabled >= 0) deathLinkManager = new DeathLinkManager(session, deathLinkGroup, disableDeathLinkForAspects, deathTrap, deathTrapLink);
+                    if (damageLink) damageLinkManager = new DamageLinkManager(session, damageLinkGroup);
+                    if (healthLink) healthLinkManager = new HealthLinkManager(session, healthLinkGroup, healthCurseLink);
+                    if (trapLink) trapLinkManager = new TrapLinkManager(session, trapLinkGroup);
                 }
                 else if (result is LoginFailure failure)
                 {
@@ -250,7 +273,14 @@ namespace DeadCellsArchipelago
         
         private void OnError(Exception ex, string message)
         {
-            Log.Error($"=== Archipelago Error: {message} - {ex.Message} ===");
+            Log.Error($"=== Archipelago Error: {message} ===");
+            if (ex is WebSocketException)
+            {
+                Log.Warning($"=== Disconnecting... ===");
+                isConnected = false;
+                logError = true;
+                logDesc = "Disconnected from server";
+            }
         }
         
         private void OnDisconnected(string reason)
@@ -284,26 +314,6 @@ namespace DeadCellsArchipelago
                 Status = ArchipelagoClientState.ClientGoal
             };
             session.Socket.SendPacket(statusUpdate);
-        }
-
-        private void OnDeathLinkReceived(DeathLink deathLink)
-        {
-            userWithSkillIssue = deathLink.Source;
-            if (userWithSkillIssue != slotName) deathLinkReceived = true;
-        }
-
-        public void SendDeathLink(string message = "")
-        {
-            if (!disableDeathLinkForAspects || disableDeathLinkForAspects && SAVED_DATA != null && SAVED_DATA.CountSentAspect() == 13)
-            {
-                if(message == "")
-                {
-                    message = $"{slotName} died in Dead Cells";
-                }
-                if(deathLinkService != null && session != null) {
-                    deathLinkService.SendDeathLink(new DeathLink(slotName, message));
-                }
-            }
         }
 
         private void OnMessageReceived(LogMessage message)

@@ -671,12 +671,12 @@ LOCATION_RULES = [
             _can_reach_location_if_exists(state, world, loc)
             for loc in [
                 "Toxic Sewers Enter",
-                "Castle's Outskirts Enter",
+                "Dracula's Castle Enter",
                 "Dilapidated Arboretum Enter",
             ]
         )
     ),
-    
+
     # ── Boss Rush Items ──────────────────────────────────────────────────────
     ("Boss Knight Outfit", _boss_rush_trials_1_2()),
     ("Barbarian Boss Knight Outfit", _boss_rush_trials_3_4() and _bsc(3)),
