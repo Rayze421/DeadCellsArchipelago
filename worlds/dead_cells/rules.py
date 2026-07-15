@@ -45,7 +45,7 @@ SKIN_ITEMS = [
     "Festive Outfit", "Gardener's Outfit", "Mushroom Boi's Outfit", "Mushroom Outfit",
     "Banished's Outfit", "Blowgunner's Outfit", "Tick Trainer's Outfit", "The Royal Gardener's Outfit",
     "Retro Outfit", "HEV Outfit", "Lizard Outfit", "Apostate Outfit",
-    "Bootleg Outfit", "Kamikaze Outfit", "Arbalester's Outfit", "Blade Master's Outfit",
+    "Almost-Yourself Outfit", "Kamikaze Outfit", "Arbalester's Outfit", "Blade Master's Outfit",
 
     # king
     "King Outfit", "White King Outfit",
