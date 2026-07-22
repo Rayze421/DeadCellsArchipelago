@@ -839,7 +839,7 @@ LOCATION_TABLE: Dict[str, dict] = {
     "Ranger's Gear": {
         "id": 0x00F1, "region": "Checks", "type": "blueprint_enemy",
         "dlc": "", "min_bc": 0, "item": "P_DmgSkillRanged",
-        "sources": [{'biome': 'AncientTemple', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Duelist'}, {'biome': 'Cliff', 'min_bc': 0, 'max_bc': 255, 'dlc': 'FatalFalls', 'type': 'blueprint_enemy', 'mob': 'Duelist'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Duelist'}],
+        "sources": [{'biome': 'AncientTemple', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Duelist'}, {'biome': 'Bank', 'min_bc': 0, 'max_bc': 255, 'dlc': '', 'type': 'blueprint_enemy', 'mob': 'Duelist'}],
     },
     "Shrapnel Axes": {
         "id": 0x00F2, "region": "Checks", "type": "blueprint_enemy",
