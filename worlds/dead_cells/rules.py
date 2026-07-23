@@ -664,6 +664,9 @@ LOCATION_RULES = [
     # Parry Shield Stilt Village secret
     ("Parry Shield", _has_all("Spider Rune", "Ram Rune")),
 
+    # Extended Healing Ossuary secret
+    ("Extended Healing", _has("Teleportation Rune")),
+
     # Sanguine Vortex head
     (
         "Sanguine Vortex", 
